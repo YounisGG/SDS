@@ -1,0 +1,56 @@
+:root {
+    --main-blue: #00d2ff;
+    --deep-dark: #05070a;
+    --card-bg: #11141d;
+    --border: rgba(255,255,255,0.1);
+}
+
+body {
+    background-color: var(--deep-dark);
+    color: white;
+    font-family: 'Cairo', sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.dashboard-container {
+    display: none; /* مخفي حتى يتم تسجيل الدخول */
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.glass-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+.btn-glow {
+    background: linear-gradient(45deg, #00d2ff, #3a47d5);
+    border: none;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.btn-glow:hover {
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.console-output {
+    background: #000;
+    color: #00ff88;
+    font-family: 'Courier New', monospace;
+    padding: 15px;
+    height: 300px;
+    overflow-y: auto;
+    border-radius: 10px;
+    font-size: 13px;
+}
