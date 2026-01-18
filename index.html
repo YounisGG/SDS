@@ -3,121 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDS - Scripts Delivery System</title>
+    <title>AI Game Scripter | صانع السكربتات الذكي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #00f2ff; --bg: #050505; --card: #121212; }
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: #fff; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        
-        .container { background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid #333; box-shadow: 0 0 25px rgba(0, 242, 255, 0.1); width: 100%; max-width: 450px; text-align: center; }
-        h2 { color: var(--neon); text-shadow: 0 0 10px var(--neon); margin-bottom: 20px; }
-        
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing: border-box; }
-        input:focus { border-color: var(--neon); outline: none; box-shadow: 0 0 5px var(--neon); }
-        
-        button { width: 100%; padding: 12px; background: var(--neon); color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
-        button:hover { opacity: 0.8; transform: scale(1.02); }
-
-        .toggle-link { color: #888; font-size: 13px; cursor: pointer; display: block; margin-top: 15px; }
-        .toggle-link b { color: var(--neon); }
-
-        #main-app { display: none; width: 90%; max-width: 800px; }
-        #output { background: #000; color: #0f0; padding: 15px; border-radius: 8px; text-align: left; min-height: 150px; white-space: pre-wrap; font-family: monospace; border: 1px solid #222; margin-top: 20px; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1a 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body>
+<body class="p-4 md:p-8">
 
-    <div class="container" id="auth-box">
-        <div id="login-form">
-            <h2>SDS LOGIN</h2>
-            <input type="text" id="log-user" placeholder="اسم المستخدم">
-            <input type="password" id="log-pass" placeholder="كلمة المرور">
-            <button onclick="handleLogin()">تسجيل الدخول</button>
-            <span class="toggle-link" onclick="toggleAuth()">ليس لديك حساب؟ <b>إنشاء حساب جديد</b></span>
-        </div>
+    <div class="max-w-4xl mx-auto">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 gradient-text">AI Game Scripter</h1>
+            <p class="text-gray-400 text-lg">أول منصة ذكاء اصطناعي لتوليد سكربتات الألعاب فوراً</p>
+        </header>
 
-        <div id="signup-form" style="display: none;">
-            <h2>CREATE ACCOUNT</h2>
-            <input type="text" id="reg-user" placeholder="اختر اسم مستخدم">
-            <input type="password" id="reg-pass" placeholder="اختر كلمة مرور">
-            <button onclick="handleSignup()">إنشاء الحساب</button>
-            <span class="toggle-link" onclick="toggleAuth()">لديك حساب بالفعل؟ <b>دخول</b></span>
-        </div>
-    </div>
+        <div class="glass-card p-6 md:p-10 shadow-2xl">
+            <div class="space-y-6">
+                <div>
+                    <label class="block mb-2 text-sm font-medium text-gray-300">اسم اللعبة أو المنصة (مثلاً: Roblox, Unity, Python):</label>
+                    <input type="text" id="gameName" placeholder="مثال: Roblox - Blox Fruits" 
+                    class="w-full bg-black bg-opacity-30 border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-blue-500 transition">
+                </div>
 
-    <div id="main-app">
-        <div class="container" style="max-width: 100%;">
-            <div style="display:flex; justify-content: space-between; align-items: center;">
-                <h2 style="margin:0;">SDS GENERATOR</h2>
-                <button onclick="location.reload()" style="width: auto; padding: 5px 15px; background: #ff4444; color: white;">خروج</button>
+                <div>
+                    <label class="block mb-2 text-sm font-medium text-gray-300">ماذا تريد من السكربت أن يفعل؟</label>
+                    <textarea id="scriptFeature" rows="4" placeholder="مثال: أريد سكربت يقوم بتجميع العملات تلقائياً (Auto Farm)" 
+                    class="w-full bg-black bg-opacity-30 border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-blue-500 transition"></textarea>
+                </div>
+
+                <button onclick="generateScript()" id="genBtn" 
+                class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold py-4 rounded-xl shadow-lg transform hover:scale-[1.02] transition duration-200">
+                    توليد السكربت الآن ✨
+                </button>
             </div>
-            <hr style="border: 0.5px solid #222; margin: 20px 0;">
-            <input type="text" id="prompt" placeholder="اطلب سكربت اللعبة هنا (مثلاً: Fly Script Roblox)">
-            <button id="genBtn" onclick="generateScript()">توليد السكربت</button>
-            <div id="output">بانتظار أوامرك...</div>
         </div>
+
+        <div id="resultContainer" class="hidden mt-8 space-y-4">
+            <h2 class="text-2xl font-bold text-cyan-400">السكربت المولد:</h2>
+            <div class="relative">
+                <pre id="outputCode" class="bg-black bg-opacity-60 p-6 rounded-xl border border-blue-900 overflow-x-auto text-green-400 font-mono text-sm leading-relaxed"></pre>
+                <button onclick="copyCode()" class="absolute top-4 left-4 bg-gray-700 hover:bg-gray-600 text-xs py-1 px-3 rounded">نسخ الكود</button>
+            </div>
+            <p id="aiAdvice" class="text-gray-400 italic text-sm p-4 border-r-4 border-blue-500 bg-blue-900 bg-opacity-10"></p>
+        </div>
+
+        <footer class="mt-12 text-center text-gray-500 text-sm">
+            تم التطوير بواسطة AI Gemini | للاستخدام التعليمي فقط
+        </footer>
     </div>
 
-    <script type="importmap">
-      { "imports": { "@google/generative-ai": "https://esm.run/@google/generative-ai" } }
-    </script>
+    <script>
+        // API Configuration
+        const API_KEY = "AIzaSyD7A1Ublp9M9PTH0FsTQrVWWGtHIc4PzqI"; 
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
-    <script type="module">
-        import { GoogleGenerativeAI } from "@google/generative-ai";
-
-        // --- نظام الحسابات ---
-        window.toggleAuth = () => {
-            const loginF = document.getElementById('login-form');
-            const signupF = document.getElementById('signup-form');
-            loginF.style.display = loginF.style.display === 'none' ? 'block' : 'none';
-            signupF.style.display = signupF.style.display === 'none' ? 'block' : 'none';
-        }
-
-        window.handleSignup = () => {
-            const user = document.getElementById('reg-user').value;
-            const pass = document.getElementById('reg-pass').value;
-            if(!user || !pass) return alert("املاً البيانات!");
-            
-            localStorage.setItem(`sds_user_${user}`, pass);
-            alert("تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول.");
-            toggleAuth();
-        }
-
-        window.handleLogin = () => {
-            const user = document.getElementById('log-user').value;
-            const pass = document.getElementById('log-pass').value;
-            const savedPass = localStorage.getItem(`sds_user_${user}`);
-
-            if(savedPass && savedPass === pass) {
-                document.getElementById('auth-box').style.display = 'none';
-                document.getElementById('main-app').style.display = 'block';
-            } else {
-                alert("اسم المستخدم أو كلمة المرور غير صحيحة!");
-            }
-        }
-
-        // --- نظام الذكاء الاصطناعي ---
-        window.generateScript = async () => {
-            const prompt = document.getElementById('prompt').value;
-            const output = document.getElementById('output');
+        async function generateScript() {
+            const game = document.getElementById('gameName').value;
+            const feature = document.getElementById('scriptFeature').value;
             const btn = document.getElementById('genBtn');
-            
-            if(!prompt) return alert("اكتب طلبك أولاً!");
+            const resultContainer = document.getElementById('resultContainer');
+            const outputCode = document.getElementById('outputCode');
+            const aiAdvice = document.getElementById('aiAdvice');
 
-            const API_KEY = "AIzaSyCMp7fZrKKC-mweC6Qm7_xaIJXpKXq-e9E";
-            const genAI = new GoogleGenerativeAI(API_KEY);
-            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+            if (!game || !feature) {
+                alert("يرجى ملء جميع الحقول!");
+                return;
+            }
 
+            // Update UI State
             btn.disabled = true;
-            output.innerText = "⏳ جاري توليد السكربت... يرجى الانتظار";
+            btn.innerHTML = 'جاري المعالجة بواسطة الذكاء الاصطناعي... <span class="loader"></span>';
+            resultContainer.classList.add('hidden');
+
+            const promptText = `أنت خبير في برمجة الألعاب. قم بكتابة سكربت كامل لـ لعبة: ${game}. 
+            الوظيفة المطلوبة: ${feature}. 
+            اجعل الكود نظيفاً مع تعليقات تشرح كيفية استخدامه. 
+            رد بصيغة JSON كالتالي: {"code": "الكود هنا", "advice": "نصيحة للمستخدم"}`;
 
             try {
-                const result = await model.generateContent("أعطني سكربت لـ: " + prompt + " مع شرح بسيط جداً بالعربية.");
-                output.innerText = result.response.text();
-            } catch (e) {
-                output.innerText = "❌ حدث خطأ في النظام. تأكد من إعدادات الـ API.";
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: promptText }] }]
+                    })
+                });
+
+                const data = await response.json();
+                const aiResponse = data.candidates[0].content.parts[0].text;
+                
+                // تنظيف الاستجابة (في حال أرجع Gemini نصوصاً إضافية)
+                const cleanJson = aiResponse.replace(/```json|```/g, "").trim();
+                const finalData = JSON.parse(cleanJson);
+
+                // Show Results
+                outputCode.textContent = finalData.code;
+                aiAdvice.textContent = "نصيحة الذكاء الاصطناعي: " + finalData.advice;
+                resultContainer.classList.remove('hidden');
+                
+            } catch (error) {
+                console.error("Error:", error);
+                alert("حدث خطأ أثناء الاتصال بالذكاء الاصطناعي. تأكد من مفتاح الـ API.");
             } finally {
                 btn.disabled = false;
+                btn.innerHTML = 'توليد السكربت الآن ✨';
             }
+        }
+
+        function copyCode() {
+            const code = document.getElementById('outputCode').textContent;
+            navigator.clipboard.writeText(code);
+            alert("تم نسخ السكربت بنجاح!");
         }
     </script>
 </body>
