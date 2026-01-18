@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Node - حول جهازك إلى سيرفر</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #0f172a; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .glow { box-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
+    </style>
+</head>
+<body class="p-5">
+    <div class="max-w-4xl mx-auto">
+        <header class="text-center py-10">
+            <h1 class="text-5xl font-extrabold text-green-400 mb-4 tracking-tight">MC-SERVER <span class="text-white">PRO</span></h1>
+            <p class="text-gray-400 text-lg">حول كمبيوترك إلى سيرفر ماين كرافت عالمي بضغط زر واحدة!</p>
+        </header>
+
+        <div class="grid md:grid-cols-3 gap-6 mb-10">
+            <div class="glass p-6 rounded-2xl text-center">
+                <i class="fas fa-bolt text-yellow-400 text-3xl mb-3"></i>
+                <h3 class="font-bold">أداء جبار</h3>
+                <p class="text-sm text-gray-400">استغل قوة الـ RAM والمعالج في جهازك بالكامل.</p>
+            </div>
+            <div class="glass p-6 rounded-2xl text-center border-green-500">
+                <i class="fas fa-shield-halved text-green-500 text-3xl mb-3"></i>
+                <h3 class="font-bold">حماية DDOS</h3>
+                <p class="text-sm text-gray-400">تشفير كامل لاتصالك وحماية خصوصية جهازك.</p>
+            </div>
+            <div class="glass p-6 rounded-2xl text-center">
+                <i class="fas fa-globe text-blue-400 text-3xl mb-3"></i>
+                <h3 class="font-bold">متاح للجميع</h3>
+                <p class="text-sm text-gray-400">أصحابك يدخلون سيرفرك حتى لو كنت خلف جدار ناري.</p>
+            </div>
+        </div>
+
+        <div class="glass p-8 rounded-3xl glow border-t-4 border-green-500">
+            <h2 class="text-2xl font-bold mb-6 text-center">لوحة التحكم في السيرفر</h2>
+            
+            <div class="space-y-4">
+                <div class="flex justify-between items-center bg-slate-800 p-4 rounded-xl">
+                    <span>حالة الجهاز المحلي:</span>
+                    <span class="text-green-500 font-bold"><i class="fas fa-circle text-xs"></i> متصل وجاهز</span>
+                </div>
+
+                <div class="bg-black p-4 rounded-lg font-mono text-sm text-green-400 overflow-x-auto">
+                    <p>> جاري فحص إصدار Java...</p>
+                    <p>> تم العثور على الإصدار 17.0.1</p>
+                    <p>> جاهز لإنشاء السيرفر (Paper/Spigot)...</p>
+                </div>
+
+                <button onclick="alert('جاري تحميل سكربت التشغيل الآلي...')" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-4 rounded-xl transition-all transform hover:scale-105">
+                    <i class="fas fa-play ml-2"></i> تشغيل السيرفر الآن
+                </button>
+            </div>
+        </div>
+
+        <footer class="mt-20 text-center text-gray-500 text-sm">
+            تم التطوير بواسطة ذكاء اصطناعي لخدمة مجتمع اللاعبين العربي.
+        </footer>
+    </div>
+</body>
+</html>
