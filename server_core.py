@@ -1,27 +1,55 @@
 import os
+import subprocess
 import urllib.request
+from flask import Flask, jsonify
 
-def setup_server():
-    print("--- [ PC-to-Server Pro Core ] ---")
-    folder = "Minecraft_Server"
-    
-    if not os.path.exists(folder):
-        os.makedirs(folder)
-        print(f"[+] تم إنشاء مجلد السيرفر بنجاح.")
+app = Flask(__name__)
 
-    # رابط تحميل السيرفر الرسمي
-    url = "https://piston-data.mojang.com/v1/objects/8410fd098631e3b4daac81903ed746813296ac96/server.jar"
-    path = os.path.join(folder, "server.jar")
+class MinecraftServerTool:
+    def __init__(self):
+        self.server_folder = "Minecraft_Server"
+        self.jar_url = "https://piston-data.mojang.com/v1/objects/8410fd098631e3b4daac81903ed746813296ac96/server.jar"
+        self.jar_name = "server.jar"
 
-    if not os.path.exists(path):
-        print("[!] جاري تحميل ملفات السيرفر من موجانج... قد يستغرق وقت")
-        urllib.request.urlretrieve(url, path)
+    def setup_environment(self):
+        """إنشاء المجلد وتحميل السيرفر تلقائياً"""
+        if not os.path.exists(self.server_folder):
+            os.makedirs(self.server_folder)
         
-    # الموافقة على الاتفاقية
-    with open(os.path.join(folder, "eula.txt"), "w") as f:
-        f.write("eula=true")
-        
-    print("[✔] السيرفر جاهز! يمكنك الآن تشغيله عبر لوحة التحكم.")
+        jar_path = os.path.join(self.server_folder, self.jar_name)
+        if not os.path.exists(jar_path):
+            print("[*] جاري تحميل ملفات ماين كرافت... يرجى الانتظار")
+            urllib.request.urlretrieve(self.jar_url, jar_path)
+            
+        # الموافقة على EULA
+        with open(os.path.join(self.server_folder, "eula.txt"), "w") as f:
+            f.write("eula=true")
 
-if __name__ == "__main__":
-    setup_server()
+    def run_command(self, ram_gb=2):
+        """تشغيل السيرفر الفعلي"""
+        os.chdir(self.server_folder)
+        command = f"java -Xmx{ram_gb}G -Xms{ram_gb}G -jar {self.jar_name} nogui"
+        subprocess.Popen(command, shell=True)
+        return "سيرفر ماين كرافت بدأ الآن!"
+
+# --- إنشاء الجسر (API) لربط الموقع بالـ PC ---
+server_tool = MinecraftServerTool()
+server_tool.setup_environment()
+
+@app.route('/start-server')
+def start_api():
+    try:
+        msg = server_tool.run_command(ram_gb=2)
+        return jsonify({"status": "success", "message": msg})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)})
+
+@app.route('/status')
+def status_api():
+    return jsonify({"server_status": "Online", "owner_email": "xywns003@gmail.com"})
+
+if __name__ == '__main__':
+    print("--- [ PC-to-Server Pro الجسر يعمل الآن ] ---")
+    print("الموقع الآن يستطيع التحكم في جهازك لتشغيل السيرفر.")
+    app.run(host='0.0.0.0', port=5000)
+
