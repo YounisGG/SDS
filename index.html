@@ -3,105 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minecraft Cloud | لوحة التحكم الاحترافية</title>
+    <title>MC Control Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <style>
-        body { background: #08080c; color: #e2e8f0; font-family: 'Cairo', sans-serif; }
-        .glass { background: rgba(20, 20, 30, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .gradient-text { background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .tab-content { display: none; }
-        .active-tab { display: block; animation: fadeIn 0.5s; }
+        body { background: #0d1117; color: white; font-family: 'Segoe UI', sans-serif; }
+        .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; }
+        .btn-action { transition: 0.3s; padding: 10px; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 10px; }
     </style>
 </head>
-<body class="p-4 md:p-10">
+<body class="p-5">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-blue-500 mb-8 text-center">التحكم العميق بالسيرفر 🎮</h1>
 
-    <header class="max-w-6xl mx-auto flex justify-between items-center mb-10 animate__animated animate__fadeInDown">
-        <div>
-            <h1 class="text-3xl font-bold gradient-text">MC-SERVER PRO</h1>
-            <p class="text-gray-400 text-sm">إدارة سيرفرك من أي مكان</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div class="card">
+                <p class="text-gray-400">عنوان السيرفر (IP):</p>
+                <input type="text" id="serverIp" placeholder="مثال: 192.168.1.5" class="w-full bg-black p-2 mt-2 rounded border border-gray-700">
+            </div>
+            <div class="card">
+                <p class="text-gray-400">منفذ السيرفر (Port):</p>
+                <input type="text" id="serverPort" value="25565" class="w-full bg-black p-2 mt-2 rounded border border-gray-700">
+            </div>
         </div>
-        <div class="text-right text-xs text-gray-500">
-            <span>DASHBOARD v2.0</span><br>
-            <span>Owner: xywns003@gmail.com</span>
-        </div>
-    </header>
 
-    <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
-        
-        <nav class="lg:col-span-1 space-y-4">
-            <button onclick="showTab('main')" class="w-full glass p-4 rounded-xl hover:bg-blue-600 transition flex items-center gap-3">🏠 الرئيسية</button>
-            <button onclick="showTab('players')" class="w-full glass p-4 rounded-xl hover:bg-blue-600 transition flex items-center gap-3">👥 إدارة اللاعبين</button>
-            <button onclick="showTab('settings')" class="w-full glass p-4 rounded-xl hover:bg-blue-600 transition flex items-center gap-3">⚙️ إعدادات عميقة</button>
-            <button onclick="showTab('support')" class="w-full glass p-4 rounded-xl hover:bg-blue-600 transition flex items-center gap-3">🛠 خدمة العملاء</button>
-        </nav>
-
-        <div class="lg:col-span-3">
+        <div class="card mb-8">
+            <h2 class="text-xl mb-4 text-yellow-500 font-bold">🎯 التحكم في لاعب محدد</h2>
+            <input type="text" id="targetPlayer" placeholder="أدخل اسم اللاعب هنا..." class="w-full bg-black p-4 rounded-xl border-2 border-blue-900 focus:border-blue-500 outline-none mb-4 text-xl">
             
-            <div id="main" class="tab-content active-tab glass p-8 rounded-3xl">
-                <h2 class="text-2xl font-bold mb-6">حالة السيرفر</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-black/40 p-6 rounded-2xl border border-green-500/30">
-                        <p class="text-gray-400">الحالة الحالية</p>
-                        <h3 class="text-2xl text-green-400 font-mono">ONLINE</h3>
-                        <button onclick="sendCommand('start')" class="mt-4 bg-green-600 px-6 py-2 rounded-lg hover:scale-105 transition">تشغيل السيرفر</button>
-                    </div>
-                    <div class="bg-black/40 p-6 rounded-2xl border border-red-500/30">
-                        <p class="text-gray-400">استهلاك الرام</p>
-                        <h3 class="text-2xl text-blue-400 font-mono">2.4 GB / 8 GB</h3>
-                        <button onclick="sendCommand('stop')" class="mt-4 bg-red-600 px-6 py-2 rounded-lg hover:scale-105 transition">إيقاف فوري</button>
-                    </div>
-                </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <button onclick="execute('ban')" class="btn-action bg-red-600 hover:bg-red-800">حظر (Ban)</button>
+                <button onclick="execute('kick')" class="btn-action bg-orange-600 hover:bg-orange-800">طرد (Kick)</button>
+                <button onclick="execute('op')" class="btn-action bg-purple-600 hover:bg-purple-800">ترقية (OP)</button>
+                <button onclick="execute('gamemode creative')" class="btn-action bg-blue-600 hover:bg-blue-800">إبداعي</button>
             </div>
 
-            <div id="players" class="tab-content glass p-8 rounded-3xl">
-                <h2 class="text-2xl font-bold mb-6">التحكم باللاعبين</h2>
-                <input id="playerName" type="text" placeholder="اسم اللاعب..." class="w-full bg-black/50 p-4 rounded-xl mb-4 border border-gray-700">
-                <div class="flex gap-4">
-                    <button onclick="managePlayer('ban')" class="flex-1 bg-red-700 p-4 rounded-xl font-bold">حظر (BAN)</button>
-                    <button onclick="managePlayer('kick')" class="flex-1 bg-orange-600 p-4 rounded-xl font-bold">طرد (KICK)</button>
-                    <button onclick="managePlayer('op')" class="flex-1 bg-purple-600 p-4 rounded-xl font-bold">ترقية (OP)</button>
+            <div class="mt-6 p-4 bg-black/30 rounded-lg border border-gray-800">
+                <h3 class="mb-3 text-sm text-gray-400">إعدادات متقدمة للاعب المحدد:</h3>
+                <div class="flex items-center justify-between">
+                    <span>تفعيل وضع الطيران</span>
+                    <button onclick="execute('ability fly true')" class="bg-green-600 px-4 py-1 rounded">تفعيل</button>
                 </div>
             </div>
-
-            <div id="settings" class="tab-content glass p-8 rounded-3xl">
-                <h2 class="text-2xl font-bold mb-6">إعدادات الملف الداخلي</h2>
-                <div class="space-y-4 text-sm">
-                    <div class="flex justify-between items-center p-4 bg-white/5 rounded-lg">
-                        <span>السماح بـ الطيران (Fly)</span>
-                        <input type="checkbox" class="w-6 h-6">
-                    </div>
-                    <div class="flex justify-between items-center p-4 bg-white/5 rounded-lg">
-                        <span>مستوى الصعوبة (Difficulty)</span>
-                        <select class="bg-black p-2 rounded">
-                            <option>Easy</option>
-                            <option>Normal</option>
-                            <option>Hard</option>
-                        </select>
-                    </div>
-                    <button class="w-full bg-blue-600 p-3 rounded-xl">حفظ في server.properties</button>
-                </div>
-            </div>
-
         </div>
-    </main>
+    </div>
 
     <script>
-        function showTab(id) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active-tab'));
-            document.getElementById(id).classList.add('active-tab');
-        }
-
-        async function sendCommand(cmd) {
-            alert("تم إرسال أمر: " + cmd + " إلى جهازك الشخصي عبر الجسر");
-            await fetch(`http://localhost:5000/api/${cmd}`);
-        }
-
-        async function managePlayer(type) {
-            const name = document.getElementById('playerName').value;
-            if(!name) return alert("اكتب اسم اللاعب أولاً");
-            alert(`جاري تنفيذ ${type} على اللاعب ${name}...`);
-            await fetch(`http://localhost:5000/api/player?type=${type}&name=${name}`);
+        async function execute(action) {
+            const player = document.getElementById('targetPlayer').value;
+            const ip = document.getElementById('serverIp').value;
+            if(!player) return alert("يرجى كتابة اسم اللاعب أولاً!");
+            
+            // إرسال الأمر للجسر (Python)
+            try {
+                const response = await fetch(`http://localhost:5000/command?cmd=${action} ${player}`);
+                const data = await response.json();
+                alert("النتيجة: " + data.message);
+            } catch (e) {
+                alert("خطأ: تأكد من تشغيل أداة Python على الـ PC!");
+            }
         }
     </script>
 </body>
