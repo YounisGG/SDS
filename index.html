@@ -3,146 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Game Scripter | صانع السكربتات الذكي</title>
+    <title>GamerTask | منصة المهام الاحترافية</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Cairo', sans-serif;
-            background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1a 100%);
+            background-color: #050505;
             color: white;
-            min-height: 100vh;
         }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1.5rem;
+        .input-field {
+            background: #121212;
+            border: 2px solid #222;
+            transition: all 0.3s;
         }
-        .gradient-text {
-            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .input-field:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+            outline: none;
         }
-        .loader {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3498db;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-            margin-left: 10px;
+        .neon-button {
+            background: linear-gradient(45deg, #8b5cf6, #d946ef);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .error-msg { color: #ff4d4d; font-size: 0.8rem; margin-top: 5px; display: none; }
+        .success-msg { color: #00ff88; font-size: 0.8rem; margin-top: 5px; display: none; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="flex items-center justify-center min-h-screen">
 
-    <div class="max-w-4xl mx-auto">
-        <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-6xl font-bold mb-4 gradient-text">AI Game Scripter</h1>
-            <p class="text-gray-400 text-lg">أول منصة ذكاء اصطناعي لتوليد سكربتات الألعاب فوراً</p>
-        </header>
-
-        <div class="glass-card p-6 md:p-10 shadow-2xl">
-            <div class="space-y-6">
-                <div>
-                    <label class="block mb-2 text-sm font-medium text-gray-300">اسم اللعبة أو المنصة (مثلاً: Roblox, Unity, Python):</label>
-                    <input type="text" id="gameName" placeholder="مثال: Roblox - Blox Fruits" 
-                    class="w-full bg-black bg-opacity-30 border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-blue-500 transition">
-                </div>
-
-                <div>
-                    <label class="block mb-2 text-sm font-medium text-gray-300">ماذا تريد من السكربت أن يفعل؟</label>
-                    <textarea id="scriptFeature" rows="4" placeholder="مثال: أريد سكربت يقوم بتجميع العملات تلقائياً (Auto Farm)" 
-                    class="w-full bg-black bg-opacity-30 border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-blue-500 transition"></textarea>
-                </div>
-
-                <button onclick="generateScript()" id="genBtn" 
-                class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold py-4 rounded-xl shadow-lg transform hover:scale-[1.02] transition duration-200">
-                    توليد السكربت الآن ✨
-                </button>
-            </div>
+    <div class="w-full max-w-md p-8 bg-[#0f0f0f] rounded-3xl border border-gray-800 shadow-2xl">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-black mb-2 tracking-tighter uppercase italic text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+                GamerTask
+            </h1>
+            <p class="text-gray-500">سجل الآن وابدأ بجني المال من مهاراتك</p>
         </div>
 
-        <div id="resultContainer" class="hidden mt-8 space-y-4">
-            <h2 class="text-2xl font-bold text-cyan-400">السكربت المولد:</h2>
-            <div class="relative">
-                <pre id="outputCode" class="bg-black bg-opacity-60 p-6 rounded-xl border border-blue-900 overflow-x-auto text-green-400 font-mono text-sm leading-relaxed"></pre>
-                <button onclick="copyCode()" class="absolute top-4 left-4 bg-gray-700 hover:bg-gray-600 text-xs py-1 px-3 rounded">نسخ الكود</button>
+        <form id="regForm" class="space-y-6">
+            <div>
+                <label class="block text-sm font-bold mb-2 text-gray-400">اسم المستخدم</label>
+                <input type="text" id="username" placeholder="مثال: pro_player" 
+                class="input-field w-full p-4 rounded-xl text-white">
+                <p id="userError" class="error-msg">⚠️ هذا الاسم مستخدم بالفعل، اختر اسماً آخر.</p>
+                <p id="userSuccess" class="success-msg">✅ اسم المستخدم متاح!</p>
             </div>
-            <p id="aiAdvice" class="text-gray-400 italic text-sm p-4 border-r-4 border-blue-500 bg-blue-900 bg-opacity-10"></p>
-        </div>
 
-        <footer class="mt-12 text-center text-gray-500 text-sm">
-            تم التطوير بواسطة AI Gemini | للاستخدام التعليمي فقط
-        </footer>
+            <div>
+                <label class="block text-sm font-bold mb-2 text-gray-400">البريد الإلكتروني</label>
+                <input type="email" id="email" placeholder="name@example.com" 
+                class="input-field w-full p-4 rounded-xl text-white">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2 text-gray-400">كلمة المرور</label>
+                <input type="password" id="password" placeholder="••••••••" 
+                class="input-field w-full p-4 rounded-xl text-white">
+            </div>
+
+            <button type="submit" class="neon-button w-full py-4 rounded-xl font-bold text-lg hover:scale-[1.02] transition-transform">
+                إنشاء الحساب
+            </button>
+        </form>
+
+        <p class="mt-8 text-center text-gray-600 text-sm">
+            لديك حساب بالفعل؟ <a href="#" class="text-purple-500 hover:underline">تسجيل الدخول</a>
+        </p>
     </div>
 
     <script>
-        // API Configuration
-        const API_KEY = "AIzaSyD7A1Ublp9M9PTH0FsTQrVWWGtHIc4PzqI"; 
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+        // محاكاة لقاعدة بيانات أسماء المستخدمين الموجودة فعلياً
+        const existingUsers = ["ahmed", "karrar", "gamer123", "legend"];
 
-        async function generateScript() {
-            const game = document.getElementById('gameName').value;
-            const feature = document.getElementById('scriptFeature').value;
-            const btn = document.getElementById('genBtn');
-            const resultContainer = document.getElementById('resultContainer');
-            const outputCode = document.getElementById('outputCode');
-            const aiAdvice = document.getElementById('aiAdvice');
+        const usernameInput = document.getElementById('username');
+        const userError = document.getElementById('userError');
+        const userSuccess = document.getElementById('userSuccess');
 
-            if (!game || !feature) {
-                alert("يرجى ملء جميع الحقول!");
+        // فحص اليوزر أثناء الكتابة
+        usernameInput.addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            
+            if(val.length < 3) {
+                userError.style.display = "none";
+                userSuccess.style.display = "none";
                 return;
             }
 
-            // Update UI State
-            btn.disabled = true;
-            btn.innerHTML = 'جاري المعالجة بواسطة الذكاء الاصطناعي... <span class="loader"></span>';
-            resultContainer.classList.add('hidden');
-
-            const promptText = `أنت خبير في برمجة الألعاب. قم بكتابة سكربت كامل لـ لعبة: ${game}. 
-            الوظيفة المطلوبة: ${feature}. 
-            اجعل الكود نظيفاً مع تعليقات تشرح كيفية استخدامه. 
-            رد بصيغة JSON كالتالي: {"code": "الكود هنا", "advice": "نصيحة للمستخدم"}`;
-
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: promptText }] }]
-                    })
-                });
-
-                const data = await response.json();
-                const aiResponse = data.candidates[0].content.parts[0].text;
-                
-                // تنظيف الاستجابة (في حال أرجع Gemini نصوصاً إضافية)
-                const cleanJson = aiResponse.replace(/```json|```/g, "").trim();
-                const finalData = JSON.parse(cleanJson);
-
-                // Show Results
-                outputCode.textContent = finalData.code;
-                aiAdvice.textContent = "نصيحة الذكاء الاصطناعي: " + finalData.advice;
-                resultContainer.classList.remove('hidden');
-                
-            } catch (error) {
-                console.error("Error:", error);
-                alert("حدث خطأ أثناء الاتصال بالذكاء الاصطناعي. تأكد من مفتاح الـ API.");
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = 'توليد السكربت الآن ✨';
+            if(existingUsers.includes(val)) {
+                userError.style.display = "block";
+                userSuccess.style.display = "none";
+                usernameInput.style.borderColor = "#ff4d4d";
+            } else {
+                userError.style.display = "none";
+                userSuccess.style.display = "block";
+                usernameInput.style.borderColor = "#00ff88";
             }
-        }
+        });
 
-        function copyCode() {
-            const code = document.getElementById('outputCode').textContent;
-            navigator.clipboard.writeText(code);
-            alert("تم نسخ السكربت بنجاح!");
-        }
+        // منع الإرسال إذا كان اليوزر مستخدم
+        document.getElementById('regForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            if(userError.style.display === "block") {
+                alert("يرجى تغيير اسم المستخدم أولاً!");
+            } else {
+                alert("تم تسجيل الحساب بنجاح في GamerTask!");
+            }
+        });
     </script>
 </body>
 </html>
