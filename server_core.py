@@ -1,41 +1,40 @@
+import os
 import subprocess
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+import time
+import requests # يحتاج تثبيت عن طريق pip install requests
 
-app = Flask(__name__)
-CORS(app) # للسماح للموقع بالتواصل مع الأداة
+# إعدادات الربط مع موقعك
+API_URL = "https://younisgg.github.io/SDS/" # رابط موقعك
+SERVER_JAR = "server.jar" # اسم ملف ماين كرافت
 
-# متغير لتخزين عملية السيرفر
-server_process = None
+def start_minecraft():
+    print(" [SDS] جاري تشغيل سيرفر ماين كرافت...")
+    # أمر تشغيل السيرفر مع تخصيص 2 جيجا رام
+    cmd = f"java -Xmx2048M -Xms2048M -jar {SERVER_JAR} nogui"
+    return subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
-@app.route('/api/start')
-def start():
-    global server_process
-    # تشغيل السيرفر مع إمكانية إدخال أوامر (stdin)
-    server_process = subprocess.Popen(
-        ['java', '-Xmx2G', '-jar', 'server.jar', 'nogui'],
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        text=True,
-        cwd='Minecraft_Server'
-    )
-    return jsonify({"msg": "Server Starting..."})
-
-@app.route('/api/player')
-def player_control():
-    action = request.args.get('type') # ban, kick, op
-    name = request.args.get('name')
+def main():
+    print("========================================")
+    print("   SDS CORE ENGINE - نظام الربط الذكي")
+    print("========================================")
     
-    if server_process:
-        # إرسال الأمر الفعلي لكونسول ماين كرافت
-        command = f"{action} {name}\n"
-        server_process.stdin.write(command)
-        server_process.stdin.flush()
-        return jsonify({"msg": f"Executed {action} on {name}"})
-    return jsonify({"msg": "Server is not running!"})
+    if not os.path.exists(SERVER_JAR):
+        print(" [!] خطأ: ملف server.jar غير موجود في المجلد!")
+        return
 
-if __name__ == '__main__':
-    print("--- الجسر الاحترافي يعمل الآن على المنفذ 5000 ---")
-    app.run(port=5000)
+    process = start_minecraft()
+    
+    while True:
+        # هنا العقل يفكر: يتصل بموقعك ويشوف إذا في أوامر جديدة (مثل op أو stop)
+        # ملاحظة: الربط الحقيقي يتطلب Backend (مثل Node.js) لكننا نستخدم المحاكاة حالياً
+        line = process.stdout.readline()
+        if line:
+            print(f" [Console] {line.strip()}")
+            
+        time.sleep(0.1)
+
+if __name__ == "__main__":
+    main()
+
 
 
