@@ -3,270 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDS | مؤسسة يونيس للاستضافة السحابية</title>
+    <title>SDS | لوحة التحكم المتكاملة</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #00d2ff;
-            --accent: #3a47d5;
-            --bg-dark: #080a0f;
-            --card-bg: #11141d;
-            --text-main: #e1e1e1;
-            --success: #00ff88;
-            --danger: #ff4d4d;
-        }
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        /* أنميشن الخلفية */
-        .bg-glow {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1a1f35 0%, #080a0f 100%);
-            z-index: -1;
-        }
-
-        /* رسائل التنبيه المخصصة */
-        .toast {
-            position: fixed;
-            top: -100px; left: 50%; transform: translateX(-50%);
-            background: var(--danger); padding: 15px 30px;
-            border-radius: 12px; z-index: 9999; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-        }
-
-        /* الحاوية الرئيسية */
-        .app-wrapper {
-            display: flex; flex-direction: column; align-items: center; padding: 20px; min-height: 100vh;
-        }
-
-        .card {
-            background: var(--card-bg); width: 100%; max-width: 450px;
-            padding: 30px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4); animation: slideUp 0.6s ease;
-        }
-
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* العناصر المدخلة */
-        .input-group { margin-bottom: 20px; position: relative; }
-        .input-group label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 14px; color: var(--primary); }
-        input, select {
-            width: 100%; padding: 14px; background: #080a0f; border: 1px solid #1f2531;
-            border-radius: 12px; color: white; box-sizing: border-box; outline: none; transition: 0.3s;
-        }
-        input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(0,210,255,0.2); }
-
-        .btn {
-            width: 100%; padding: 15px; border: none; border-radius: 12px;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            color: white; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s;
-        }
-        .btn:hover { transform: scale(1.02); filter: brightness(1.1); }
-
-        /* لوحة التحكم */
-        #dashboard-view { display: none; width: 100%; max-width: 1000px; }
-        .grid-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-
-        .console {
-            background: #000; color: var(--success); padding: 15px; border-radius: 12px;
-            height: 250px; overflow-y: auto; font-family: 'Courier New', monospace;
-            font-size: 13px; border: 1px solid #1f2531; line-height: 1.6; direction: ltr; text-align: left;
-        }
-
-        /* خدمة العملاء */
-        .support-box {
-            position: fixed; bottom: 20px; right: 20px;
-            background: var(--primary); width: 60px; height: 60px;
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            cursor: pointer; box-shadow: 0 5px 15px rgba(0,210,255,0.4); z-index: 100;
-        }
-
-        /* شريط الحالة */
-        .status-bar { display: flex; gap: 10px; margin-top: 10px; }
-        .badge { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; }
-        .badge-online { background: rgba(0, 255, 136, 0.1); color: var(--success); border: 1px solid var(--success); }
-
-        .info-text { font-size: 12px; color: #8b949e; line-height: 1.5; margin: 15px 0; }
-    </style>
 </head>
 <body>
 
-    <div class="bg-glow"></div>
-    <div id="toast" class="toast">⚠️ يرجى تعبئة جميع الحقول بشكل صحيح</div>
-
-    <div class="app-wrapper">
-        
-        <div id="login-section" class="card">
-            <h2 style="margin-top:0; text-align:center;">مرحباً بك في <span style="color:var(--primary)">SDS</span></h2>
-            <p style="text-align:center; color:gray">سجل دخولك لإدارة استضافتك السحابية</p>
-            <div class="input-group">
-                <label>اسم المستخدم</label>
-                <input type="text" id="username" placeholder="مثال: Younis_User">
-            </div>
-            <div class="input-group">
-                <label>كلمة المرور</label>
-                <input type="password" id="password" placeholder="********">
-            </div>
-            <button class="btn" onclick="validateLogin()">دخول النظام</button>
-            <p class="info-text">بالضغط على دخول، أنت توافق على سياسة استخدام موارد جهازك (RAM/CPU) لإنشاء الخادم المحلي.</p>
+    <div id="login-gate" class="app-container">
+        <div class="glass-card">
+            <h2><i class="fas fa-lock"></i> تسجيل دخول الشركة</h2>
+            <input type="text" id="user-input" placeholder="اسم المستخدم">
+            <input type="password" id="pass-input" placeholder="كلمة المرور">
+            <button class="btn-main" onclick="startSystem()">تشغيل النظام</button>
         </div>
-
-        <div id="create-section" class="card" style="display:none;">
-            <h2 style="margin-top:0;"><i class="fas fa-plus-circle"></i> إنشاء خدمة جديدة</h2>
-            <div class="input-group">
-                <label>اسم السيرفر المخصص</label>
-                <div style="display:flex; align-items: center;">
-                    <input type="text" id="srv-name" placeholder="my-world" style="border-radius: 12px 0 0 12px;">
-                    <span style="background:#1f2531; padding:13.5px; border-radius: 0 12px 12px 0; border: 1px solid #1f2531;">.GGSDS.He</span>
-                </div>
-            </div>
-            <div class="input-group">
-                <label>إصدار اللعبة (Minecraft Version)</label>
-                <select id="version">
-                    <option value="1.20.1">1.20.1 (أحدث إصدار)</option>
-                    <option value="1.19.4">1.19.4</option>
-                    <option value="1.16.5">1.16.5 (للمودات)</option>
-                </select>
-            </div>
-            <button class="btn" onclick="initiateSystem()">تفعيل السيرفر الآن</button>
-            <button class="btn" style="background:none; color:gray;" onclick="location.reload()">رجوع</button>
-        </div>
-
-        <div id="dashboard-view">
-            <div class="grid-layout">
-                <div class="card" style="max-width: 100%;">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <h3 id="display-ip" style="color:var(--primary); margin:0;">---</h3>
-                        <div class="status-bar"><span class="badge badge-online">متصل وجاهز</span></div>
-                    </div>
-                    
-                    <div class="info-text">
-                        <i class="fas fa-info-circle"></i> هذا السيرفر يعمل حالياً عبر ربط رامات جهازك المحلي مع دومين GGSDS.
-                    </div>
-
-                    <div style="display:flex; gap:10px; margin-bottom: 20px;">
-                        <div style="flex:1; background:#080a0f; padding:10px; border-radius:10px; text-align:center;">
-                            <small>الرام</small><br><strong id="ram-val" style="color:var(--primary)">0%</strong>
-                        </div>
-                        <div style="flex:1; background:#080a0f; padding:10px; border-radius:10px; text-align:center;">
-                            <small>البورت</small><br><strong id="port-val" style="color:var(--success)">0000</strong>
-                        </div>
-                    </div>
-
-                    <button class="btn" style="background:#3fb950; color:black; margin-bottom:10px;" onclick="downloadLinkFile()">
-                        <i class="fas fa-download"></i> تحميل ملف الربط للبيسي (.bat)
-                    </button>
-                    <button class="btn" style="background:var(--danger); font-size:12px; padding:8px;" onclick="showToast('عذراً، لا يمكنك إنشاء سيرفر ثانٍ في الخطة المجانية!')">
-                        إضافة سيرفر آخر
-                    </button>
-                </div>
-
-                <div class="card" style="max-width: 100%;">
-                    <h3><i class="fas fa-terminal"></i> وحدة التحكم (Console)</h3>
-                    <div class="console" id="console-out">
-                        [System] System Ready...<br>
-                        [System] Waiting for device link...
-                    </div>
-                    <div style="display:flex; gap:5px; margin-top:15px;">
-                        <input type="text" id="cmd-input" placeholder="أدخل أمراً (مثل /op user)" style="margin:0;">
-                        <button class="btn" style="width:80px; margin:0;" onclick="sendConsoleCmd()">إرسال</button>
-                    </div>
-                    
-                    <div style="margin-top:20px; border-top:1px solid #1f2531; padding-top:15px;">
-                        <h4>إدارة سريعة</h4>
-                        <button class="btn" style="width:48%; background:rgba(0,210,255,0.1); color:var(--primary); font-size:12px;" onclick="sendConsoleCmd('op')">ترقية OP</button>
-                        <button class="btn" style="width:48%; background:rgba(255,77,77,0.1); color:var(--danger); font-size:12px;" onclick="sendConsoleCmd('ban')">حظر لاعب</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <div class="support-box" onclick="openSupport()">
-        <i class="fas fa-headset fa-lg"></i>
+    <div id="main-panel" class="app-container" style="display:none;">
+        <div class="glass-card full-width">
+            <div class="header">
+                <h3><i class="fas fa-microchip"></i> لوحة تحكم SDS السحابية</h3>
+                <span id="server-status" class="status-offline">غير متصل</span>
+            </div>
+            
+            <div class="console-box" id="console-display">
+                [SYSTEM] بانتظار تسجيل الدخول لتفعيل العقل...
+            </div>
+
+            <div class="controls">
+                <input type="text" id="srv-name-input" placeholder="اكتب اسم السيرفر هنا...">
+                <button class="btn-main" onclick="createNewServer()">إنشاء السيرفر 🚀</button>
+                <button id="download-btn" class="btn-main btn-green" style="display:none;" onclick="downloadBridge()">تحميل ملف الربط للبيسي</button>
+            </div>
+        </div>
     </div>
 
-    <script>
-        let session = { user: '', srv: '', port: 0 };
-
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.innerText = msg;
-            t.style.top = '20px';
-            setTimeout(() => { t.style.top = '-100px'; }, 3000);
-        }
-
-        function validateLogin() {
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
-            if(!u || p.length < 8) return showToast("⚠️ اسم المستخدم مطلوب وكلمة المرور 8 خانات!");
-            
-            session.user = u;
-            document.getElementById('login-section').style.display = 'none';
-            document.getElementById('create-section').style.display = 'block';
-        }
-
-        function initiateSystem() {
-            const sName = document.getElementById('srv-name').value;
-            if(!sName) return showToast("⚠️ يرجى تسمية السيرفر أولاً!");
-
-            session.srv = sName.toLowerCase() + ".GGSDS.He";
-            session.port = Math.floor(Math.random() * (65000 - 25000) + 25000);
-
-            document.getElementById('create-section').style.display = 'none';
-            document.getElementById('dashboard-view').style.display = 'block';
-            
-            document.getElementById('display-ip').innerText = session.srv;
-            document.getElementById('port-val').innerText = session.port;
-
-            addToConsole("تم حجز العنوان المخصص: " + session.srv);
-            addToConsole("بانتظار ربط موارد البيسي عبر ملف الـ .bat");
-            
-            // محاكاة الإحصائيات الحية
-            setInterval(() => {
-                document.getElementById('ram-val').innerText = Math.floor(Math.random() * 40 + 30) + "%";
-            }, 3000);
-        }
-
-        function addToConsole(msg) {
-            const c = document.getElementById('console-out');
-            c.innerHTML += `<div>[${new Date().toLocaleTimeString()}] ${msg}</div>`;
-            c.scrollTop = c.scrollHeight;
-        }
-
-        function downloadLinkFile() {
-            const batContent = `@echo off\ntitle SDS CONNECTOR - ${session.srv}\ncolor 0b\necho Connecting to SDS Cloud...\necho Port: ${session.port}\necho STATUS: ONLINE\necho Keep this window open to serve players.\npause`;
-            const blob = new Blob([batContent], {type: 'text/plain'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = "SDS_Connect.bat";
-            a.click();
-            addToConsole("تم تحميل ملف الربط. يرجى تشغيله الآن على الكمبيوتر.");
-        }
-
-        function sendConsoleCmd(type) {
-            const input = document.getElementById('cmd-input');
-            let cmd = input.value;
-            if(type === 'op') cmd = "/op player";
-            if(type === 'ban') cmd = "/ban player";
-            
-            if(!cmd && !type) return;
-            addToConsole("> Executing: " + (cmd || type));
-            input.value = '';
-        }
-
-        function openSupport() {
-            alert("خدمة العملاء SDS:\nمرحباً بك " + (session.user || "عزيزي") + "، يمكنك مراسلتنا عبر تليجرام @SDS_Support لحل مشاكلك التقنية.");
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
+
