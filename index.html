@@ -5,126 +5,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SDS - Scripts Delivery System</title>
     <style>
-        :root { --primary: #00f2ff; --bg: #0a0a0a; --card: #161616; --text: #e0e0e0; }
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        :root { --neon: #00f2ff; --bg: #050505; --card: #121212; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: #fff; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
         
-        /* شاشة تسجيل الدخول */
-        #login-page { height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, #111 0%, #000 100%); }
-        .login-card { background: var(--card); padding: 40px; border-radius: 20px; border: 1px solid var(--primary); box-shadow: 0 0 20px rgba(0, 242, 255, 0.2); width: 350px; text-align: center; }
-        .login-card h2 { color: var(--primary); margin-bottom: 25px; font-size: 28px; letter-spacing: 2px; }
+        .container { background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid #333; box-shadow: 0 0 25px rgba(0, 242, 255, 0.1); width: 100%; max-width: 450px; text-align: center; }
+        h2 { color: var(--neon); text-shadow: 0 0 10px var(--neon); margin-bottom: 20px; }
         
-        /* الواجهة الرئيسية بعد الدخول */
-        #main-app { display: none; padding: 20px; max-width: 900px; margin: auto; }
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 30px; }
-        .header h1 { color: var(--primary); margin: 0; font-style: italic; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing: border-box; }
+        input:focus { border-color: var(--neon); outline: none; box-shadow: 0 0 5px var(--neon); }
+        
+        button { width: 100%; padding: 12px; background: var(--neon); color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        button:hover { opacity: 0.8; transform: scale(1.02); }
 
-        /* العناصر المشتركة */
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #222; border: 1px solid #444; color: white; border-radius: 8px; box-sizing: border-box; }
-        input:focus { border-color: var(--primary); outline: none; }
-        button { width: 100%; padding: 12px; background: var(--primary); color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 242, 255, 0.4); }
+        .toggle-link { color: #888; font-size: 13px; cursor: pointer; display: block; margin-top: 15px; }
+        .toggle-link b { color: var(--neon); }
 
-        /* منطقة النتائج */
-        #output-container { position: relative; margin-top: 20px; background: #000; border-radius: 10px; border: 1px solid #333; padding: 20px; min-height: 200px; }
-        #output { font-family: 'Consolas', monospace; color: #00ff88; white-space: pre-wrap; direction: ltr; }
-        .copy-btn { position: absolute; top: 10px; left: 10px; width: auto; padding: 5px 15px; font-size: 12px; background: #333; color: #fff; }
-        
-        .loader { display: none; color: var(--primary); margin: 10px 0; }
+        #main-app { display: none; width: 90%; max-width: 800px; }
+        #output { background: #000; color: #0f0; padding: 15px; border-radius: 8px; text-align: left; min-height: 150px; white-space: pre-wrap; font-family: monospace; border: 1px solid #222; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-    <div id="login-page">
-        <div class="login-card">
+    <div class="container" id="auth-box">
+        <div id="login-form">
             <h2>SDS LOGIN</h2>
-            <input type="text" id="username" placeholder="اسم المستخدم">
-            <input type="password" id="password" placeholder="كلمة المرور">
-            <button onclick="login()">دخول النظام</button>
-            <p id="login-err" style="color: red; font-size: 12px; margin-top: 10px;"></p>
+            <input type="text" id="log-user" placeholder="اسم المستخدم">
+            <input type="password" id="log-pass" placeholder="كلمة المرور">
+            <button onclick="handleLogin()">تسجيل الدخول</button>
+            <span class="toggle-link" onclick="toggleAuth()">ليس لديك حساب؟ <b>إنشاء حساب جديد</b></span>
+        </div>
+
+        <div id="signup-form" style="display: none;">
+            <h2>CREATE ACCOUNT</h2>
+            <input type="text" id="reg-user" placeholder="اختر اسم مستخدم">
+            <input type="password" id="reg-pass" placeholder="اختر كلمة مرور">
+            <button onclick="handleSignup()">إنشاء الحساب</button>
+            <span class="toggle-link" onclick="toggleAuth()">لديك حساب بالفعل؟ <b>دخول</b></span>
         </div>
     </div>
 
     <div id="main-app">
-        <div class="header">
-            <h1>SDS PRO GEN</h1>
-            <button style="width: auto;" onclick="logout()">خروج</button>
-        </div>
-
-        <div style="background: var(--card); padding: 25px; border-radius: 15px; border: 1px solid #333;">
-            <h3>مولد السكربتات الذكي</h3>
-            <p style="font-size: 14px; color: #888;">اكتب اسم اللعبة وماذا تريد أن يفعل السكربت (مثال: Roblox Speed Hack)</p>
-            <input type="text" id="promptInput" placeholder="ماذا تريد اليوم؟">
-            <button id="genBtn" onclick="generate()">توليد الكود</button>
-            
-            <div id="loader" class="loader">جاري معالجة طلبك عبر خوادم SDS...</div>
-        </div>
-
-        <div id="output-container">
-            <button class="copy-btn" onclick="copyCode()">نسخ الكود</button>
+        <div class="container" style="max-width: 100%;">
+            <div style="display:flex; justify-content: space-between; align-items: center;">
+                <h2 style="margin:0;">SDS GENERATOR</h2>
+                <button onclick="location.reload()" style="width: auto; padding: 5px 15px; background: #ff4444; color: white;">خروج</button>
+            </div>
+            <hr style="border: 0.5px solid #222; margin: 20px 0;">
+            <input type="text" id="prompt" placeholder="اطلب سكربت اللعبة هنا (مثلاً: Fly Script Roblox)">
+            <button id="genBtn" onclick="generateScript()">توليد السكربت</button>
             <div id="output">بانتظار أوامرك...</div>
         </div>
     </div>
 
-    <script>
-        // 1. نظام تسجيل الدخول
-        function login() {
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
+    <script type="importmap">
+      { "imports": { "@google/generative-ai": "https://esm.run/@google/generative-ai" } }
+    </script>
 
-            // يمكنك تغيير كلمة المرور هنا
-            if(user === "admin" && pass === "1234") {
-                document.getElementById('login-page').style.display = 'none';
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+
+        // --- نظام الحسابات ---
+        window.toggleAuth = () => {
+            const loginF = document.getElementById('login-form');
+            const signupF = document.getElementById('signup-form');
+            loginF.style.display = loginF.style.display === 'none' ? 'block' : 'none';
+            signupF.style.display = signupF.style.display === 'none' ? 'block' : 'none';
+        }
+
+        window.handleSignup = () => {
+            const user = document.getElementById('reg-user').value;
+            const pass = document.getElementById('reg-pass').value;
+            if(!user || !pass) return alert("املاً البيانات!");
+            
+            localStorage.setItem(`sds_user_${user}`, pass);
+            alert("تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول.");
+            toggleAuth();
+        }
+
+        window.handleLogin = () => {
+            const user = document.getElementById('log-user').value;
+            const pass = document.getElementById('log-pass').value;
+            const savedPass = localStorage.getItem(`sds_user_${user}`);
+
+            if(savedPass && savedPass === pass) {
+                document.getElementById('auth-box').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
             } else {
-                document.getElementById('login-err').innerText = "بيانات الدخول خاطئة!";
+                alert("اسم المستخدم أو كلمة المرور غير صحيحة!");
             }
         }
 
-        function logout() {
-            location.reload();
-        }
-
-        // 2. نظام توليد السكربتات (API)
-        async function generate() {
-            const prompt = document.getElementById('promptInput').value;
+        // --- نظام الذكاء الاصطناعي ---
+        window.generateScript = async () => {
+            const prompt = document.getElementById('prompt').value;
             const output = document.getElementById('output');
-            const loader = document.getElementById('loader');
             const btn = document.getElementById('genBtn');
-
-            if(!prompt) return alert("أدخل تفاصيل السكربت!");
+            
+            if(!prompt) return alert("اكتب طلبك أولاً!");
 
             const API_KEY = "AIzaSyCMp7fZrKKC-mweC6Qm7_xaIJXpKXq-e9E";
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+            const genAI = new GoogleGenerativeAI(API_KEY);
+            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
             btn.disabled = true;
-            loader.style.display = "block";
-            output.innerText = "";
+            output.innerText = "⏳ جاري توليد السكربت... يرجى الانتظار";
 
             try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: "أنت خبير برمجة ألعاب. اكتب سكربت كامل لـ: " + prompt + ". مع تعليقات بسيطة بالعربي." }] }]
-                    })
-                });
-
-                const data = await response.json();
-                const result = data.candidates[0].content.parts[0].text;
-                output.innerText = result;
+                const result = await model.generateContent("أعطني سكربت لـ: " + prompt + " مع شرح بسيط جداً بالعربية.");
+                output.innerText = result.response.text();
             } catch (e) {
-                output.innerText = "فشل في الاتصال بالخادم. تأكد من المفتاح.";
+                output.innerText = "❌ حدث خطأ في النظام. تأكد من إعدادات الـ API.";
             } finally {
                 btn.disabled = false;
-                loader.style.display = "none";
             }
-        }
-
-        // 3. ميزة النسخ
-        function copyCode() {
-            const text = document.getElementById('output').innerText;
-            navigator.clipboard.writeText(text);
-            alert("تم نسخ السكربت إلى الحافظة!");
         }
     </script>
 </body>
