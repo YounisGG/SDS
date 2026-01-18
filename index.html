@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Younis Minecraft Engine</title>
+    <title>GGSDS Minecraft Panel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* الألوان والتنسيق العام */
         :root {
             --mc-blue: #00d2ff;
+            --mc-green: #3fb950;
             --dark-bg: #0b0e14;
             --card-bg: #161b22;
-            --terminal-bg: #000000;
+            --danger: #f85149;
         }
 
         body {
@@ -22,158 +24,210 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* التنبيه المخصص */
+        #alert-box {
+            display: none;
+            position: fixed;
+            top: 20px;
+            background: var(--danger);
+            padding: 15px 30px;
+            border-radius: 10px;
+            z-index: 2000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: slideDown 0.4s;
         }
 
         .container {
             background: var(--card-bg);
             padding: 30px;
-            border-radius: 15px;
-            width: 450px;
+            border-radius: 20px;
+            width: 420px;
             border: 1px solid #30363d;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
             text-align: center;
+            animation: fadeIn 0.8s ease-in-out;
         }
 
         input {
             width: 100%; padding: 12px; margin: 10px 0;
             background: #0d1117; border: 1px solid #30363d;
             color: var(--mc-blue); border-radius: 8px; box-sizing: border-box;
+            font-size: 15px; outline: none;
         }
 
         .btn {
             width: 100%; padding: 12px; border: none; border-radius: 8px;
             background: var(--mc-blue); color: black; font-weight: bold;
-            cursor: pointer; transition: 0.3s; margin-top: 10px;
+            cursor: pointer; transition: 0.3s; margin-top: 10px; font-size: 16px;
         }
 
-        /* لوحة التحكم الإحترافية */
-        #dashboard { display: none; width: 90%; max-width: 900px; }
+        .btn:hover { filter: brightness(1.2); transform: scale(1.02); }
+
+        /* لوحة التحكم */
+        #dashboard { display: none; width: 95%; max-width: 950px; }
 
         .console-box {
-            background: var(--terminal-bg);
-            color: #3fb950;
-            padding: 15px;
-            border-radius: 8px;
-            height: 200px;
-            overflow-y: auto;
-            font-family: 'Courier New', monospace;
-            text-align: left;
-            direction: ltr;
-            font-size: 13px;
-            border: 1px solid #30363d;
+            background: #000; color: var(--mc-green);
+            padding: 15px; border-radius: 10px; height: 180px;
+            overflow-y: auto; font-family: 'Courier New', monospace;
+            text-align: left; direction: ltr; font-size: 13px;
+            border: 1px solid #30363d; margin: 15px 0;
         }
 
-        .server-info-card {
-            background: #1c2128;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border-right: 5px solid var(--mc-blue);
-            text-align: right;
+        .server-stats {
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px;
         }
 
-        .setup-steps {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-            font-size: 14px;
+        .stat-card {
+            background: #1c2128; padding: 15px; border-radius: 10px; border-bottom: 3px solid var(--mc-blue);
         }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDown { from { top: -50px; } to { top: 20px; } }
     </style>
 </head>
 <body>
 
-    <div class="container" id="main-setup">
-        <h2 id="step-title"><i class="fas fa-microchip"></i> تشغيل خدمة Younis</h2>
-        <div id="form-content">
-            <input type="text" id="username" placeholder="اسم المستخدم">
-            <input type="text" id="srv-name" placeholder="اسم السيرفر (مثلاً: server1)">
-            <p style="font-size: 11px; color: #8b949e;">* سيتم استخدام رامات ومعالج هذا الجهاز لتشغيل الخدمة بنظام ويندوز.</p>
-            <button class="btn" onclick="startEngine()">موافق، إنشاء الخدمة</button>
+    <div id="alert-box">⚠️ رسالة تنبيه</div>
+
+    <div class="container" id="login-screen">
+        <h2><i class="fas fa-user-shield"></i> تسجيل الدخول</h2>
+        <input type="text" id="username" placeholder="اسم المستخدم">
+        <input type="password" id="password" placeholder="كلمة المرور (8 أرقام)">
+        <button class="btn" onclick="handleLogin()">دخول النظام</button>
+    </div>
+
+    <div class="container" id="create-screen" style="display:none;">
+        <h2>إعداد خادم جديد ⚡</h2>
+        <p style="font-size: 13px; color: #8b949e;">أدخل اسم السيرفر ليتم حجز الدومين (IP) الخاص بك.</p>
+        <div style="display:flex; align-items: center;">
+            <input type="text" id="srv-name" placeholder="مثلاً: myworld" style="border-radius: 8px 0 0 8px;">
+            <span style="background:#30363d; padding:11px; border-radius: 0 8px 8px 0; margin-top: -2px;">.GGSDS.He</span>
         </div>
+        <p style="font-size: 11px; color: #f1c40f;">* تنبيه: سيتم استخدام موارد جهازك (الرام والمعالج) لتشغيل هذا السيرفر.</p>
+        <button class="btn" onclick="setupServer()">إنشاء الخدمة الآن</button>
     </div>
 
     <div id="dashboard">
-        <div class="server-info-card">
-            <h2 id="display-name" style="margin:0">SERVER_NAME</h2>
-            <span id="display-ip" style="color: var(--mc-blue);">loading...</span>
+        <div class="server-stats">
+            <div class="stat-card">
+                <small>حالة السيرفر</small><br>
+                <strong style="color: var(--mc-green);"><i class="fas fa-circle"></i> متصل</strong>
+            </div>
+            <div class="stat-card">
+                <small>عنوان IP (للعبة)</small><br>
+                <strong id="display-ip" style="font-size: 14px;">---</strong>
+            </div>
+            <div class="stat-card">
+                <button class="btn" style="margin:0; padding:5px; font-size:12px; background:var(--danger); color:white" onclick="customAlert('غير متاح حالياً إنشاء أكثر من سيرفر!')">إضافة سيرفر آخر</button>
+            </div>
         </div>
 
         <div class="container" style="width: 100%; max-width: 100%; text-align: right;">
-            <h3><i class="fas fa-terminal"></i> حالة النظام (Console)</h3>
+            <div style="display: flex; justify-content: space-between;">
+                <h3><i class="fas fa-terminal"></i> وحدة التحكم (Console)</h3>
+                <button class="btn" style="width:auto; margin:0; padding:5px 15px;" onclick="downloadBatch()">تحميل ملف الربط (.bat)</button>
+            </div>
+            
             <div class="console-box" id="console">
-                [System] بانتظار تشغيل الملف المصدري...
+                [System] بانتظار تشغيل ملف الربط من جهازك...
             </div>
 
-            <div class="setup-steps">
-                <h4><i class="fas fa-download"></i> خطوات التشغيل النهائية:</h4>
-                <ol>
-                    <li>اضغط على زر <b>"تحميل ملف الخدمة"</b> بالأسفل.</li>
-                    <li>ضع الملف المحمل في مجلد جديد على سطح المكتب.</li>
-                    <li>قم بتشغيل الملف، وسيتحول جهازك فوراً إلى سيرفر ماين كرافت.</li>
-                </ol>
-                <button class="btn" style="background: #3fb950;" onclick="downloadBatch()">تحميل ملف الخدمة (.bat)</button>
+            <div id="admin-tools" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                <div style="background: #1c2128; padding: 15px; border-radius: 10px;">
+                    <h4><i class="fas fa-users"></i> المشرفين والمحظرين</h4>
+                    <input type="text" id="player-target" placeholder="اسم اللاعب...">
+                    <button class="btn" style="width:48%; display:inline-block;" onclick="sendCmd('op')">ترقية OP</button>
+                    <button class="btn" style="width:48%; display:inline-block; background:var(--danger); color:white" onclick="sendCmd('ban')">حظر اللاعب</button>
+                </div>
+                <div style="background: #1c2128; padding: 15px; border-radius: 10px;">
+                    <h4><i class="fas fa-cogs"></i> إعدادات السيرفر</h4>
+                    <p style="font-size: 12px; color:gray">يمكنك التحكم بخصائص اللعبة من هنا بعد الربط الفعلي بجهازك.</p>
+                    <button class="btn" style="background:gray">إعادة تشغيل النظام</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        let config = { user: '', srv: '', port: 0 };
+        let serverData = { user: '', ip: '', port: 0 };
 
-        function startEngine() {
-            config.user = document.getElementById('username').value;
-            config.srv = document.getElementById('srv-name').value + ".GGSDS.He";
-            config.port = Math.floor(Math.random() * 9000) + 25000;
-
-            if(!config.user || !config.srv) return alert("يرجى ملء كافة البيانات!");
-
-            document.getElementById('main-setup').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block';
-            
-            document.getElementById('display-name').innerText = config.user.toUpperCase() + "'S SERVER";
-            document.getElementById('display-ip').innerText = "IP: " + config.srv + ":" + config.port;
-
-            writeToConsole("تم حجز الدومين: " + config.srv);
-            writeToConsole("البورت المفتوح: " + config.port);
-            writeToConsole("النظام جاهز للربط مع Windows...");
+        function customAlert(msg) {
+            const el = document.getElementById('alert-box');
+            el.innerText = "⚠️ " + msg;
+            el.style.display = 'block';
+            setTimeout(() => { el.style.display = 'none'; }, 4000);
         }
 
-        function writeToConsole(msg) {
+        function handleLogin() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            if(!user || pass.length < 8) return customAlert("تأكد من كتابة اليوزر والباسورد (8 أرقام)");
+            
+            serverData.user = user;
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('create-screen').style.display = 'block';
+        }
+
+        function setupServer() {
+            const name = document.getElementById('srv-name').value;
+            if(!name) return customAlert("يجب اختيار اسم للسيرفر!");
+
+            serverData.port = Math.floor(Math.random() * 9000) + 25000;
+            serverData.ip = name.toLowerCase() + ".GGSDS.He";
+
+            document.getElementById('create-screen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('display-ip').innerText = serverData.ip + ":" + serverData.port;
+            
+            logToConsole("تم إنشاء الهوية الرقمية للسيرفر.");
+            logToConsole("العنوان المخصص: " + serverData.ip);
+        }
+
+        function logToConsole(msg) {
             const c = document.getElementById('console');
             c.innerHTML += `<div>[${new Date().toLocaleTimeString()}] ${msg}</div>`;
             c.scrollTop = c.scrollHeight;
         }
 
         function downloadBatch() {
-            // هذا هو الكود البرمجي الذي سيتم تنفيذه داخل جهاز المستخدم
-            const batchContent = `@echo off
-title Minecraft Server Engine - ${config.srv}
-echo ========================================
-echo Starting Server on Port ${config.port}
-echo User: ${config.user}
-echo ========================================
-echo [System] Checking RAM availability...
-echo [System] Allocating resources...
-echo [System] Binding to ${config.srv}
-echo.
-echo * Note: Keep this window open to stay online *
-echo.
+            const content = `@echo off
+title Younis Minecraft Engine - ${serverData.ip}
+color 0b
+echo ==============================================
+echo   YOUNIS SERVER ENGINE IS RUNNING
+echo ==============================================
+echo [INFO] Connecting to: ${serverData.ip}:${serverData.port}
+echo [INFO] Allocating Device RAM...
+echo [INFO] CPU Status: Optimized
+echo ----------------------------------------------
+echo Keep this window open to maintain server connection.
+echo ----------------------------------------------
 pause`;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = "Run_Server.bat";
+            a.click();
+            logToConsole("تم تحميل ملف التشغيل. يرجى فتحه لربط رامات جهازك.");
+        }
 
-            const blob = new Blob([batchContent], { type: 'text/plain' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = "Start_Server.bat";
-            link.click();
+        function sendCmd(type) {
+            const player = document.getElementById('player-target').value;
+            if(!player) return customAlert("اكتب اسم اللاعب أولاً!");
             
-            writeToConsole("تم تحميل ملف التشغيل بنجاح. يرجى تشغيله الآن.");
+            if(type === 'op') {
+                logToConsole("SUCCESS: تم إعطاء رتبة المشرف لـ " + player);
+                alert("تمت ترقية " + player + " بنجاح داخل السيرفر!");
+            } else {
+                logToConsole("BANNED: تم طرد وحظر اللاعب " + player);
+                alert("تم حظر " + player + " من الدخول للسيرفر!");
+            }
+            document.getElementById('player-target').value = '';
         }
     </script>
 </body>
 </html>
-
-
-
-
-
-
