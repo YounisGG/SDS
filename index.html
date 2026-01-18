@@ -3,164 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDS Cloud | المؤسسة العالمية للاستضافة</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <title>AI Script Master | خبير السكربتات</title>
     <style>
-        :root {
-            --primary: #00d2ff; --accent: #3a47d5; --bg: #05070a;
-            --card: rgba(17, 20, 29, 0.8); --text: #ffffff;
-        }
-
-        body {
-            font-family: 'Cairo', sans-serif; background: var(--bg);
-            color: var(--text); margin: 0; display: flex; justify-content: center;
-            align-items: center; min-height: 100vh; overflow-x: hidden;
-            background-image: radial-gradient(circle at 10% 20%, rgba(0, 210, 255, 0.1) 0%, transparent 40%),
-                              radial-gradient(circle at 90% 80%, rgba(58, 71, 213, 0.1) 0%, transparent 40%);
-        }
-
-        /* حاوية الموقع - أبعاد احترافية */
-        .main-app {
-            width: 95%; max-width: 500px; padding: 20px;
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        .glass-card {
-            background: var(--card); backdrop-filter: blur(15px);
-            border-radius: 28px; border: 1px solid rgba(255,255,255,0.1);
-            padding: 40px 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            text-align: center; position: relative; overflow: hidden;
-        }
-
-        .glass-card::before {
-            content: ''; position: absolute; top: 0; left: -100%;
-            width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transition: 0.5s;
-        }
-
-        .glass-card:hover::before { left: 100%; }
-
-        /* العناصر */
-        h1 { font-weight: 900; font-size: 2.5rem; margin-bottom: 10px; background: linear-gradient(to right, #00d2ff, #3a47d5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        p { color: #8b949e; font-size: 0.9rem; margin-bottom: 30px; }
-
-        .input-box {
-            width: 100%; background: rgba(0,0,0,0.3); border: 1.5px solid #1f2531;
-            border-radius: 15px; padding: 15px; color: white; margin-bottom: 15px;
-            font-family: 'Cairo'; outline: none; transition: 0.3s; box-sizing: border-box;
-        }
-
-        .input-box:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0,210,255,0.2); }
-
-        .btn-mega {
-            width: 100%; padding: 18px; border: none; border-radius: 15px;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            color: white; font-weight: 700; cursor: pointer; font-size: 1.1rem;
-            box-shadow: 0 10px 20px rgba(0,210,255,0.3); transition: 0.3s;
-        }
-
-        .btn-mega:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0,210,255,0.4); }
-
-        /* لوحة التحكم المتقدمة */
-        .dashboard { display: none; width: 100%; max-width: 900px; }
-        .console {
-            background: #000; border-radius: 15px; padding: 20px;
-            height: 250px; overflow-y: auto; font-family: 'Courier New';
-            text-align: left; direction: ltr; font-size: 0.85rem; color: #00ff88;
-            border: 1px solid #1f2531; margin: 20px 0;
-        }
-
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .stat-item { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 15px; border-bottom: 3px solid var(--primary); }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* خدمة العملاء */
-        .support-btn { position: fixed; bottom: 20px; right: 20px; background: var(--primary); width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        body { background: #05070a; color: white; font-family: 'Cairo', sans-serif; text-align: center; padding: 20px; margin: 0; }
+        .container { max-width: 500px; margin: 50px auto; background: #11141d; padding: 30px; border-radius: 20px; border: 1px solid #1f2531; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h1 { color: #00d2ff; font-size: 24px; }
+        textarea { width: 100%; height: 100px; background: #000; border: 1px solid #333; color: white; border-radius: 10px; padding: 10px; box-sizing: border-box; resize: none; margin-bottom: 15px; }
+        button { width: 100%; padding: 15px; background: linear-gradient(45deg, #00d2ff, #3a47d5); border: none; color: white; font-weight: bold; border-radius: 10px; cursor: pointer; }
+        .output-box { margin-top: 20px; text-align: left; background: #000; padding: 15px; border-radius: 10px; display: none; border: 1px solid #00ff88; }
+        pre { white-space: pre-wrap; word-wrap: break-word; color: #00ff88; font-size: 13px; }
+        .explain { color: #e1e1e1; font-size: 14px; margin-top: 15px; border-top: 1px solid #333; padding-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="main-app" id="auth-screen">
-        <div class="glass-card">
-            <h1>SDS CLOUD</h1>
-            <p>مرحباً بك في مستقبل الاستضافة السحابية</p>
-            
-            <input type="text" id="u-name" class="input-box" placeholder="اسم المستخدم">
-            <input type="password" id="u-pass" class="input-box" placeholder="كلمة المرور">
-            
-            <button class="btn-mega" onclick="launchApp()">دخول النظام <i class="fas fa-chevron-left"></i></button>
-            
-            <div style="margin-top: 20px; font-size: 11px; color: #555;">
-                حقوق الطبع والنشر © 2024 Younis SDS Corporation
+    <div class="container">
+        <h1>AI SCRIPT MASTER 🤖</h1>
+        <p>اطلب أي سكربت (ماين كرافت، بايثون، تليجرام..)</p>
+        
+        <textarea id="prompt" placeholder="اكتب طلبك هنا.. مثلاً: سكربت ترحيب باللاعبين لماين كرافت"></textarea>
+        <button onclick="generateScript()">استخراج السكربت والشرح</button>
+
+        <div id="loading" style="display:none; margin-top:15px;">⏳ جاري البرمجة والتحليل...</div>
+
+        <div id="resultBox" class="output-box">
+            <strong style="color:#00d2ff;">السكربت:</strong>
+            <pre id="scriptCode"></pre>
+            <div class="explain">
+                <strong style="color:#00d2ff;">الشرح المبسط:</strong>
+                <p id="scriptExplain"></p>
             </div>
         </div>
     </div>
-
-    <div class="dashboard" id="dash-screen">
-        <div class="glass-card" style="text-align: right;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2 style="margin:0">لوحة التحكم السحابية</h2>
-                <span id="live-ip" style="color:var(--primary); font-weight: bold;">---</span>
-            </div>
-
-            <div class="stats-grid" style="margin-top: 30px;">
-                <div class="stat-item"><small>حالة المعالج</small><br><strong id="cpu-load">0%</strong></div>
-                <div class="stat-item"><small>ذاكرة الرام</small><br><strong id="ram-load">0%</strong></div>
-            </div>
-
-            <div class="console" id="log-box">
-                [SYSTEM] INITIALIZING CORE...<br>
-                [SYSTEM] CONNECTED TO GLOBAL SDS NETWORK.
-            </div>
-
-            <div style="display: flex; gap: 10px;">
-                <input type="text" id="srv-name" class="input-box" placeholder="اسم السيرفر" style="margin:0">
-                <button class="btn-mega" style="width: 150px;" onclick="createSrv()">تفعيل</button>
-            </div>
-            
-            <button class="btn-mega" style="background: #1f2531; margin-top: 15px; font-size: 0.9rem;" onclick="downloadBat()">تحميل ملف الربط الذكي (.bat)</button>
-        </div>
-    </div>
-
-    <div class="support-btn" onclick="alert('سيتم توجيهك للدعم الفني المباشر...')"><i class="fas fa-headset fa-lg"></i></div>
 
     <script>
-        function launchApp() {
-            const u = document.getElementById('u-name').value;
-            const p = document.getElementById('u-pass').value;
-            if(!u || p.length < 8) return alert("خطأ: يرجى إدخال بيانات صحيحة (الباسورد 8 خانات)");
+        async function generateScript() {
+            const prompt = document.getElementById('prompt').value;
+            const loading = document.getElementById('loading');
+            const resultBox = document.getElementById('resultBox');
 
-            document.getElementById('auth-screen').style.display = 'none';
-            document.getElementById('dash-screen').style.display = 'block';
-            addToLog("User " + u + " authenticated successfully.");
-        }
+            if(!prompt) return alert("اكتب طلبك أولاً!");
 
-        function createSrv() {
-            const name = document.getElementById('srv-name').value;
-            if(!name) return;
-            const ip = name.toLowerCase() + ".ggsds.he";
-            document.getElementById('live-ip').innerText = ip;
-            addToLog("Server Created: " + ip);
-            
-            setInterval(() => {
-                document.getElementById('cpu-load').innerText = Math.floor(Math.random() * 15 + 5) + "%";
-                document.getElementById('ram-load').innerText = Math.floor(Math.random() * 20 + 40) + "%";
-            }, 2000);
-        }
+            loading.style.display = 'block';
+            resultBox.style.display = 'none';
 
-        function addToLog(m) {
-            const box = document.getElementById('log-box');
-            box.innerHTML += `<div>[${new Date().toLocaleTimeString()}] ${m}</div>`;
-            box.scrollTop = box.scrollHeight;
-        }
-
-        function downloadBat() {
-            const c = "@echo off\ntitle SDS CONNECTOR\necho Connecting...\npause";
-            const b = new Blob([c], {type:'text/plain'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(b); a.download = "SDS_Connect.bat"; a.click();
+            try {
+                // ملاحظة: هنا سنحتاج API Key خاص بك من Google AI Studio
+                // سأضع لك كود تجريبي يوضح النتيجة الآن
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                    resultBox.style.display = 'block';
+                    document.getElementById('scriptCode').innerText = "System.out.println('Hello SDS');";
+                    document.getElementById('scriptExplain').innerText = "هذا الكود يقوم بطباعة كلمة ترحيب في الكونسول عند تشغيل السيرفر.";
+                }, 2000);
+            } catch (error) {
+                alert("حدث خطأ في الاتصال بالذكاء الاصطناعي");
+                loading.style.display = 'none';
+            }
         }
     </script>
 </body>
