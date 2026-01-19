@@ -15,9 +15,7 @@
   <input id="email" placeholder="الإيميل (عرضي)">
   <input type="password" id="gamePass" placeholder="كلمة المرور (عرضية)">
   <button onclick="sendRequest()">إرسال الطلب</button>
-  <p style="text-align:center;font-size:13px;color:gray;margin-top:5px;">
-    ملاحظة: سيتم التحقق من الحساب ونشره خلال 24 ساعة
-  </p>
+  <p style="text-align:center;font-size:13px;color:gray;margin-top:5px;">ملاحظة: سيتم التحقق من الحساب ونشره خلال 24 ساعة</p>
 </div>
 
 <div class="requests" id="adminPanel" style="display:none;">
@@ -33,18 +31,16 @@ let requests = JSON.parse(localStorage.getItem("requests")) || [];
 function loadAdminPanel(){
   if(currentUser !== "Younisxho") return;
 
-  document.getElementById("publishForm").style.display = "none";
-  document.getElementById("adminPanel").style.display = "block";
+  document.getElementById("publishForm").style.display="none";
+  document.getElementById("adminPanel").style.display="block";
 
   let listDiv = document.getElementById("requestsList");
-  listDiv.innerHTML = "";
-
+  listDiv.innerHTML="";
   requests.forEach((r,i)=>{
     if(r.approved) return;
-
     let card = document.createElement("div");
-    card.className = "request-card";
-    card.innerHTML = `
+    card.className="card";
+    card.innerHTML=`
       <strong>اللعبة:</strong> ${r.game}<br>
       <strong>الوصف:</strong> ${r.desc}<br>
       <strong>الإيميل:</strong> ${r.email}<br>
@@ -56,24 +52,15 @@ function loadAdminPanel(){
   });
 }
 
-// إرسال طلب نشر الحساب
 function sendRequest(){
-  if(currentUser !== "Younisxho"){
-    alert("غير مسموح لك بنشر حسابات للبيع.");
-    return;
-  }
+  if(currentUser !== "Younisxho"){ alert("❌ غير مسموح لك بنشر حسابات للبيع."); return; }
+  let game=document.getElementById("gameName").value.trim();
+  let desc=document.getElementById("gameDesc").value.trim();
+  let email=document.getElementById("email").value.trim();
+  let pass=document.getElementById("gamePass").value.trim();
+  if(!game||!desc||!email||!pass){ alert("الرجاء تعبئة جميع الحقول"); return; }
 
-  let game = document.getElementById("gameName").value.trim();
-  let desc = document.getElementById("gameDesc").value.trim();
-  let email = document.getElementById("email").value.trim();
-  let pass = document.getElementById("gamePass").value.trim();
-
-  if(!game || !desc || !email || !pass){
-    alert("الرجاء تعبئة جميع الحقول");
-    return;
-  }
-
-  requests.push({game, desc, email, pass, approved:false});
+  requests.push({game,desc,email,pass,approved:false});
   localStorage.setItem("requests", JSON.stringify(requests));
   alert("تم إرسال الطلب، سيتم مراجعته خلال 24 ساعة");
 
@@ -87,7 +74,7 @@ function sendRequest(){
 }
 
 function approveRequest(index){
-  requests[index].approved = true;
+  requests[index].approved=true;
   localStorage.setItem("requests", JSON.stringify(requests));
   alert("تم الموافقة على الحساب وسيظهر في الصفحة الرئيسية");
   loadAdminPanel();
@@ -102,24 +89,21 @@ function rejectRequest(index){
 }
 
 function displayApproved(){
-  let cardsDiv = document.querySelector(".cards");
-  if(!cardsDiv) return;
-
-  cardsDiv.innerHTML="";
-  requests.forEach(r=>{
-    if(r.approved){
-      let card = document.createElement("div");
-      card.className="card";
-      card.innerHTML = `<h3>${r.game}</h3><p>${r.desc}</p><button>عرض التفاصيل</button>`;
-      cardsDiv.appendChild(card);
-    }
+  let cardsDiv = document.querySelectorAll(".cards");
+  cardsDiv.forEach(cards=>{
+    cards.innerHTML="";
+    requests.forEach(r=>{
+      if(r.approved){
+        let card = document.createElement("div");
+        card.className="card";
+        card.innerHTML=`<h3>${r.game}</h3><p>${r.desc}</p><button onclick="alert('عرض التفاصيل')">عرض التفاصيل</button>`;
+        cards.appendChild(card);
+      }
+    });
   });
 }
 
-window.onload = function(){
-  displayApproved();
-  loadAdminPanel();
-}
+window.onload=function(){ displayApproved(); loadAdminPanel(); }
 </script>
 
 </body>
