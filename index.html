@@ -3,29 +3,90 @@
 <head>
 <meta charset="UTF-8">
 <title>الوسيط للأمان</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
+<!-- زر المنيو -->
+<div class="menu" onclick="toggle()">☰</div>
+
+<!-- منيو جانبي -->
+<div class="side" id="side">
+  <a href="index.html">🏠 الرئيسية</a>
+  <a href="profile.html">👤 البروفايل</a>
+  <a href="publish.html">➕ نشر حساب</a>
+  <a href="payment.html">💳 الدفع</a>
+  <a href="admin.html" id="adminLink">🛠 الأدمن</a>
+  <a href="login.html">🔐 تسجيل</a>
+</div>
+
+<!-- الهيدر -->
 <header>
-<h1>الوسيط للأمان</h1>
+  <h1>الوسيط للأمان</h1>
+  <p id="welcome"></p>
 </header>
 
-<section class="cards" id="c"></section>
+<!-- زر إضافة -->
+<div style="text-align:center;margin:20px">
+  <button class="btn" onclick="goPublish()">＋ نشر حساب</button>
+</div>
+
+<!-- الحسابات -->
+<section class="cards" id="cards"></section>
 
 <script>
-let s = JSON.parse(localStorage.getItem("store")||"[]");
-let c = document.getElementById("c");
-if(s.length==0)c.innerHTML="<p style='padding:20px'>لا توجد حسابات</p>";
-s.forEach(x=>{
- c.innerHTML+=`
-  <div class="card">
-   <h3>${x.game}</h3>
-   <p>${x.desc}</p>
-   <button class="btn">شراء</button>
-  </div>`;
-});
+/* منيو */
+function toggle(){
+ document.getElementById("side").classList.toggle("active");
+}
+
+/* ترحيب */
+let user = localStorage.getItem("currentUser");
+let role = localStorage.getItem("role");
+welcome.innerText = user ? "مرحبًا "+user : "سجل حسابك لعرض الحسابات";
+
+/* إظهار الأدمن */
+if(role !== "admin"){
+ document.getElementById("adminLink").style.display="none";
+}
+
+/* نشر */
+function goPublish(){
+ if(!user){
+  alert("سجل دخول أولاً");
+  location.href="login.html";
+ }else{
+  location.href="publish.html";
+ }
+}
+
+/* عرض الحسابات */
+let store = JSON.parse(localStorage.getItem("store") || "[]");
+let cards = document.getElementById("cards");
+
+if(store.length === 0){
+ cards.innerHTML = "<p style='padding:20px'>لا توجد حسابات معروضة</p>";
+}else{
+ store.forEach(s=>{
+  cards.innerHTML += `
+   <div class="card">
+    <h3>${s.game}</h3>
+    <p>${s.desc}</p>
+    <button class="btn" onclick="buy()">شراء</button>
+   </div>
+  `;
+ });
+}
+
+function buy(){
+ if(!user){
+  alert("سجل دخول للشراء");
+  location.href="login.html";
+ }else{
+  location.href="payment.html";
+ }
+}
 </script>
 
 </body>
