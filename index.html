@@ -5,42 +5,201 @@
 <title>الوسيط للأمان</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="css/style.css">
+<style>
+/* إضافات للواجهة الموسعة */
+.hero{
+  text-align:center;
+  padding:50px 20px;
+  color:white;
+  background:linear-gradient(120deg,#0f2027,#203a43,#2c5364);
+  border-bottom-left-radius:50px;
+  border-bottom-right-radius:50px;
+}
+.hero h1{font-size:36px; margin-bottom:10px;}
+.hero p{font-size:18px; line-height:1.5;}
+
+.section{
+  max-width:1000px;
+  margin:40px auto;
+  padding:20px;
+}
+
+.section h2{text-align:center; margin-bottom:20px; color:#2c5364;}
+.section p{text-align:center; color:#555; line-height:1.6;}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+  padding:20px;
+}
+
+.card{
+  background:white;
+  padding:20px;
+  border-radius:15px;
+  box-shadow:0 15px 30px rgba(0,0,0,.15);
+  transition:0.3s;
+}
+.card:hover{transform:translateY(-10px); box-shadow:0 25px 40px rgba(0,0,0,.2);}
+.card h3{margin-top:0;}
+.card button{
+  margin-top:10px;
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:#2c5364;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.add-btn{
+  position:fixed;
+  bottom:70px;
+  left:50%;
+  transform:translateX(-50%);
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  border:none;
+  font-size:30px;
+  background:#00c6ff;
+  color:white;
+  box-shadow:0 10px 20px rgba(0,0,0,.3);
+}
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0;
+  background:white;
+  border-top:1px solid #ddd;
+  font-size:18px;
+}
+
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* أقسام إضافية */
+.features{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+}
+.feature-card{
+  background:#f5f5f5;
+  padding:20px;
+  border-radius:15px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,.1);
+  transition:0.3s;
+}
+.feature-card:hover{transform:translateY(-10px);}
+.feature-card h3{margin-top:0;}
+.feature-card p{font-size:14px; color:#555;}
+</style>
 </head>
 <body>
 
-<header>
+<!-- قسم الهيرو -->
+<section class="hero">
   <h1>الوسيط للأمان</h1>
-  <p>منصة وسيطة لعرض الحسابات بأمان</p>
-</header>
+  <p>منصة موثوقة لعرض وبيع الحسابات بأمان. كل الحسابات تحتاج موافقة الأدمن قبل العرض.</p>
+</section>
 
-<main>
-  <section class="cards">
-    <div class="card">
-      <h3>حساب PUBG</h3>
-      <p>مستوى عالي – سكنات نادرة</p>
-      <button>عرض التفاصيل</button>
-    </div>
+<!-- قسم كيف تستخدم الموقع -->
+<section class="section">
+  <h2>كيفية استخدام الموقع</h2>
+  <p>1️⃣ أنشئ حسابك عبر زر تسجيل الدخول.<br>
+     2️⃣ تصفح الحسابات المعروضة.<br>
+     3️⃣ الأدمن هو الوحيد الذي يمكنه نشر حسابات جديدة.<br>
+     4️⃣ أي حساب جديد يجب أن يوافق عليه الأدمن قبل عرضه.</p>
+</section>
 
-    <div class="card">
-      <h3>حساب Fortnite</h3>
-      <p>سكنات موسمية – جاهز للبيع</p>
-      <button>عرض التفاصيل</button>
-    </div>
-  </section>
-</main>
+<!-- قسم المميزات -->
+<section class="section features">
+  <div class="feature-card">
+    <h3>واجهة سهلة</h3>
+    <p>واجهة بسيطة وسلسة لكل المستخدمين على الكمبيوتر والجوال.</p>
+  </div>
+  <div class="feature-card">
+    <h3>أمان الحسابات</h3>
+    <p>لا يمكن نشر أي حساب بدون مراجعة الأدمن لضمان المصداقية.</p>
+  </div>
+  <div class="feature-card">
+    <h3>تحديث مباشر</h3>
+    <p>الحسابات الموافق عليها تظهر مباشرة على الصفحة الرئيسية.</p>
+  </div>
+  <div class="feature-card">
+    <h3>دعم العملاء</h3>
+    <p>مراسلات مباشرة مع الأدمن لأي شكوى أو اقتراح.</p>
+  </div>
+</section>
 
-<!-- زر نشر حساب -->
-<button class="add-btn" onclick="alert('سيتم نقلك لصفحة نشر حساب (قريبًا)')">＋</button>
+<!-- قسم الحسابات المعروضة -->
+<section class="section">
+  <h2>الحسابات المتاحة</h2>
+  <p style="text-align:center; color:#555;">يمكنك تصفح الحسابات الموافق عليها فقط.</p>
+  <div class="cards">
+    <!-- الحسابات الموافق عليها ستظهر هنا بواسطة JavaScript -->
+  </div>
+  <p id="noAccountsMsg" style="text-align:center;color:#888;font-weight:bold;">لا توجد حسابات حالياً</p>
+</section>
+
+<!-- زر نشر الحساب -->
+<button class="add-btn" onclick="location.href='publish.html'" id="addBtn">＋</button>
 
 <!-- منيو سفلي -->
 <nav class="bottom-nav">
   <span>🏠</span>
   <span>🛒</span>
   <span>💬</span>
-  <!-- أيقونة تسجيل الدخول / إنشاء حساب -->
   <span onclick="location.href='login.html'" style="cursor:pointer;">👤 تسجيل دخول</span>
 </nav>
 
-<script src="js/app.js"></script>
+<script>
+let currentUser = localStorage.getItem("currentUser") || "";
+
+// إخفاء زر النشر إذا المستخدم ليس الأدمن
+if(currentUser !== "Younisxho"){
+  document.getElementById("addBtn").style.display = "none";
+}
+
+// عرض الحسابات الموافق عليها
+function displayApproved(){
+  let cardsDiv = document.querySelector(".cards");
+  if(!cardsDiv) return;
+
+  let requests = JSON.parse(localStorage.getItem("requests")) || [];
+  let approvedAccounts = requests.filter(r => r.approved);
+
+  cardsDiv.innerHTML="";
+
+  if(approvedAccounts.length === 0){
+    document.getElementById("noAccountsMsg").style.display = "block";
+  } else {
+    document.getElementById("noAccountsMsg").style.display = "none";
+  }
+
+  approvedAccounts.forEach(r=>{
+    let card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `<h3>${r.game}</h3><p>${r.desc}</p><button>عرض التفاصيل</button>`;
+    cardsDiv.appendChild(card);
+  });
+}
+
+window.onload = function(){
+  displayApproved();
+}
+</script>
+
 </body>
 </html>
