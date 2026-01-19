@@ -2,63 +2,48 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>تسجيل الدخول</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تسجيل</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
+<script>
+if(localStorage.getItem("currentUser")){
+ if(confirm("أنت لديك حساب بالفعل، هل تريد تسجيل الخروج؟")){
+  localStorage.clear();
+ }else{
+  location.href="index.html";
+ }
+}
+</script>
+
 <header>
-  <h1>الوسيط للأمان</h1>
-  <p>تسجيل / إنشاء حساب</p>
+<h1>تسجيل / إنشاء حساب</h1>
 </header>
 
-<div class="card" style="max-width:400px;margin:40px auto">
-  <input id="username" placeholder="اسم المستخدم">
-  <input id="password" type="password" placeholder="كلمة المرور (8 أحرف على الأقل)">
-  <input id="adminKey" placeholder="كود خاص (اختياري)">
-  <button class="btn" onclick="login()">دخول</button>
+<div class="card" style="max-width:400px;margin:30px auto">
+ <input id="u" placeholder="اسم المستخدم">
+ <input id="p" type="password" placeholder="كلمة المرور (8+)">
+ <input id="k" placeholder="كود خاص (اختياري)">
+ <button class="btn" onclick="go()">دخول</button>
 </div>
 
 <script>
-function login(){
-  let u = username.value.trim();
-  let p = password.value.trim();
-  let k = adminKey.value.trim();
+function go(){
+ if(p.value.length<8)return alert("كلمة المرور قصيرة");
 
-  if(u=="" || p==""){
-    alert("أكمل جميع الحقول");
-    return;
-  }
+ if(k.value==="20112006"){
+  localStorage.setItem("currentUser","Younisxho");
+  localStorage.setItem("role","admin");
+  location.href="admin.html";
+  return;
+ }
 
-  if(p.length < 8){
-    alert("كلمة المرور يجب أن تكون 8 أحرف أو أكثر");
-    return;
-  }
-
-  /* دخول الأدمن */
-  if(k === "20112006"){
-    localStorage.setItem("currentUser","Younisxho");
-    localStorage.setItem("role","admin");
-    alert("تم الدخول كأدمن");
-    location.href="admin.html";
-    return;
-  }
-
-  /* مستخدم عادي */
-  let users = JSON.parse(localStorage.getItem("users") || "[]");
-
-  if(users.includes(u)){
-    alert("تم تسجيل الدخول");
-  }else{
-    users.push(u);
-    localStorage.setItem("users",JSON.stringify(users));
-    alert("تم إنشاء الحساب بنجاح");
-  }
-
-  localStorage.setItem("currentUser",u);
-  localStorage.setItem("role","user");
-  location.href="index.html";
+ localStorage.setItem("currentUser",u.value);
+ localStorage.setItem("role","user");
+ alert("تم تسجيل الحساب");
+ location.href="index.html";
 }
 </script>
 
