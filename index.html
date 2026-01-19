@@ -1,129 +1,43 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>الوسيط للأمان</title>
-<style>
-body{
-  margin:0;
-  font-family:Tahoma;
-  background:linear-gradient(120deg,#0f2027,#203a43,#2c5364);
-  color:#fff;
-}
-.container{
-  max-width:420px;
-  margin:80px auto;
-  background:rgba(0,0,0,.6);
-  padding:25px;
-  border-radius:15px;
-  animation: fadeIn 1.2s ease;
-}
-@keyframes fadeIn{
-  from{opacity:0; transform:translateY(30px);}
-  to{opacity:1; transform:translateY(0);}
-}
-input, textarea, button{
-  width:100%;
-  margin:8px 0;
-  padding:10px;
-  border:none;
-  border-radius:8px;
-}
-button{
-  background:#00c6ff;
-  font-weight:bold;
-  cursor:pointer;
-}
-button:hover{background:#00a2d6}
-.note{
-  font-size:12px;
-  opacity:.8;
-}
-.hidden{display:none}
-.menu{
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  margin-bottom:15px;
-}
-.menu button{width:auto}
-</style>
+  <meta charset="UTF-8">
+  <title>الوسيط للأمان</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-<div class="container" id="auth">
-  <h2>الوسيط للأمان</h2>
-  <input id="user" placeholder="اسم المستخدم">
-  <input id="pass" type="password" placeholder="كلمة المرور (8+ أرقام)">
-  <button onclick="register()">إنشاء حساب</button>
-  <button onclick="login()">تسجيل دخول</button>
-  <p id="msg"></p>
-</div>
+<header>
+  <h1>الوسيط للأمان</h1>
+  <p>منصة وسيطة لعرض الحسابات بأمان</p>
+</header>
 
-<div class="container hidden" id="dashboard">
-  <div class="menu">
-    <button onclick="show('publish')">➕ نشر حساب</button>
-    <button onclick="show('support')">خدمة العملاء</button>
-    <button onclick="logout()">خروج</button>
-  </div>
+<main>
+  <section class="cards">
+    <div class="card">
+      <h3>حساب PUBG</h3>
+      <p>مستوى عالي – سكنات نادرة</p>
+      <button>عرض التفاصيل</button>
+    </div>
 
-  <div id="publish" class="hidden">
-    <h3>طلب عرض حساب</h3>
-    <input placeholder="اسم اللعبة">
-    <textarea placeholder="وصف الحساب"></textarea>
-    <input placeholder="الإيميل">
-    <input type="password" placeholder="الباسورد">
-    <p class="note">ملاحظة: سيتم التحقق من الحساب ونشره خلال 24 ساعة</p>
-    <button onclick="alert('تم إرسال الطلب للإدارة')">إرسال الطلب</button>
-  </div>
+    <div class="card">
+      <h3>حساب Fortnite</h3>
+      <p>سكنات موسمية – جاهز للبيع</p>
+      <button>عرض التفاصيل</button>
+    </div>
+  </section>
+</main>
 
-  <div id="support" class="hidden">
-    <h3>خدمة العملاء</h3>
-    <textarea placeholder="اكتب رسالتك للإدارة"></textarea>
-    <button onclick="alert('تم إرسال الرسالة إلى Younisxho')">إرسال</button>
-  </div>
+<button class="add-btn">＋</button>
 
-  <h3>الحسابات المعروضة</h3>
-  <p class="note">سيتم عرض الحسابات الموافق عليها هنا</p>
-</div>
+<nav class="bottom-nav">
+  <span>🏠</span>
+  <span>🛒</span>
+  <span>💬</span>
+  <span>👤</span>
+</nav>
 
-<script>
-let users = [];
-
-function register(){
-  let u = user.value.trim();
-  let p = pass.value.trim();
-  if(p.length < 8){
-    msg.innerText = "كلمة المرور يجب أن تكون 8 أحرف أو أكثر";
-    return;
-  }
-  if(users.includes(u)){
-    msg.innerText = "اسم المستخدم مستخدم سابقًا";
-    return;
-  }
-  users.push(u);
-  msg.innerText = "تم إنشاء الحساب بنجاح";
-}
-
-function login(){
-  if(users.includes(user.value)){
-    auth.classList.add("hidden");
-    dashboard.classList.remove("hidden");
-  }else{
-    msg.innerText = "الحساب غير موجود";
-  }
-}
-
-function show(id){
-  document.querySelectorAll("#dashboard > div").forEach(d=>d.classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
-}
-
-function logout(){
-  location.reload();
-}
-</script>
-
+<script src="js/app.js"></script>
 </body>
 </html>
