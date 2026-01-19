@@ -5,59 +5,7 @@
 <title>نشر حساب | الوسيط للأمان</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="css/style.css">
-<style>
-.publish-box{
-  max-width:400px;
-  margin:50px auto;
-  background:white;
-  padding:20px;
-  border-radius:20px;
-  box-shadow:0 15px 30px rgba(0,0,0,.15);
-  animation:fadeUp .7s ease;
-}
-
-.publish-box h2{text-align:center;margin-bottom:15px;}
-
-.publish-box input, .publish-box textarea{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border-radius:10px;
-  border:1px solid #ccc;
-}
-
-.publish-box button{
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-  border:none;
-  border-radius:10px;
-  background:#2c5364;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.requests{
-  max-width:400px;
-  margin:20px auto;
-}
-
-.request-card{
-  background:white;
-  padding:12px;
-  border-radius:12px;
-  box-shadow:0 8px 15px rgba(0,0,0,.1);
-  margin-bottom:10px;
-}
-
-.request-card button{
-  margin-top:5px;
-  background:#00c6ff;
-}
-</style>
 </head>
-
 <body>
 
 <div class="publish-box" id="publishForm">
@@ -67,7 +15,9 @@
   <input id="email" placeholder="الإيميل (عرضي)">
   <input type="password" id="gamePass" placeholder="كلمة المرور (عرضية)">
   <button onclick="sendRequest()">إرسال الطلب</button>
-  <p style="text-align:center;font-size:13px;color:gray;margin-top:5px;">ملاحظة: سيتم التحقق من الحساب ونشره خلال 24 ساعة</p>
+  <p style="text-align:center;font-size:13px;color:gray;margin-top:5px;">
+    ملاحظة: سيتم التحقق من الحساب ونشره خلال 24 ساعة
+  </p>
 </div>
 
 <div class="requests" id="adminPanel" style="display:none;">
@@ -79,30 +29,7 @@
 let currentUser = localStorage.getItem("currentUser") || "";
 let requests = JSON.parse(localStorage.getItem("requests")) || [];
 
-function sendRequest(){
-  let game = document.getElementById("gameName").value.trim();
-  let desc = document.getElementById("gameDesc").value.trim();
-  let email = document.getElementById("email").value.trim();
-  let pass = document.getElementById("gamePass").value.trim();
-
-  if(!game || !desc || !email || !pass){
-    alert("الرجاء تعبئة جميع الحقول");
-    return;
-  }
-
-  requests.push({game, desc, email, pass, approved:false});
-  localStorage.setItem("requests", JSON.stringify(requests));
-  alert("تم إرسال الطلب، سيتم مراجعته خلال 24 ساعة");
-
-  // تفريغ الحقول
-  document.getElementById("gameName").value = "";
-  document.getElementById("gameDesc").value = "";
-  document.getElementById("email").value = "";
-  document.getElementById("gamePass").value = "";
-
-  loadAdminPanel();
-}
-
+// إظهار لوحة الأدمن فقط للأدمن
 function loadAdminPanel(){
   if(currentUser !== "Younisxho") return;
 
@@ -113,7 +40,7 @@ function loadAdminPanel(){
   listDiv.innerHTML = "";
 
   requests.forEach((r,i)=>{
-    if(r.approved) return; // فقط الطلبات الجديدة
+    if(r.approved) return;
 
     let card = document.createElement("div");
     card.className = "request-card";
@@ -129,12 +56,42 @@ function loadAdminPanel(){
   });
 }
 
+// إرسال طلب نشر الحساب
+function sendRequest(){
+  if(currentUser !== "Younisxho"){
+    alert("غير مسموح لك بنشر حسابات للبيع.");
+    return;
+  }
+
+  let game = document.getElementById("gameName").value.trim();
+  let desc = document.getElementById("gameDesc").value.trim();
+  let email = document.getElementById("email").value.trim();
+  let pass = document.getElementById("gamePass").value.trim();
+
+  if(!game || !desc || !email || !pass){
+    alert("الرجاء تعبئة جميع الحقول");
+    return;
+  }
+
+  requests.push({game, desc, email, pass, approved:false});
+  localStorage.setItem("requests", JSON.stringify(requests));
+  alert("تم إرسال الطلب، سيتم مراجعته خلال 24 ساعة");
+
+  document.getElementById("gameName").value="";
+  document.getElementById("gameDesc").value="";
+  document.getElementById("email").value="";
+  document.getElementById("gamePass").value="";
+
+  loadAdminPanel();
+  displayApproved();
+}
+
 function approveRequest(index){
   requests[index].approved = true;
   localStorage.setItem("requests", JSON.stringify(requests));
   alert("تم الموافقة على الحساب وسيظهر في الصفحة الرئيسية");
   loadAdminPanel();
-  displayApproved(); // تحديث الصفحة الرئيسية
+  displayApproved();
 }
 
 function rejectRequest(index){
@@ -145,27 +102,20 @@ function rejectRequest(index){
 }
 
 function displayApproved(){
-  // إضافة الحسابات الموافق عليها للصفحة الرئيسية
   let cardsDiv = document.querySelector(".cards");
   if(!cardsDiv) return;
 
-  cardsDiv.innerHTML = ""; // تفريغ لإعادة التحميل
-
+  cardsDiv.innerHTML="";
   requests.forEach(r=>{
     if(r.approved){
       let card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <h3>${r.game}</h3>
-        <p>${r.desc}</p>
-        <button>عرض التفاصيل</button>
-      `;
+      card.className="card";
+      card.innerHTML = `<h3>${r.game}</h3><p>${r.desc}</p><button>عرض التفاصيل</button>`;
       cardsDiv.appendChild(card);
     }
   });
 }
 
-// عند تحميل الصفحة
 window.onload = function(){
   displayApproved();
   loadAdminPanel();
