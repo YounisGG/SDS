@@ -3,54 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <title>لوحة الأدمن</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <header>
-  <h1>لوحة تحكم الأدمن</h1>
-  <p>إدارة الطلبات</p>
+  <h1>لوحة الأدمن</h1>
+  <p>إدارة الطلبات والحسابات</p>
 </header>
 
-<section class="cards" id="box"></section>
+<div class="card" style="max-width:500px;margin:20px auto">
+  <h3>إضافة حساب تجريبي</h3>
+  <input id="g" placeholder="اسم اللعبة">
+  <textarea id="d" placeholder="وصف الحساب"></textarea>
+  <button class="btn" onclick="add()">إضافة</button>
+</div>
+
+<section class="cards" id="list"></section>
 
 <script>
-if(localStorage.getItem("role") !== "admin"){
-  alert("غير مصرح");
+if(localStorage.getItem("role")!=="admin"){
+  alert("ممنوع");
   location.href="index.html";
 }
 
-let reqs = JSON.parse(localStorage.getItem("requests") || "[]");
-let box = document.getElementById("box");
+let store = JSON.parse(localStorage.getItem("store")||"[]");
+let list = document.getElementById("list");
 
-if(reqs.length === 0){
-  box.innerHTML = "<p style='padding:20px'>لا توجد طلبات</p>";
+function draw(){
+ list.innerHTML="";
+ store.forEach((s,i)=>{
+  list.innerHTML+=`
+   <div class="card">
+    <h3>${s.game}</h3>
+    <p>${s.desc}</p>
+   </div>`;
+ });
 }
+draw();
 
-reqs.forEach((r,i)=>{
-  box.innerHTML += `
-    <div class="card">
-      <h3>${r.game}</h3>
-      <p>${r.desc}</p>
-      <button onclick="accept(${i})">قبول</button>
-      <button onclick="reject(${i})">رفض</button>
-    </div>
-  `;
-});
-
-function accept(i){
-  reqs[i].status="accepted";
-  localStorage.setItem("requests",JSON.stringify(reqs));
-  alert("تم قبول الطلب");
-  location.reload();
-}
-
-function reject(i){
-  reqs.splice(i,1);
-  localStorage.setItem("requests",JSON.stringify(reqs));
-  alert("تم رفض الطلب");
-  location.reload();
+function add(){
+ store.push({game:g.value,desc:d.value});
+ localStorage.setItem("store",JSON.stringify(store));
+ alert("تمت الإضافة");
+ draw();
 }
 </script>
 
