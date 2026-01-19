@@ -15,9 +15,7 @@ header{
   color:white;
 }
 
-h1, h2, h3{
-  margin:0;
-}
+h1,h2,h3{margin:0;}
 
 .cards{
   display:grid;
@@ -69,6 +67,7 @@ h1, h2, h3{
   padding:10px 0;
   background:white;
   border-top:1px solid #ddd;
+  font-size:18px;
 }
 
 @keyframes fadeUp{
@@ -111,3 +110,45 @@ h1, h2, h3{
   cursor:pointer;
 }
 .error{color:red; font-size:13px; text-align:center}
+
+/* صفحة نشر حساب */
+.publish-box{
+  max-width:400px;
+  margin:50px auto;
+  background:white;
+  padding:20px;
+  border-radius:20px;
+  box-shadow:0 15px 30px rgba(0,0,0,.15);
+  animation:fadeUp .7s ease;
+}
+.publish-box input, .publish-box textarea{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+.publish-box button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:10px;
+  background:#2c5364;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+.requests{max-width:400px; margin:20px auto;}
+.request-card{
+  background:white;
+  padding:12px;
+  border-radius:12px;
+  box-shadow:0 8px 15px rgba(0,0,0,.1);
+  margin-bottom:10px;
+}
+.request-card button{
+  margin-top:5px;
+  background:#00c6ff;
+  cursor:pointer;
+}
