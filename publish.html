@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>نشر حساب | الوسيط للأمان</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.publish-box{
+  max-width:400px;
+  margin:50px auto;
+  background:white;
+  padding:20px;
+  border-radius:20px;
+  box-shadow:0 15px 30px rgba(0,0,0,.15);
+  animation:fadeUp .7s ease;
+}
+
+.publish-box h2{text-align:center;margin-bottom:15px;}
+
+.publish-box input, .publish-box textarea{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+
+.publish-box button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:10px;
+  background:#2c5364;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.requests{
+  max-width:400px;
+  margin:20px auto;
+}
+
+.request-card{
+  background:white;
+  padding:12px;
+  border-radius:12px;
+  box-shadow:0 8px 15px rgba(0,0,0,.1);
+  margin-bottom:10px;
+}
+
+.request-card button{
+  margin-top:5px;
+  background:#00c6ff;
+}
+</style>
+</head>
+
+<body>
+
+<div class="publish-box" id="publishForm">
+  <h2>نشر حساب جديد</h2>
+  <input id="gameName" placeholder="اسم اللعبة">
+  <textarea id="gameDesc" placeholder="وصف الحساب"></textarea>
+  <input id="email" placeholder="الإيميل (عرضي)">
+  <input type="password" id="gamePass" placeholder="كلمة المرور (عرضية)">
+  <button onclick="sendRequest()">إرسال الطلب</button>
+  <p style="text-align:center;font-size:13px;color:gray;margin-top:5px;">ملاحظة: سيتم التحقق من الحساب ونشره خلال 24 ساعة</p>
+</div>
+
+<div class="requests" id="adminPanel" style="display:none;">
+  <h2 style="text-align:center;">لوحة الأدمن (Younisxho)</h2>
+  <div id="requestsList"></div>
+</div>
+
+<script>
+let currentUser = localStorage.getItem("currentUser") || "";
+let requests = JSON.parse(localStorage.getItem("requests")) || [];
+
+function sendRequest(){
+  let game = document.getElementById("gameName").value.trim();
+  let desc = document.getElementById("gameDesc").value.trim();
+  let email = document.getElementById("email").value.trim();
+  let pass = document.getElementById("gamePass").value.trim();
+
+  if(!game || !desc || !email || !pass){
+    alert("الرجاء تعبئة جميع الحقول");
+    return;
+  }
+
+  requests.push({game, desc, email, pass, approved:false});
+  localStorage.setItem("requests", JSON.stringify(requests));
+  alert("تم إرسال الطلب، سيتم مراجعته خلال 24 ساعة");
+
+  // تفريغ الحقول
+  document.getElementById("gameName").value = "";
+  document.getElementById("gameDesc").value = "";
+  document.getElementById("email").value = "";
+  document.getElementById("gamePass").value = "";
+
+  loadAdminPanel();
+}
+
+function loadAdminPanel(){
+  if(currentUser !== "Younisxho") return;
+
+  document.getElementById("publishForm").style.display = "none";
+  document.getElementById("adminPanel").style.display = "block";
+
+  let listDiv = document.getElementById("requestsList");
+  listDiv.innerHTML = "";
+
+  requests.forEach((r,i)=>{
+    if(r.approved) return; // فقط الطلبات الجديدة
+
+    let card = document.createElement("div");
+    card.className = "request-card";
+    card.innerHTML = `
+      <strong>اللعبة:</strong> ${r.game}<br>
+      <strong>الوصف:</strong> ${r.desc}<br>
+      <strong>الإيميل:</strong> ${r.email}<br>
+      <strong>الباسورد:</strong> ${r.pass}<br>
+      <button onclick="approveRequest(${i})">✔️ الموافقة</button>
+      <button onclick="rejectRequest(${i})">❌ الرفض</button>
+    `;
+    listDiv.appendChild(card);
+  });
+}
+
+function approveRequest(index){
+  requests[index].approved = true;
+  localStorage.setItem("requests", JSON.stringify(requests));
+  alert("تم الموافقة على الحساب وسيظهر في الصفحة الرئيسية");
+  loadAdminPanel();
+  displayApproved(); // تحديث الصفحة الرئيسية
+}
+
+function rejectRequest(index){
+  requests.splice(index,1);
+  localStorage.setItem("requests", JSON.stringify(requests));
+  alert("تم رفض الحساب");
+  loadAdminPanel();
+}
+
+function displayApproved(){
+  // إضافة الحسابات الموافق عليها للصفحة الرئيسية
+  let cardsDiv = document.querySelector(".cards");
+  if(!cardsDiv) return;
+
+  cardsDiv.innerHTML = ""; // تفريغ لإعادة التحميل
+
+  requests.forEach(r=>{
+    if(r.approved){
+      let card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <h3>${r.game}</h3>
+        <p>${r.desc}</p>
+        <button>عرض التفاصيل</button>
+      `;
+      cardsDiv.appendChild(card);
+    }
+  });
+}
+
+// عند تحميل الصفحة
+window.onload = function(){
+  displayApproved();
+  loadAdminPanel();
+}
+</script>
+
+</body>
+</html>
