@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>تسجيل الدخول | الوسيط للأمان</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="auth-box">
+  <h2 id="title">إنشاء حساب</h2>
+
+  <input id="username" placeholder="اسم المستخدم">
+  <input id="password" type="password" placeholder="كلمة المرور (8 أحرف على الأقل)">
+  <p class="error" id="msg"></p>
+
+  <button onclick="submitForm()">متابعة</button>
+
+  <div class="switch" onclick="toggleMode()">
+    لديك حساب؟ تسجيل دخول
+  </div>
+</div>
+
+<script>
+let isLogin = false;
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+function toggleMode(){
+  isLogin = !isLogin;
+  title.innerText = isLogin ? "تسجيل الدخول" : "إنشاء حساب";
+  document.querySelector(".switch").innerText =
+    isLogin ? "ليس لديك حساب؟ إنشاء حساب" : "لديك حساب؟ تسجيل دخول";
+  msg.innerText = "";
+}
+
+function submitForm(){
+  let u = username.value.trim();
+  let p = password.value.trim();
+
+  if(p.length < 8){
+    msg.innerText = "كلمة المرور يجب أن تكون 8 أحرف أو أكثر";
+    return;
+  }
+
+  if(!isLogin){
+    if(users.find(x=>x.user===u)){
+      msg.innerText = "اسم المستخدم مستخدم سابقًا";
+      return;
+    }
+    users.push({user:u, pass:p});
+    localStorage.setItem("users", JSON.stringify(users));
+    alert("تم إنشاء الحساب بنجاح");
+    location.href="index.html";
+  }else{
+    let found = users.find(x=>x.user===u && x.pass===p);
+    if(found){
+      localStorage.setItem("currentUser", u);
+      location.href="index.html";
+    }else{
+      msg.innerText = "بيانات الدخول غير صحيحة";
+    }
+  }
+}
+</script>
+
+</body>
+</html>
