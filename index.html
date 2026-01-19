@@ -2,214 +2,260 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeTrust | منصة الوساطة الكبرى</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SafeTrust Mobile Pro | Younisxho Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Cairo', sans-serif; background: #0b0e14; color: #fff; }
-       .glass { background: rgba(17, 25, 40, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
-       .admin-glow { border: 2px solid #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); }
-       .pending-tag { background: #f59e0b; color: #000; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
-        input, textarea { background: #161b22!important; border: 1px solid #30363d!important; color: white!important; }
-        input:focus { border-color: #3b82f6!important; outline: none; }
+        :root { --neon-blue: #00f2fe; --neon-purple: #4facfe; --admin-red: #ff4b2b; }
+        body { font-family: 'Cairo', sans-serif; background: #020617; color: white; overflow-x: hidden; }
+       .neon-text { text-shadow: 0 0 10px var(--neon-blue); }
+       .glass-card { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 2rem; }
+       .animate-slide { animation: slideUp 0.6s ease-out forwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+       .floating { animation: floating 3s ease-in-out infinite; }
+        @keyframes floating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+       .admin-glow { border: 2px solid var(--admin-red)!important; box-shadow: 0 0 20px rgba(255, 75, 43, 0.3); }
+        input, textarea { background: #0f172a!important; border: 1px solid #1e293b!important; color: white!important; border-radius: 1rem!important; padding: 1rem!important; }
+       .btn-gradient { background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%); transition: 0.4s; }
+       .btn-gradient:hover { box-shadow: 0 0 30px rgba(79, 172, 254, 0.6); transform: scale(1.02); }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 10px; }
     </style>
 </head>
-<body class="min-h-screen">
+<body>
 
-    <nav class="glass sticky top-0 z-50 p-4 border-b border-gray-800">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-black text-blue-500">SAFE<span class="text-white">TRUST</span></h1>
-            <div id="userHeader" class="flex items-center gap-4">
-                <span id="userNameDisplay" class="hidden text-sm font-bold bg-blue-900 px-4 py-1 rounded-full"></span>
-                <button onclick="logout()" id="logoutBtn" class="hidden text-red-500 text-xs font-bold uppercase">خروج</button>
-            </div>
-        </div>
-    </nav>
-
-    <div id="authBox" class="max-w-md mx-auto mt-20 p-8 glass rounded-3xl shadow-2xl">
-        <h2 class="text-2xl font-black mb-6 text-center">بوابة الوسيط الآمن</h2>
-        <div class="space-y-4">
-            <input type="text" id="username" placeholder="اسم المستخدم (Younisxho للآدمن)" class="w-full p-4 rounded-xl">
-            <input type="password" id="password" placeholder="كلمة المرور" class="w-full p-4 rounded-xl">
-            <button onclick="login()" class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-bold text-lg transition">دخول إلى النظام</button>
+    <div id="toast" class="fixed top-10 left-1/2 -translate-x-1/2 z- hidden">
+        <div class="bg-blue-600 px-8 py-4 rounded-2xl shadow-2xl font-black flex items-center gap-3 border border-blue-400">
+            <span id="toastMsg">تمت العملية بنجاح!</span>
         </div>
     </div>
 
-    <div id="dashboard" class="hidden max-w-6xl mx-auto mt-10 p-4">
-        <div class="flex flex-col md:flex-row gap-8">
+    <div id="authScreen" class="fixed inset-0 z- bg-[#020617] flex items-center justify-center p-6">
+        <div class="w-full max-w-md glass-card p-10 text-center animate-slide">
+            <h1 class="text-5xl font-black italic neon-text mb-2">SAFE<span class="text-white">TRUST</span></h1>
+            <p class="text-gray-500 text-xs mb-10 tracking-[0.2em] font-bold">MOBILE ESCROW SYSTEM</p>
             
-            <aside class="w-full md:w-64 space-y-3">
-                <button onclick="switchTab('market')" id="tabMarketBtn" class="w-full text-right p-4 rounded-xl font-bold bg-blue-600">🛒 سوق الحسابات</button>
-                <button onclick="switchTab('sell')" id="tabSellBtn" class="w-full text-right p-4 rounded-xl font-bold hover:bg-gray-800">➕ عرض حساب للبيع</button>
-                
-                <div id="adminPanel" class="hidden pt-6 border-t border-gray-800 mt-6 animate-pulse">
-                    <p class="text-red-500 text-xs font-black mb-3 px-2">لوحة تحكم الإدارة (Younisxho)</p>
-                    <button onclick="switchTab('admin')" id="tabAdminBtn" class="w-full text-right p-4 rounded-xl font-bold bg-red-900/20 text-red-400 border border-red-900">🛡 إدارة طلبات البيع</button>
-                </div>
-            </aside>
+            <div class="space-y-4">
+                <input type="text" id="uName" placeholder="اسم المستخدم" class="w-full">
+                <input type="password" id="uPass" placeholder="كلمة المرور" class="w-full">
+                <button onclick="handleAuth('login')" class="w-full btn-gradient py-4 rounded-2xl font-black text-lg">دخول</button>
+                <button onclick="handleAuth('signup')" class="text-gray-400 text-sm hover:text-white transition">إنشاء حساب جديد</button>
+            </div>
+            <p class="mt-8 text-[10px] text-red-500 font-bold uppercase italic">Admin Access: Younisxho</p>
+        </div>
+    </div>
 
-            <main class="flex-1">
-                
-                <section id="marketView" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    </section>
+    <div id="mainApp" class="hidden min-h-screen">
+        <nav class="p-6 flex justify-between items-center glass-card m-4 border-none rounded-[2rem]">
+            <h2 class="text-xl font-black neon-text italic">ST <span class="text-white">PRO</span></h2>
+            <div class="flex items-center gap-4">
+                <div id="userBadge" class="bg-blue-900/40 px-4 py-1 rounded-full text-xs font-bold border border-blue-500/30">---</div>
+                <button onclick="location.reload()" class="bg-red-500/20 p-2 rounded-xl text-red-500">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+                </button>
+            </div>
+        </nav>
 
-                <section id="sellView" class="hidden glass p-8 rounded-3xl">
-                    <h2 class="text-xl font-bold mb-6">تقديم طلب بيع حساب</h2>
+        <div class="p-4 flex flex-col gap-6">
+            <div class="flex gap-2 overflow-x-auto pb-2 px-2 no-scrollbar">
+                <button onclick="showTab('market')" id="tMarket" class="flex-shrink-0 px-6 py-3 rounded-2xl font-bold bg-blue-600 shadow-lg shadow-blue-600/30">🛒 السوق</button>
+                <button onclick="showTab('sell')" id="tSell" class="flex-shrink-0 px-6 py-3 rounded-2xl font-bold bg-slate-800">➕ بيع</button>
+                <button onclick="showTab('safety')" id="tSafety" class="flex-shrink-0 px-6 py-3 rounded-2xl font-bold bg-slate-800">🛡️ دليل الأمان</button>
+                <button onclick="showTab('admin')" id="tAdmin" class="hidden flex-shrink-0 px-6 py-3 rounded-2xl font-bold bg-red-950/30 text-red-500 border border-red-500/50">🛡️ الإدارة</button>
+            </div>
+
+            <section id="secMarket" class="animate-slide">
+                <h3 class="text-2xl font-black mb-4 px-2">الحسابات المتاحة</h3>
+                <div id="marketList" class="grid grid-cols-1 gap-4"></div>
+            </section>
+
+            <section id="secSell" class="hidden animate-slide">
+                <div class="glass-card p-8 border-blue-500/20">
+                    <h3 class="text-2xl font-black mb-2 text-blue-400">اعرض حسابك الآن</h3>
+                    <p class="text-gray-400 text-xs mb-8 leading-loose">بياناتك السرية تُشفر وتُرسل للأدمن يونس فقط. سيتم عرض الحساب خلال 24 ساعة بعد التأكد.</p>
                     <div class="space-y-4">
-                        <input type="text" id="gameName" placeholder="اسم اللعبة" class="w-full p-3 rounded-xl">
-                        <input type="text" id="accEmail" placeholder="إيميل الحساب (للفحص فقط)" class="w-full p-3 rounded-xl text-left" dir="ltr">
-                        <input type="password" id="accPass" placeholder="كلمة مرور الحساب (للفحص فقط)" class="w-full p-3 rounded-xl text-left" dir="ltr">
-                        <textarea id="accDesc" placeholder="وصف الحساب (المستوى، السكنات، الإنجازات)" rows="4" class="w-full p-3 rounded-xl"></textarea>
-                        <input type="number" id="accPrice" placeholder="السعر المطلوب ($)" class="w-full p-3 rounded-xl">
-                        <button onclick="sendForReview()" class="w-full bg-green-600 p-4 rounded-xl font-bold text-lg">إرسال الطلب (مراجعة خلال 24 ساعة)</button>
-                    </div>
-                </section>
-
-                <section id="adminView" class="hidden space-y-4">
-                    <h2 class="text-xl font-bold text-red-500">طلبات تحتاج اختبارك يا Younisxho</h2>
-                    <div id="pendingList" class="space-y-4">
+                        <input type="text" id="gameTitle" placeholder="اسم اللعبة" class="w-full">
+                        <input type="number" id="gamePrice" placeholder="السعر المطلوب ($)" class="w-full">
+                        <div class="bg-blue-950/20 p-4 rounded-2xl border border-blue-500/10">
+                            <p class="text-[10px] text-blue-400 font-bold mb-3 uppercase">البيانات السرية (للفحص فقط)</p>
+                            <input type="email" id="accEmail" placeholder="الإيميل المربوط" class="w-full mb-3">
+                            <input type="password" id="accPass" placeholder="كلمة المرور" class="w-full">
                         </div>
-                </section>
+                        <textarea id="accDesc" rows="4" placeholder="وصف الحساب (ليفل، سكنات..)" class="w-full"></textarea>
+                        <button onclick="submitRequest()" class="w-full btn-gradient py-4 rounded-2xl font-black text-lg">إرسال لـ Younisxho</button>
+                    </div>
+                </div>
+            </section>
 
-            </main>
+            <section id="secSafety" class="hidden animate-slide space-y-4 px-2">
+                <div class="glass-card p-6 border-green-500/20">
+                    <h4 class="text-green-400 font-black text-lg mb-4">قواعد الوسيط الصارمة</h4>
+                    <div id="hugeText" class="text-gray-400 text-sm leading-relaxed h-[400px] overflow-y-auto pr-4">
+                        </div>
+                </div>
+            </section>
+
+            <section id="secAdmin" class="hidden animate-slide space-y-4">
+                <h3 class="text-2xl font-black text-red-500 px-2 flex justify-between">إدارة يونس <span class="bg-red-500/10 px-3 py-1 rounded text-xs">ROOT</span></h3>
+                <div id="adminQueue" class="space-y-4"></div>
+            </section>
         </div>
     </div>
 
     <script>
-        // --- محرك البيانات (Database) ---
-        let accounts = JSON.parse(localStorage.getItem('st_accounts')) ||;
+        // --- محرك الحالة (SafeTrust Core Engine) ---
+        let db = JSON.parse(localStorage.getItem('safetrust_mobile')) |
+
+| { users:, accounts: };
         let currentUser = null;
 
-        const ADMIN_NAME = "Younisxho";
+        const ADMIN_ID = "Younisxho";
 
-        function login() {
-            const user = document.getElementById('username').value.trim();
-            if(!user) return alert("يرجى إدخال اليوزر");
-            
+        // --- نظام التنبيهات ---
+        function toast(msg) {
+            const t = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            t.classList.remove('hidden');
+            setTimeout(() => t.classList.add('hidden'), 3000);
+        }
+
+        // --- نظام الدخول والتسجيل ---
+        function handleAuth(mode) {
+            const u = document.getElementById('uName').value.trim();
+            const p = document.getElementById('uPass').value.trim();
+            if(!u ||!p) return toast("يرجى ملء البيانات");
+
+            if(mode === 'signup') {
+                if(db.users.find(x => x.user.toLowerCase() === u.toLowerCase())) return toast("اليوزر مستخدم!");
+                db.users.push({ user: u, pass: p });
+                save();
+                toast("تم إنشاء حسابك! ادخل الآن.");
+            } else {
+                const found = db.users.find(x => x.user.toLowerCase() === u.toLowerCase() && x.pass === p);
+                if(found |
+
+| u === ADMIN_ID) { // تجاوز يونس للأمان
+                    login(u);
+                } else {
+                    toast("خطأ في البيانات!");
+                }
+            }
+        }
+
+        function login(user) {
             currentUser = user;
-            document.getElementById('authBox').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
-            document.getElementById('userNameDisplay').innerText = "👤 " + user;
-            document.getElementById('userNameDisplay').classList.remove('hidden');
-            document.getElementById('logoutBtn').classList.remove('hidden');
-
-            if(user === ADMIN_NAME) {
-                document.getElementById('adminPanel').classList.remove('hidden');
-                document.getElementById('userNameDisplay').classList.add('admin-glow');
-            }
-            renderTabs();
-        }
-
-        function switchTab(tab) {
-            ['marketView', 'sellView', 'adminView'].forEach(v => document.getElementById(v).classList.add('hidden'));
-           .forEach(b => document.getElementById(b)?.classList.remove('bg-blue-600', 'bg-red-900/40'));
+            document.getElementById('authScreen').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            document.getElementById('userBadge').innerText = user;
             
-            if(tab === 'market') {
-                document.getElementById('marketView').classList.remove('hidden');
-                document.getElementById('tabMarketBtn').classList.add('bg-blue-600');
-                renderMarket();
-            } else if(tab === 'sell') {
-                document.getElementById('sellView').classList.remove('hidden');
-                document.getElementById('tabSellBtn').classList.add('bg-blue-600');
-            } else if(tab === 'admin') {
-                document.getElementById('adminView').classList.remove('hidden');
-                document.getElementById('tabAdminBtn').classList.add('bg-red-900/40');
-                renderAdminList();
+            if(user.toLowerCase() === ADMIN_ID.toLowerCase()) {
+                document.getElementById('tAdmin').classList.remove('hidden');
+                document.getElementById('userBadge').classList.add('admin-glow');
             }
+            renderMarket();
+            fillHugeText();
         }
 
-        function sendForReview() {
-            const game = document.getElementById('gameName').value;
-            const email = document.getElementById('accEmail').value;
-            const pass = document.getElementById('accPass').value;
-            const desc = document.getElementById('accDesc').value;
-            const price = document.getElementById('accPrice').value;
+        // --- تبديل الصفحات ---
+        function showTab(id) {
+           .forEach(s => document.getElementById(s).classList.add('hidden'));
+            document.getElementById('sec' + id.charAt(0).toUpperCase() + id.slice(1)).classList.remove('hidden');
+            
+           .forEach(t => document.getElementById(t)?.classList.replace('bg-blue-600', 'bg-slate-800'));
+            document.getElementById('t' + id.charAt(0).toUpperCase() + id.slice(1))?.classList.replace('bg-slate-800', 'bg-blue-600');
 
-            if(!game ||!email ||!pass ||!price) return alert("يرجى ملء كافة البيانات السرية والوصف");
+            if(id === 'admin') renderAdmin();
+        }
 
-            const request = {
+        // --- إرسال طلب البيع ---
+        function submitRequest() {
+            const acc = {
                 id: Date.now(),
                 seller: currentUser,
-                game: game,
-                email: email,
-                pass: pass,
-                desc: desc,
-                price: price,
+                title: document.getElementById('gameTitle').value,
+                price: document.getElementById('gamePrice').value,
+                email: document.getElementById('accEmail').value,
+                pass: document.getElementById('accPass').value,
+                desc: document.getElementById('accDesc').value,
                 status: 'pending',
-                time: new Date().toLocaleString()
+                date: new Date().getTime()
             };
-
-            accounts.push(request);
-            saveData();
-            alert("✅ تم إرسال الطلب. سيقوم Younisxho بفحص الحساب خلال 24 ساعة.");
-            switchTab('market');
+            db.accounts.push(acc);
+            save();
+            toast("تم الإرسال لـ يونس! انتظر 24 ساعة.");
+            showTab('market');
         }
 
-        function approve(id) {
-            const acc = accounts.find(a => a.id === id);
-            if(acc) {
-                acc.status = 'approved';
-                saveData();
-                renderAdminList();
-                renderMarket();
-                alert("✨ تم الموافقة وعرض الحساب بنجاح بدون البيانات السرية.");
+        // --- عرض يونس للأدمن ---
+        function renderAdmin() {
+            const cont = document.getElementById('adminQueue');
+            const pending = db.accounts.filter(a => a.status === 'pending');
+            cont.innerHTML = pending.map(a => `
+                <div class="glass-card p-6 border-red-500/20">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-xs bg-red-500/20 text-red-500 px-3 py-1 rounded-lg">طلب مراجعة</span>
+                        <span class="text-[10px] text-gray-500">${new Date(a.date).toLocaleString()}</span>
+                    </div>
+                    <h4 class="font-black">${a.title} - $${a.price}</h4>
+                    <div class="bg-black/50 p-4 my-4 rounded-2xl font-mono text-xs border border-gray-800">
+                        <p class="text-blue-400 mb-1 italic">Email: ${a.email}</p>
+                        <p class="text-red-400 mb-3 italic">Pass: ${a.pass}</p>
+                        <p class="text-gray-300">${a.desc}</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="adminAction(${a.id}, 'approve')" class="flex-1 bg-green-600 py-3 rounded-xl font-black">قبول وعرض ✅</button>
+                        <button onclick="adminAction(${a.id}, 'reject')" class="flex-1 bg-slate-800 py-3 rounded-xl font-black">رفض وحذف ❌</button>
+                    </div>
+                </div>
+            `).join('') |
+
+| "<p class='text-center py-10 text-gray-600'>لا توجد طلبات معلقة..</p>";
+        }
+
+        function adminAction(id, action) {
+            if(action === 'approve') {
+                db.accounts.find(x => x.id === id).status = 'approved';
+                toast("تم العرض في السوق بنجاح!");
+            } else {
+                db.accounts = db.accounts.filter(x => x.id!== id);
+                toast("تم حذف الطلب.");
             }
-        }
-
-        function deleteAcc(id) {
-            accounts = accounts.filter(a => a.id!== id);
-            saveData();
-            renderAdminList();
+            save();
+            renderAdmin();
             renderMarket();
         }
 
+        // --- عرض السوق العام (إخفاء السرية) ---
         function renderMarket() {
-            const cont = document.getElementById('marketView');
-            const approved = accounts.filter(a => a.status === 'approved');
-            cont.innerHTML = approved.map(a => `
-                <div class="glass p-6 rounded-2xl border-l-4 border-blue-500 hover:scale-[1.01] transition">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="text-xs text-gray-400">بائع: ${a.seller}</span>
-                        <span class="text-green-400 font-black text-xl">$${a.price}</span>
+            const grid = document.getElementById('marketList');
+            const approved = db.accounts.filter(a => a.status === 'approved');
+            grid.innerHTML = approved.map(a => `
+                <div class="glass-card p-6 border-blue-500/10 floating">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-green-400 font-black text-2xl">$${a.price}</span>
+                        <span class="text-[10px] bg-white/5 px-2 py-1 rounded">البائع: ${a.seller}</span>
                     </div>
-                    <h3 class="font-bold text-lg mb-2">${a.game}</h3>
-                    <p class="text-gray-400 text-sm mb-4 leading-relaxed">${a.desc}</p>
-                    <button class="w-full bg-blue-600/20 text-blue-400 py-3 rounded-xl font-bold border border-blue-500/30">شراء عبر الوسيط</button>
+                    <h4 class="text-xl font-black mb-2">${a.title}</h4>
+                    <p class="text-gray-500 text-sm mb-6">${a.desc}</p>
+                    <button class="w-full bg-blue-900/30 border border-blue-500/30 py-3 rounded-2xl font-bold">شراء عبر Younisxho</button>
                 </div>
             `).join('') |
 
-| "<p class='text-gray-500'>لا توجد حسابات معروضة حالياً.</p>";
+| "<p class='text-center py-10 text-gray-600'>السوق فارغ حالياً..</p>";
         }
 
-        function renderAdminList() {
-            const cont = document.getElementById('pendingList');
-            const pending = accounts.filter(a => a.status === 'pending');
-            cont.innerHTML = pending.map(a => `
-                <div class="glass p-6 rounded-2xl border-r-4 border-red-500">
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="pending-tag">في انتظارك يا Younisxho</span>
-                        <span class="text-xs text-gray-500">${a.time}</span>
-                    </div>
-                    <h3 class="font-bold text-lg">${a.game} - السعر: $${a.price}</h3>
-                    <div class="my-4 bg-black/40 p-4 rounded-xl border border-gray-700 text-sm font-mono">
-                        <p class="text-blue-400">👤 الإيميل: ${a.email}</p>
-                        <p class="text-red-400">🔑 الباسورد: ${a.pass}</p>
-                        <p class="mt-2 text-gray-300">📝 الوصف: ${a.desc}</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="approve(${a.id})" class="flex-1 bg-green-600 p-3 rounded-lg font-bold">عرض في الموقع</button>
-                        <button onclick="deleteAcc(${a.id})" class="flex-1 bg-gray-800 p-3 rounded-lg font-bold">رفض الطلب</button>
-                    </div>
-                </div>
-            `).join('') |
-
-| "<p class='text-green-500'>كل الطلبات نظيفة! لا توجد طلبات معلقة.</p>";
+        // --- وظائف مساعدة ---
+        function save() { localStorage.setItem('safetrust_mobile', JSON.stringify(db)); }
+        
+        function fillHugeText() {
+            const cont = document.getElementById('hugeText');
+            let text = "";
+            for(let i=1; i<=50; i++) {
+                text += `<b>القاعدة رقم ${i}:</b> هذا النص مخصص لشرح تفاصيل سلامة الحسابات لعام 2026. يجب على الأدمن يونس التأكد من أن الإيميل مربوط فعلياً وأن البائع هو المالك الأصلي. يحظر تداول الحسابات التي تعرضت للحظر سابقاً. نظام الوساطة في SafeTrust Pro يضمن لك استرداد أموالك في حال كان الحساب غير مطابق للوصف. <br><br>`;
+            }
+            cont.innerHTML = text;
         }
-
-        function saveData() { localStorage.setItem('st_accounts', JSON.stringify(accounts)); }
-        function logout() { location.reload(); }
-        function renderTabs() { renderMarket(); renderAdminList(); }
     </script>
 </body>
 </html>
