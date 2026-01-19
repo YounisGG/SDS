@@ -3,206 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة الوسيط الآمن | Safe Middleman</title>
+    <title>SafeTrust | منصة الوساطة الكبرى</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* CSS - التصميم والأنميشن */
-        :root {
-            --main-color: #00d2ff;
-            --secondary-color: #3a7bd5;
-            --bg-dark: #0f0f1b;
-            --text-white: #ffffff;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-white);
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        /* أنميشن الخلفية */
-        .background-animate {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(45deg, #0f0f1b, #1a1a2e);
-            z-index: -1;
-        }
-
-        header {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: radial-gradient(circle, rgba(58,123,213,0.2) 0%, rgba(15,15,27,1) 70%);
-        }
-
-        h1 {
-            font-size: 4rem;
-            animation: fadeInDown 1.5s ease;
-            text-shadow: 0 0 20px var(--main-color);
-        }
-
-        /* أنظمة النماذج (التسجيل) */
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 20px;
-        }
-
-        .auth-box {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 40px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 50px;
-            transform: translateY(50px);
-            opacity: 0;
-            transition: 1s all ease;
-        }
-
-        .auth-box.visible {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        input {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 10px;
-            border: none;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            font-size: 1.1rem;
-        }
-
-        button {
-            background: linear-gradient(to right, var(--main-color), var(--secondary-color));
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px var(--main-color);
-        }
-
-        /* قسم الوساطة */
-        .middleman-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 50px;
-        }
-
-        .card {
-            background: rgba(0, 210, 255, 0.1);
-            padding: 20px;
-            border-left: 5px solid var(--main-color);
-        }
-
-        /* خدمة العملاء */
-        .support-footer {
-            text-align: center;
-            padding: 50px;
-            background: #05050a;
-        }
-
-        /* Animations Keyframes */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        body { font-family: 'Cairo', sans-serif; background: #0b0e14; color: #fff; }
+       .glass { background: rgba(17, 25, 40, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+       .admin-glow { border: 2px solid #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); }
+       .pending-tag { background: #f59e0b; color: #000; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
+        input, textarea { background: #161b22!important; border: 1px solid #30363d!important; color: white!important; }
+        input:focus { border-color: #3b82f6!important; outline: none; }
     </style>
 </head>
-<body>
+<body class="min-h-screen">
 
-    <div class="background-animate"></div>
-
-    <header>
-        <h1>منصة الوسيط الذكي</h1>
-        <p>الضمان الحقيقي بين البائع والمشتري</p>
-        <button onclick="scrollToAuth()">ابدأ التداول الآن</button>
-    </header>
-
-    <div class="container">
-        <div id="authSection" class="auth-box">
-            <h2>إنشاء حساب جديد</h2>
-            <p id="msg" style="color: #ff4d4d;"></p>
-            <input type="text" id="username" placeholder="اسم المستخدم">
-            <input type="password" id="password" placeholder="كلمة المرور">
-            <button onclick="registerUser()">تسجيل</button>
+    <nav class="glass sticky top-0 z-50 p-4 border-b border-gray-800">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-black text-blue-500">SAFE<span class="text-white">TRUST</span></h1>
+            <div id="userHeader" class="flex items-center gap-4">
+                <span id="userNameDisplay" class="hidden text-sm font-bold bg-blue-900 px-4 py-1 rounded-full"></span>
+                <button onclick="logout()" id="logoutBtn" class="hidden text-red-500 text-xs font-bold uppercase">خروج</button>
+            </div>
         </div>
+    </nav>
 
-        <div class="middleman-section">
-            <div class="card">
-                <h3>للبائع</h3>
-                <p>قم بإيداع السلعة أو الخدمة في نظامنا المؤمن حتى نضمن لك حقك المالي.</p>
-            </div>
-            <div class="card">
-                <h3>للمشتري</h3>
-                <p>قم بتحويل المبلغ للوسيط، ولن يتم تسليمه للبائع إلا بعد استلامك للطلب وتأكيده.</p>
-            </div>
+    <div id="authBox" class="max-w-md mx-auto mt-20 p-8 glass rounded-3xl shadow-2xl">
+        <h2 class="text-2xl font-black mb-6 text-center">بوابة الوسيط الآمن</h2>
+        <div class="space-y-4">
+            <input type="text" id="username" placeholder="اسم المستخدم (Younisxho للآدمن)" class="w-full p-4 rounded-xl">
+            <input type="password" id="password" placeholder="كلمة المرور" class="w-full p-4 rounded-xl">
+            <button onclick="login()" class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-bold text-lg transition">دخول إلى النظام</button>
         </div>
     </div>
 
-    <footer class="support-footer">
-        <h3>هل تحتاج مساعدة؟</h3>
-        <p>تواصل مع الدعم الفني مباشرة:</p>
-        <a href="mailto:xywns003@gmail.com" style="color: var(--main-color); text-decoration: none; font-size: 1.5rem;">xywns003@gmail.com</a>
-    </footer>
+    <div id="dashboard" class="hidden max-w-6xl mx-auto mt-10 p-4">
+        <div class="flex flex-col md:flex-row gap-8">
+            
+            <aside class="w-full md:w-64 space-y-3">
+                <button onclick="switchTab('market')" id="tabMarketBtn" class="w-full text-right p-4 rounded-xl font-bold bg-blue-600">🛒 سوق الحسابات</button>
+                <button onclick="switchTab('sell')" id="tabSellBtn" class="w-full text-right p-4 rounded-xl font-bold hover:bg-gray-800">➕ عرض حساب للبيع</button>
+                
+                <div id="adminPanel" class="hidden pt-6 border-t border-gray-800 mt-6 animate-pulse">
+                    <p class="text-red-500 text-xs font-black mb-3 px-2">لوحة تحكم الإدارة (Younisxho)</p>
+                    <button onclick="switchTab('admin')" id="tabAdminBtn" class="w-full text-right p-4 rounded-xl font-bold bg-red-900/20 text-red-400 border border-red-900">🛡 إدارة طلبات البيع</button>
+                </div>
+            </aside>
+
+            <main class="flex-1">
+                
+                <section id="marketView" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    </section>
+
+                <section id="sellView" class="hidden glass p-8 rounded-3xl">
+                    <h2 class="text-xl font-bold mb-6">تقديم طلب بيع حساب</h2>
+                    <div class="space-y-4">
+                        <input type="text" id="gameName" placeholder="اسم اللعبة" class="w-full p-3 rounded-xl">
+                        <input type="text" id="accEmail" placeholder="إيميل الحساب (للفحص فقط)" class="w-full p-3 rounded-xl text-left" dir="ltr">
+                        <input type="password" id="accPass" placeholder="كلمة مرور الحساب (للفحص فقط)" class="w-full p-3 rounded-xl text-left" dir="ltr">
+                        <textarea id="accDesc" placeholder="وصف الحساب (المستوى، السكنات، الإنجازات)" rows="4" class="w-full p-3 rounded-xl"></textarea>
+                        <input type="number" id="accPrice" placeholder="السعر المطلوب ($)" class="w-full p-3 rounded-xl">
+                        <button onclick="sendForReview()" class="w-full bg-green-600 p-4 rounded-xl font-bold text-lg">إرسال الطلب (مراجعة خلال 24 ساعة)</button>
+                    </div>
+                </section>
+
+                <section id="adminView" class="hidden space-y-4">
+                    <h2 class="text-xl font-bold text-red-500">طلبات تحتاج اختبارك يا Younisxho</h2>
+                    <div id="pendingList" class="space-y-4">
+                        </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
 
     <script>
-        // برمجة منطق المستخدمين
-        function registerUser() {
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
-            const msg = document.getElementById('msg');
+        // --- محرك البيانات (Database) ---
+        let accounts = JSON.parse(localStorage.getItem('st_accounts')) ||;
+        let currentUser = null;
 
-            if(user === "" || pass === "") {
-                msg.innerText = "يرجى ملء كافة الحقول!";
-                return;
+        const ADMIN_NAME = "Younisxho";
+
+        function login() {
+            const user = document.getElementById('username').value.trim();
+            if(!user) return alert("يرجى إدخال اليوزر");
+            
+            currentUser = user;
+            document.getElementById('authBox').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            document.getElementById('userNameDisplay').innerText = "👤 " + user;
+            document.getElementById('userNameDisplay').classList.remove('hidden');
+            document.getElementById('logoutBtn').classList.remove('hidden');
+
+            if(user === ADMIN_NAME) {
+                document.getElementById('adminPanel').classList.remove('hidden');
+                document.getElementById('userNameDisplay').classList.add('admin-glow');
             }
+            renderTabs();
+        }
 
-            // جلب المستخدمين المخزنين سابقاً
-            let users = JSON.parse(localStorage.getItem('platform_users')) || [];
-
-            // التحقق من وجود المستخدم (المهمة المطلوبة)
-            const exists = users.find(u => u.username === user);
-
-            if(exists) {
-                msg.style.color = "#ff4d4d";
-                msg.innerText = "خطأ: اسم المستخدم هذا مستخدم بالفعل! اختر اسماً آخر.";
-            } else {
-                users.push({username: user, password: pass});
-                localStorage.setItem('platform_users', JSON.stringify(users));
-                msg.style.color = "#00ff88";
-                msg.innerText = "تم التسجيل بنجاح كعضو في منصة الوسيط!";
-                document.getElementById('username').value = "";
-                document.getElementById('password').value = "";
+        function switchTab(tab) {
+            ['marketView', 'sellView', 'adminView'].forEach(v => document.getElementById(v).classList.add('hidden'));
+           .forEach(b => document.getElementById(b)?.classList.remove('bg-blue-600', 'bg-red-900/40'));
+            
+            if(tab === 'market') {
+                document.getElementById('marketView').classList.remove('hidden');
+                document.getElementById('tabMarketBtn').classList.add('bg-blue-600');
+                renderMarket();
+            } else if(tab === 'sell') {
+                document.getElementById('sellView').classList.remove('hidden');
+                document.getElementById('tabSellBtn').classList.add('bg-blue-600');
+            } else if(tab === 'admin') {
+                document.getElementById('adminView').classList.remove('hidden');
+                document.getElementById('tabAdminBtn').classList.add('bg-red-900/40');
+                renderAdminList();
             }
         }
 
-        // تأثيرات الظهور عند التمرير
-        window.addEventListener('scroll', () => {
-            const authBox = document.querySelector('.auth-box');
-            if(window.scrollY > 200) {
-                authBox.classList.add('visible');
-            }
-        });
+        function sendForReview() {
+            const game = document.getElementById('gameName').value;
+            const email = document.getElementById('accEmail').value;
+            const pass = document.getElementById('accPass').value;
+            const desc = document.getElementById('accDesc').value;
+            const price = document.getElementById('accPrice').value;
 
-        function scrollToAuth() {
-            document.getElementById('authSection').scrollIntoView({behavior: 'smooth'});
+            if(!game ||!email ||!pass ||!price) return alert("يرجى ملء كافة البيانات السرية والوصف");
+
+            const request = {
+                id: Date.now(),
+                seller: currentUser,
+                game: game,
+                email: email,
+                pass: pass,
+                desc: desc,
+                price: price,
+                status: 'pending',
+                time: new Date().toLocaleString()
+            };
+
+            accounts.push(request);
+            saveData();
+            alert("✅ تم إرسال الطلب. سيقوم Younisxho بفحص الحساب خلال 24 ساعة.");
+            switchTab('market');
         }
+
+        function approve(id) {
+            const acc = accounts.find(a => a.id === id);
+            if(acc) {
+                acc.status = 'approved';
+                saveData();
+                renderAdminList();
+                renderMarket();
+                alert("✨ تم الموافقة وعرض الحساب بنجاح بدون البيانات السرية.");
+            }
+        }
+
+        function deleteAcc(id) {
+            accounts = accounts.filter(a => a.id!== id);
+            saveData();
+            renderAdminList();
+            renderMarket();
+        }
+
+        function renderMarket() {
+            const cont = document.getElementById('marketView');
+            const approved = accounts.filter(a => a.status === 'approved');
+            cont.innerHTML = approved.map(a => `
+                <div class="glass p-6 rounded-2xl border-l-4 border-blue-500 hover:scale-[1.01] transition">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="text-xs text-gray-400">بائع: ${a.seller}</span>
+                        <span class="text-green-400 font-black text-xl">$${a.price}</span>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">${a.game}</h3>
+                    <p class="text-gray-400 text-sm mb-4 leading-relaxed">${a.desc}</p>
+                    <button class="w-full bg-blue-600/20 text-blue-400 py-3 rounded-xl font-bold border border-blue-500/30">شراء عبر الوسيط</button>
+                </div>
+            `).join('') |
+
+| "<p class='text-gray-500'>لا توجد حسابات معروضة حالياً.</p>";
+        }
+
+        function renderAdminList() {
+            const cont = document.getElementById('pendingList');
+            const pending = accounts.filter(a => a.status === 'pending');
+            cont.innerHTML = pending.map(a => `
+                <div class="glass p-6 rounded-2xl border-r-4 border-red-500">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="pending-tag">في انتظارك يا Younisxho</span>
+                        <span class="text-xs text-gray-500">${a.time}</span>
+                    </div>
+                    <h3 class="font-bold text-lg">${a.game} - السعر: $${a.price}</h3>
+                    <div class="my-4 bg-black/40 p-4 rounded-xl border border-gray-700 text-sm font-mono">
+                        <p class="text-blue-400">👤 الإيميل: ${a.email}</p>
+                        <p class="text-red-400">🔑 الباسورد: ${a.pass}</p>
+                        <p class="mt-2 text-gray-300">📝 الوصف: ${a.desc}</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="approve(${a.id})" class="flex-1 bg-green-600 p-3 rounded-lg font-bold">عرض في الموقع</button>
+                        <button onclick="deleteAcc(${a.id})" class="flex-1 bg-gray-800 p-3 rounded-lg font-bold">رفض الطلب</button>
+                    </div>
+                </div>
+            `).join('') |
+
+| "<p class='text-green-500'>كل الطلبات نظيفة! لا توجد طلبات معلقة.</p>";
+        }
+
+        function saveData() { localStorage.setItem('st_accounts', JSON.stringify(accounts)); }
+        function logout() { location.reload(); }
+        function renderTabs() { renderMarket(); renderAdminList(); }
     </script>
 </body>
 </html>
