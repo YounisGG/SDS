@@ -3,86 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <title>الوسيط للأمان</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
+<div class="menu" onclick="toggleMenu()">☰</div>
+
+<div class="side" id="side">
+  <a href="index.html">🏠 الرئيسية</a>
+  <a href="profile.html">👤 بروفايل</a>
+  <a href="publish.html">➕ نشر حساب</a>
+  <a href="payment.html">💳 الدفع</a>
+  <a href="login.html">🔐 تسجيل</a>
+</div>
+
 <header>
   <h1>الوسيط للأمان</h1>
-  <p>منصة موثوقة لعرض الحسابات بأمان</p>
+  <p>منصة بيع حسابات موثوقة</p>
 </header>
 
-<!-- أقسام الموقع -->
-<section class="section" id="homeSection">
-  <h2>الصفحة الرئيسية</h2>
-  <p>تصفح الحسابات المعروضة أو سجل دخولك/أنشئ حسابك.</p>
-  <div class="cards"></div>
-  <p id="noAccountsMsg" style="text-align:center;color:#888;font-weight:bold;">لا توجد حسابات حالياً</p>
-</section>
+<section class="cards" id="cards"></section>
 
-<section class="section" id="accountsSection" style="display:none;">
-  <h2>الحسابات المتاحة</h2>
-  <div class="cards"></div>
-</section>
-
-<section class="section" id="profileSection" style="display:none;">
-  <h2>الملف الشخصي</h2>
-  <p id="profileInfo">لم تسجل الدخول بعد</p>
-</section>
-
-<!-- زر نشر الحساب -->
-<button class="add-btn" onclick="location.href='publish.html'" id="addBtn">＋</button>
-
-<!-- منيو سفلي -->
-<nav class="bottom-nav">
-  <span onclick="showSection('home')">🏠 الرئيسية</span>
-  <span onclick="showSection('accounts')">🛒 الحسابات</span>
-  <span onclick="showSection('profile')">👤 الملف الشخصي</span>
-</nav>
-
-<script>
-// عرض الحسابات الموافق عليها
-function displayApproved(){
-  let cardsDivs = document.querySelectorAll(".cards");
-  let requests = JSON.parse(localStorage.getItem("requests")) || [];
-  let approvedAccounts = requests.filter(r => r.approved);
-  cardsDivs.forEach(cardsDiv=>{
-    cardsDiv.innerHTML = "";
-    approvedAccounts.forEach(r=>{
-      let card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `<h3>${r.game}</h3><p>${r.desc}</p><button onclick="alert('عرض التفاصيل')">عرض التفاصيل</button>`;
-      cardsDiv.appendChild(card);
-    });
-  });
-
-  document.getElementById("noAccountsMsg").style.display = approvedAccounts.length === 0 ? "block" : "none";
-}
-
-// التحكم في الشخطات
-function showSection(name){
-  document.getElementById("homeSection").style.display = name==='home'?'block':'none';
-  document.getElementById("accountsSection").style.display = name==='accounts'?'block':'none';
-  document.getElementById("profileSection").style.display = name==='profile'?'block':'none';
-
-  // تحديث الملف الشخصي
-  let currentUser = localStorage.getItem("currentUser") || "";
-  document.getElementById("profileInfo").innerText = currentUser ? `أنت مسجل دخول باسم: ${currentUser}` : "لم تسجل الدخول بعد";
-}
-
-// زر النشر يظهر للأدمن فقط
-let currentUser = localStorage.getItem("currentUser") || "";
-if(currentUser !== "Younisxho"){
-  document.getElementById("addBtn").style.display = "none";
-}
-
-// عرض الحسابات عند تحميل الصفحة
-window.onload = function(){
-  displayApproved();
-  showSection('home');
-}
-</script>
-
+<script src="js/app.js"></script>
 </body>
 </html>
