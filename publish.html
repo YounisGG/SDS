@@ -2,109 +2,19 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>نشر حساب | الوسيط للأمان</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نشر حساب</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="publish-box" id="publishForm">
-  <h2>نشر حساب جديد</h2>
-  <input id="gameName" placeholder="اسم اللعبة">
-  <textarea id="gameDesc" placeholder="وصف الحساب"></textarea>
-  <input id="email" placeholder="الإيميل (عرضي)">
-  <input type="password" id="gamePass" placeholder="كلمة المرور (عرضية)">
-  <button onclick="sendRequest()">إرسال الطلب</button>
-  <p style="text-align:center;font-size:13px;color:gray;margin-top:5px;">ملاحظة: سيتم التحقق من الحساب ونشره خلال 24 ساعة</p>
+<div class="card">
+<h2>طلب نشر حساب</h2>
+<input placeholder="اسم اللعبة">
+<textarea placeholder="وصف الحساب"></textarea>
+<input placeholder="الإيميل">
+<input placeholder="كلمة المرور">
+<button class="btn" onclick="alert('تم إرسال الطلب')">إرسال</button>
 </div>
-
-<div class="requests" id="adminPanel" style="display:none;">
-  <h2 style="text-align:center;">لوحة الأدمن (Younisxho)</h2>
-  <div id="requestsList"></div>
-</div>
-
-<script>
-let currentUser = localStorage.getItem("currentUser") || "";
-let requests = JSON.parse(localStorage.getItem("requests")) || [];
-
-// إظهار لوحة الأدمن فقط للأدمن
-function loadAdminPanel(){
-  if(currentUser !== "Younisxho") return;
-
-  document.getElementById("publishForm").style.display="none";
-  document.getElementById("adminPanel").style.display="block";
-
-  let listDiv = document.getElementById("requestsList");
-  listDiv.innerHTML="";
-  requests.forEach((r,i)=>{
-    if(r.approved) return;
-    let card = document.createElement("div");
-    card.className="card";
-    card.innerHTML=`
-      <strong>اللعبة:</strong> ${r.game}<br>
-      <strong>الوصف:</strong> ${r.desc}<br>
-      <strong>الإيميل:</strong> ${r.email}<br>
-      <strong>الباسورد:</strong> ${r.pass}<br>
-      <button onclick="approveRequest(${i})">✔️ الموافقة</button>
-      <button onclick="rejectRequest(${i})">❌ الرفض</button>
-    `;
-    listDiv.appendChild(card);
-  });
-}
-
-function sendRequest(){
-  if(currentUser !== "Younisxho"){ alert("❌ غير مسموح لك بنشر حسابات للبيع."); return; }
-  let game=document.getElementById("gameName").value.trim();
-  let desc=document.getElementById("gameDesc").value.trim();
-  let email=document.getElementById("email").value.trim();
-  let pass=document.getElementById("gamePass").value.trim();
-  if(!game||!desc||!email||!pass){ alert("الرجاء تعبئة جميع الحقول"); return; }
-
-  requests.push({game,desc,email,pass,approved:false});
-  localStorage.setItem("requests", JSON.stringify(requests));
-  alert("تم إرسال الطلب، سيتم مراجعته خلال 24 ساعة");
-
-  document.getElementById("gameName").value="";
-  document.getElementById("gameDesc").value="";
-  document.getElementById("email").value="";
-  document.getElementById("gamePass").value="";
-
-  loadAdminPanel();
-  displayApproved();
-}
-
-function approveRequest(index){
-  requests[index].approved=true;
-  localStorage.setItem("requests", JSON.stringify(requests));
-  alert("تم الموافقة على الحساب وسيظهر في الصفحة الرئيسية");
-  loadAdminPanel();
-  displayApproved();
-}
-
-function rejectRequest(index){
-  requests.splice(index,1);
-  localStorage.setItem("requests", JSON.stringify(requests));
-  alert("تم رفض الحساب");
-  loadAdminPanel();
-}
-
-function displayApproved(){
-  let cardsDiv = document.querySelectorAll(".cards");
-  cardsDiv.forEach(cards=>{
-    cards.innerHTML="";
-    requests.forEach(r=>{
-      if(r.approved){
-        let card = document.createElement("div");
-        card.className="card";
-        card.innerHTML=`<h3>${r.game}</h3><p>${r.desc}</p><button onclick="alert('عرض التفاصيل')">عرض التفاصيل</button>`;
-        cards.appendChild(card);
-      }
-    });
-  });
-}
-
-window.onload=function(){ displayApproved(); loadAdminPanel(); }
-</script>
 
 </body>
 </html>
