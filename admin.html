@@ -3,32 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <title>لوحة الأدمن</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <header>
-  <h2>لوحة تحكم الأدمن</h2>
-  <p>الطلبات المرسلة</p>
+  <h1>لوحة تحكم الأدمن</h1>
+  <p>إدارة الطلبات</p>
 </header>
 
-<section class="cards" id="requests"></section>
+<section class="cards" id="box"></section>
 
 <script>
-if(localStorage.getItem("role")!=="admin"){
-  alert("دخول مرفوض");
+if(localStorage.getItem("role") !== "admin"){
+  alert("غير مصرح");
   location.href="index.html";
 }
 
-let data = JSON.parse(localStorage.getItem("requests")||"[]");
-let box = document.getElementById("requests");
+let reqs = JSON.parse(localStorage.getItem("requests") || "[]");
+let box = document.getElementById("box");
 
-if(data.length===0){
-  box.innerHTML="<p style='padding:20px'>لا توجد طلبات</p>";
+if(reqs.length === 0){
+  box.innerHTML = "<p style='padding:20px'>لا توجد طلبات</p>";
 }
 
-data.forEach((r,i)=>{
-  box.innerHTML+=`
+reqs.forEach((r,i)=>{
+  box.innerHTML += `
     <div class="card">
       <h3>${r.game}</h3>
       <p>${r.desc}</p>
@@ -39,10 +40,17 @@ data.forEach((r,i)=>{
 });
 
 function accept(i){
+  reqs[i].status="accepted";
+  localStorage.setItem("requests",JSON.stringify(reqs));
   alert("تم قبول الطلب");
+  location.reload();
 }
+
 function reject(i){
+  reqs.splice(i,1);
+  localStorage.setItem("requests",JSON.stringify(reqs));
   alert("تم رفض الطلب");
+  location.reload();
 }
 </script>
 
