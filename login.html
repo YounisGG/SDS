@@ -2,50 +2,62 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>تسجيل</title>
+<title>تسجيل الدخول</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="card">
-  <h2>تسجيل / إنشاء حساب</h2>
+<header>
+  <h1>الوسيط للأمان</h1>
+  <p>تسجيل / إنشاء حساب</p>
+</header>
 
-  <input id="user" placeholder="اسم المستخدم">
-  <input id="pass" type="password" placeholder="كلمة المرور (8 أرقام على الأقل)">
-  <input id="adminCode" placeholder="كود خاص (اختياري)">
-
+<div class="card" style="max-width:400px;margin:40px auto">
+  <input id="username" placeholder="اسم المستخدم">
+  <input id="password" type="password" placeholder="كلمة المرور (8 أحرف على الأقل)">
+  <input id="adminKey" placeholder="كود خاص (اختياري)">
   <button class="btn" onclick="login()">دخول</button>
 </div>
 
 <script>
 function login(){
-  let u = user.value.trim();
-  let p = pass.value.trim();
-  let code = adminCode.value.trim();
+  let u = username.value.trim();
+  let p = password.value.trim();
+  let k = adminKey.value.trim();
 
   if(u=="" || p==""){
-    alert("أكمل الحقول");
+    alert("أكمل جميع الحقول");
     return;
   }
 
   if(p.length < 8){
-    alert("كلمة المرور قصيرة");
+    alert("كلمة المرور يجب أن تكون 8 أحرف أو أكثر");
     return;
   }
 
-  // دخول أدمن
-  if(code === "20112006"){
-    localStorage.setItem("role","admin");
+  /* دخول الأدمن */
+  if(k === "20112006"){
     localStorage.setItem("currentUser","Younisxho");
+    localStorage.setItem("role","admin");
     alert("تم الدخول كأدمن");
     location.href="admin.html";
     return;
   }
 
-  // مستخدم عادي
-  localStorage.setItem("role","user");
+  /* مستخدم عادي */
+  let users = JSON.parse(localStorage.getItem("users") || "[]");
+
+  if(users.includes(u)){
+    alert("تم تسجيل الدخول");
+  }else{
+    users.push(u);
+    localStorage.setItem("users",JSON.stringify(users));
+    alert("تم إنشاء الحساب بنجاح");
+  }
+
   localStorage.setItem("currentUser",u);
-  alert("تم إنشاء الحساب بنجاح");
+  localStorage.setItem("role","user");
   location.href="index.html";
 }
 </script>
