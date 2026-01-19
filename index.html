@@ -1,266 +1,128 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <title>الوسيط للأمان - Al-Waseet Security</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #00d2ff;
-            --secondary: #3a7bd5;
-            --dark: #0f172a;
-            --glass: rgba(255, 255, 255, 0.1);
-        }
-
-        body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        /* أنيميشن الدخول */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .container { max-width: 1200px; margin: auto; padding: 20px; }
-
-        /* الشاشات */
-        .screen { display: none; animation: fadeIn 0.6s ease-out; }
-        .screen.active { display: block; }
-
-        /* نموذج الدخول */
-        .auth-card {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 20px;
-            width: 350px;
-            margin: 100px auto;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: none;
-            background: rgba(255,255,255,0.05);
-            color: white;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover { transform: scale(1.05); filter: brightness(1.2); }
-
-        /* القائمة الجانبية */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background: var(--glass);
-            border-radius: 15px;
-        }
-
-        .menu-btn { cursor: pointer; font-size: 24px; }
-
-        /* الكروت */
-        .game-card {
-            background: var(--glass);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 10px;
-            border-bottom: 4px solid var(--primary);
-        }
-
-        .status-badge {
-            background: #f59e0b;
-            padding: 4px 8px;
-            border-radius: 5px;
-            font-size: 12px;
-        }
-
-        .fab {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            width: 60px;
-            height: 60px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,210,255,0.3);
-        }
-    </style>
+<meta charset="UTF-8">
+<title>الوسيط للأمان</title>
+<style>
+body{
+  margin:0;
+  font-family:Tahoma;
+  background:linear-gradient(120deg,#0f2027,#203a43,#2c5364);
+  color:#fff;
+}
+.container{
+  max-width:420px;
+  margin:80px auto;
+  background:rgba(0,0,0,.6);
+  padding:25px;
+  border-radius:15px;
+  animation: fadeIn 1.2s ease;
+}
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(30px);}
+  to{opacity:1; transform:translateY(0);}
+}
+input, textarea, button{
+  width:100%;
+  margin:8px 0;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+}
+button{
+  background:#00c6ff;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:hover{background:#00a2d6}
+.note{
+  font-size:12px;
+  opacity:.8;
+}
+.hidden{display:none}
+.menu{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  margin-bottom:15px;
+}
+.menu button{width:auto}
+</style>
 </head>
+
 <body>
 
-<div id="authScreen" class="screen active">
-    <div class="auth-card">
-        <h2 id="authTitle">إنشاء حساب</h2>
-        <input type="text" id="username" placeholder="اسم المستخدم">
-        <input type="password" id="password" placeholder="كلمة المرور (8 أرقام فأكثر)">
-        <button onclick="handleAuth()">استمرار</button>
-        <p onclick="toggleAuth()" style="font-size: 12px; cursor: pointer; text-align: center; margin-top: 15px;">تبديل بين دخول/تسجيل</p>
-    </div>
+<div class="container" id="auth">
+  <h2>الوسيط للأمان</h2>
+  <input id="user" placeholder="اسم المستخدم">
+  <input id="pass" type="password" placeholder="كلمة المرور (8+ أرقام)">
+  <button onclick="register()">إنشاء حساب</button>
+  <button onclick="login()">تسجيل دخول</button>
+  <p id="msg"></p>
 </div>
 
-<div id="mainScreen" class="screen">
-    <div class="navbar">
-        <div class="menu-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
-        <div id="userDisplay">مرحباً</div>
-        <div><b>الوسيط للأمان</b></div>
-    </div>
+<div class="container hidden" id="dashboard">
+  <div class="menu">
+    <button onclick="show('publish')">➕ نشر حساب</button>
+    <button onclick="show('support')">خدمة العملاء</button>
+    <button onclick="logout()">خروج</button>
+  </div>
 
-    <div id="marketPlace" style="margin-top: 20px;">
-        <h3>المتجر العام</h3>
-        <div id="marketList"></div>
-    </div>
+  <div id="publish" class="hidden">
+    <h3>طلب عرض حساب</h3>
+    <input placeholder="اسم اللعبة">
+    <textarea placeholder="وصف الحساب"></textarea>
+    <input placeholder="الإيميل">
+    <input type="password" placeholder="الباسورد">
+    <p class="note">ملاحظة: سيتم التحقق من الحساب ونشره خلال 24 ساعة</p>
+    <button onclick="alert('تم إرسال الطلب للإدارة')">إرسال الطلب</button>
+  </div>
 
-    <div class="fab" onclick="showScreen('requestScreen')"><i class="fas fa-plus"></i></div>
-</div>
+  <div id="support" class="hidden">
+    <h3>خدمة العملاء</h3>
+    <textarea placeholder="اكتب رسالتك للإدارة"></textarea>
+    <button onclick="alert('تم إرسال الرسالة إلى Younisxho')">إرسال</button>
+  </div>
 
-<div id="requestScreen" class="screen">
-    <div class="auth-card" style="width: 80%; max-width: 500px;">
-        <h3>عرض حساب للبيع</h3>
-        <input type="text" id="gameName" placeholder="اسم اللعبة">
-        <textarea id="gameDesc" style="width:100%; height:80px; background:rgba(255,255,255,0.05); color:white; border-radius:8px; padding:10px;" placeholder="وصف الحساب"></textarea>
-        <input type="email" id="gameEmail" placeholder="إيميل الحساب">
-        <input type="password" id="gamePass" placeholder="كلمة سر الحساب">
-        <p style="color: #f59e0b; font-size: 12px;">ملاحظة: سيتم التحقق من الحساب ونشره خلال 24 ساعة.</p>
-        <button onclick="submitRequest()">إرسال الطلب للمراجعة</button>
-        <button onclick="showScreen('mainScreen')" style="background: grey; margin-top: 5px;">إلغاء</button>
-    </div>
-</div>
-
-<div id="adminScreen" class="screen">
-    <div class="container">
-        <h2>لوحة تحكم يونس (Admin)</h2>
-        <div id="adminRequests"></div>
-        <button onclick="showScreen('mainScreen')">العودة للمتجر</button>
-    </div>
+  <h3>الحسابات المعروضة</h3>
+  <p class="note">سيتم عرض الحسابات الموافق عليها هنا</p>
 </div>
 
 <script>
-    // بيانات النظام المحاكية
-    let users = [{user: "Younisxho", pass: "12340987", role: "admin"}];
-    let currentUser = null;
-    let requests = []; // الطلبات المعلقة
-    let market = [];   // الحسابات المعروضة فعلياً
+let users = [];
 
-    function toggleAuth() {
-        const title = document.getElementById('authTitle');
-        title.innerText = title.innerText === 'إنشاء حساب' ? 'تسجيل دخول' : 'إنشاء حساب';
-    }
+function register(){
+  let u = user.value.trim();
+  let p = pass.value.trim();
+  if(p.length < 8){
+    msg.innerText = "كلمة المرور يجب أن تكون 8 أحرف أو أكثر";
+    return;
+  }
+  if(users.includes(u)){
+    msg.innerText = "اسم المستخدم مستخدم سابقًا";
+    return;
+  }
+  users.push(u);
+  msg.innerText = "تم إنشاء الحساب بنجاح";
+}
 
-    function handleAuth() {
-        const u = document.getElementById('username').value;
-        const p = document.getElementById('password').value;
-        const title = document.getElementById('authTitle').innerText;
+function login(){
+  if(users.includes(user.value)){
+    auth.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+  }else{
+    msg.innerText = "الحساب غير موجود";
+  }
+}
 
-        if(p.length < 8) return alert("كلمة المرور يجب أن تكون 8 أرقام أو أكثر");
+function show(id){
+  document.querySelectorAll("#dashboard > div").forEach(d=>d.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
 
-        if(title === 'إنشاء حساب') {
-            if(users.find(x => x.user === u)) return alert("اليوزر مستخدم بالفعل!");
-            users.push({user: u, pass: p, role: "user"});
-            alert("تم إنشاء الحساب بنجاح!");
-            toggleAuth();
-        } else {
-            const user = users.find(x => x.user === u && x.pass === p);
-            if(user) {
-                currentUser = user;
-                showScreen(u === 'Younisxho' ? 'adminScreen' : 'mainScreen');
-                document.getElementById('userDisplay').innerText = "مرحباً: " + u;
-                renderMarket();
-                if(u === 'Younisxho') renderAdminRequests();
-            } else {
-                alert("خطأ في البيانات");
-            }
-        }
-    }
-
-    function showScreen(id) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-    }
-
-    function submitRequest() {
-        const req = {
-            id: Date.now(),
-            seller: currentUser.user,
-            game: document.getElementById('gameName').value,
-            desc: document.getElementById('gameDesc').value,
-            email: document.getElementById('gameEmail').value,
-            pass: document.getElementById('gamePass').value
-        };
-        requests.push(req);
-        alert("تم الإرسال! سيراجع يونس الطلب.");
-        showScreen('mainScreen');
-    }
-
-    function renderAdminRequests() {
-        const div = document.getElementById('adminRequests');
-        div.innerHTML = '<h3>طلبات بانتظار موافقتك يا يونس:</h3>';
-        requests.forEach(r => {
-            div.innerHTML += `
-                <div class="game-card">
-                    <p><b>اللعبة:</b> ${r.game}</p>
-                    <p><b>البائع:</b> ${r.seller}</p>
-                    <p><b>البيانات:</b> ${r.email} / ${r.pass}</p>
-                    <button onclick="approve(${r.id})">موافقة وعرض في المتجر</button>
-                </div>
-            `;
-        });
-    }
-
-    function approve(id) {
-        const index = requests.findIndex(x => x.id === id);
-        const req = requests.splice(index, 1)[0];
-        market.push(req);
-        alert("تم العرض في المتجر بنجاح");
-        renderAdminRequests();
-        renderMarket();
-    }
-
-    function renderMarket() {
-        const div = document.getElementById('marketList');
-        div.innerHTML = '';
-        market.forEach(m => {
-            div.innerHTML += `
-                <div class="game-card">
-                    <h4>${m.game}</h4>
-                    <p>${m.desc}</p>
-                    <button onclick="buyAccount(${m.id})">شراء الحساب</button>
-                </div>
-            `;
-        });
-    }
-
-    function buyAccount(id) {
-        const item = market.find(x => x.id === id);
-        alert(`مبروك! تم الشراء.\nبيانات الحساب وصلت إليك:\nEmail: ${item.email}\nPass: ${item.pass}\n\nوالأموال تم تحويلها للبائع: ${item.seller}`);
-    }
+function logout(){
+  location.reload();
+}
 </script>
 
 </body>
