@@ -8,20 +8,47 @@
 <body>
 
 <div class="card">
-  <h2>إنشاء حساب / دخول</h2>
-  <input id="u" placeholder="اسم المستخدم">
-  <input id="p" type="password" placeholder="كلمة المرور (8+)">
-  <button class="btn" onclick="go()">دخول / إنشاء</button>
+  <h2>تسجيل / إنشاء حساب</h2>
+
+  <input id="user" placeholder="اسم المستخدم">
+  <input id="pass" type="password" placeholder="كلمة المرور (8 أرقام على الأقل)">
+  <input id="adminCode" placeholder="كود خاص (اختياري)">
+
+  <button class="btn" onclick="login()">دخول</button>
 </div>
 
 <script>
-function go(){
- let u=u.value,p=p.value;
- if(p.length<8)return alert("كلمة المرور قصيرة");
- localStorage.setItem("currentUser",u);
- alert("✅ انت مسوي حساب");
- location.href="index.html";
+function login(){
+  let u = user.value.trim();
+  let p = pass.value.trim();
+  let code = adminCode.value.trim();
+
+  if(u=="" || p==""){
+    alert("أكمل الحقول");
+    return;
+  }
+
+  if(p.length < 8){
+    alert("كلمة المرور قصيرة");
+    return;
+  }
+
+  // دخول أدمن
+  if(code === "20112006"){
+    localStorage.setItem("role","admin");
+    localStorage.setItem("currentUser","Younisxho");
+    alert("تم الدخول كأدمن");
+    location.href="admin.html";
+    return;
+  }
+
+  // مستخدم عادي
+  localStorage.setItem("role","user");
+  localStorage.setItem("currentUser",u);
+  alert("تم إنشاء الحساب بنجاح");
+  location.href="index.html";
 }
 </script>
+
 </body>
 </html>
