@@ -2,54 +2,26 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>تسجيل الدخول | الوسيط للأمان</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تسجيل</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="auth-box">
-  <h2 id="title">إنشاء حساب</h2>
-
-  <input id="username" placeholder="اسم المستخدم">
-  <input id="password" type="password" placeholder="كلمة المرور (8 أحرف على الأقل)">
-  <p class="error" id="msg"></p>
-
-  <button onclick="submitForm()">متابعة</button>
-
-  <div class="switch" onclick="toggleMode()">لديك حساب؟ تسجيل دخول</div>
+<div class="card">
+  <h2>إنشاء حساب / دخول</h2>
+  <input id="u" placeholder="اسم المستخدم">
+  <input id="p" type="password" placeholder="كلمة المرور (8+)">
+  <button class="btn" onclick="go()">دخول / إنشاء</button>
 </div>
 
 <script>
-let isLogin = false;
-let users = JSON.parse(localStorage.getItem("users")) || [];
-
-function toggleMode(){
-  isLogin = !isLogin;
-  title.innerText = isLogin ? "تسجيل الدخول" : "إنشاء حساب";
-  document.querySelector(".switch").innerText = isLogin ? "ليس لديك حساب؟ إنشاء حساب" : "لديك حساب؟ تسجيل دخول";
-  msg.innerText="";
-}
-
-function submitForm(){
-  let u = username.value.trim();
-  let p = password.value.trim();
-  if(p.length < 8){ msg.innerText="كلمة المرور يجب أن تكون 8 أحرف على الأقل"; return; }
-
-  if(!isLogin){
-    if(users.find(x=>x.user===u)){ msg.innerText="اسم المستخدم مستخدم سابقًا"; return; }
-    users.push({user:u, pass:p});
-    localStorage.setItem("users", JSON.stringify(users));
-    alert("✅ تم إنشاء الحساب بنجاح، انت مسوي حساب الآن!");
-    localStorage.setItem("currentUser", u);
-    location.href="index.html";
-  }else{
-    let found = users.find(x=>x.user===u && x.pass===p);
-    if(found){ localStorage.setItem("currentUser", u); location.href="index.html"; }
-    else{ msg.innerText="بيانات الدخول غير صحيحة"; }
-  }
+function go(){
+ let u=u.value,p=p.value;
+ if(p.length<8)return alert("كلمة المرور قصيرة");
+ localStorage.setItem("currentUser",u);
+ alert("✅ انت مسوي حساب");
+ location.href="index.html";
 }
 </script>
-
 </body>
 </html>
