@@ -2,18 +2,42 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>بروفايل</title>
+<title>الملف الشخصي</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="card">
-<h2>الملف الشخصي</h2>
-<p id="info"></p>
+<header>
+  <h1>الملف الشخصي</h1>
+</header>
+
+<div class="card" style="max-width:400px;margin:30px auto;text-align:center">
+  <img id="img" style="width:120px;height:120px;border-radius:50%;object-fit:cover">
+  <input type="file" accept="image/*" onchange="loadImg(event)">
+  <p id="name"></p>
+  <button class="btn" onclick="logout()">تسجيل خروج</button>
 </div>
 
 <script>
-info.innerText="اسمك: "+localStorage.getItem("currentUser");
+let u = localStorage.getItem("currentUser");
+if(!u){location.href="login.html";}
+name.innerText = "اسم المستخدم: "+u;
+
+let saved = localStorage.getItem("avatar");
+if(saved) img.src = saved;
+
+function loadImg(e){
+ let r=new FileReader();
+ r.onload=()=>{localStorage.setItem("avatar",r.result);img.src=r.result;}
+ r.readAsDataURL(e.target.files[0]);
+}
+
+function logout(){
+ localStorage.clear();
+ location.href="login.html";
+}
 </script>
+
 </body>
 </html>
