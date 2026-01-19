@@ -3,18 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <title>نشر حساب</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="card">
-<h2>طلب نشر حساب</h2>
-<input placeholder="اسم اللعبة">
-<textarea placeholder="وصف الحساب"></textarea>
-<input placeholder="الإيميل">
-<input placeholder="كلمة المرور">
-<button class="btn" onclick="alert('تم إرسال الطلب')">إرسال</button>
+<header>
+  <h2>طلب نشر حساب</h2>
+  <p>سيتم التحقق خلال 24 ساعة</p>
+</header>
+
+<div class="card" style="max-width:500px;margin:30px auto">
+  <input id="game" placeholder="اسم اللعبة">
+  <textarea id="desc" placeholder="وصف الحساب"></textarea>
+  <input id="email" placeholder="الإيميل">
+  <input id="pass" placeholder="كلمة مرور الحساب">
+  <button class="btn" onclick="send()">إرسال الطلب</button>
 </div>
+
+<script>
+function send(){
+  let reqs = JSON.parse(localStorage.getItem("requests") || "[]");
+
+  reqs.push({
+    game: game.value,
+    desc: desc.value,
+    email: email.value,
+    pass: pass.value,
+    status: "pending"
+  });
+
+  localStorage.setItem("requests", JSON.stringify(reqs));
+  alert("تم إرسال الطلب بنجاح");
+}
+</script>
 
 </body>
 </html>
