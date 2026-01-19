@@ -8,23 +8,25 @@
 </head>
 <body>
 
-<div class="menu" onclick="toggleMenu()">☰</div>
-
-<div class="side" id="side">
-  <a href="index.html">🏠 الرئيسية</a>
-  <a href="profile.html">👤 بروفايل</a>
-  <a href="publish.html">➕ نشر حساب</a>
-  <a href="payment.html">💳 الدفع</a>
-  <a href="login.html">🔐 تسجيل</a>
-</div>
-
 <header>
-  <h1>الوسيط للأمان</h1>
-  <p>منصة بيع حسابات موثوقة</p>
+<h1>الوسيط للأمان</h1>
 </header>
 
-<section class="cards" id="cards"></section>
+<section class="cards" id="c"></section>
 
-<script src="js/app.js"></script>
+<script>
+let s = JSON.parse(localStorage.getItem("store")||"[]");
+let c = document.getElementById("c");
+if(s.length==0)c.innerHTML="<p style='padding:20px'>لا توجد حسابات</p>";
+s.forEach(x=>{
+ c.innerHTML+=`
+  <div class="card">
+   <h3>${x.game}</h3>
+   <p>${x.desc}</p>
+   <button class="btn">شراء</button>
+  </div>`;
+});
+</script>
+
 </body>
 </html>
