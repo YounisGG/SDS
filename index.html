@@ -3,73 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <title>الوسيط الآمن</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 :root{
  --bg:#020617;
- --card:#020617;
+ --card:#0a0f21;
  --line:#1e293b;
  --main:#22d3ee;
  --text:#e5e7eb;
 }
 *{box-sizing:border-box;font-family:Tajawal,Arial}
-body{
- margin:0;background:linear-gradient(180deg,#020617,#020617);
- color:var(--text)
-}
-
-/* ===== HEADER ===== */
+body{margin:0;background:var(--bg);color:var(--text)}
 header{
  position:fixed;top:0;right:0;left:0;
  height:60px;
- background:rgba(2,6,23,.9);
+ background:rgba(2,6,23,.95);
  display:flex;align-items:center;
  padding:0 15px;
  z-index:1000;
- backdrop-filter:blur(10px);
- border-bottom:1px solid var(--line)
+ backdrop-filter:blur(8px);
+ border-bottom:1px solid var(--line);
 }
 .menu{
- font-size:26px;cursor:pointer;
- margin-left:10px;color:var(--main)
+ font-size:28px;cursor:pointer;color:var(--main);
+ margin-left:10px;
+ transition:.3s;
 }
-header h1{
- font-size:18px;margin:0
-}
+.menu:hover{transform:rotate(10deg);}
+header h1{font-size:18px;margin:0}
 
-/* ===== SIDE MENU ===== */
+/* SIDE MENU */
 .side{
- position:fixed;top:60px;right:-260px;
- width:260px;height:100%;
+ position:fixed;top:60px;right:-280px;
+ width:280px;height:100%;
  background:#020617;
  border-left:1px solid var(--line);
- transition:.3s;
+ transition:.4s;
  padding:20px;
- z-index:999
+ z-index:999;
+ border-radius:15px 0 0 15px;
+ box-shadow: -5px 0 30px rgba(34,211,238,.3);
 }
-.side.active{right:0}
+.side.active{right:0;}
 .side a{
  display:block;
- padding:12px;
  color:var(--text);
  text-decoration:none;
- border-radius:10px;
- margin-bottom:8px
+ margin-bottom:15px;
+ padding:10px;
+ border-radius:12px;
+ font-weight:bold;
+ transition:.3s;
 }
-.side a:hover{background:#020617;color:var(--main)}
+.side a:hover{background:#0a0f21;color:var(--main);transform:translateX(-5px);}
+.float{
+ position:fixed;bottom:20px;left:20px;
+ width:55px;height:55px;
+ border-radius:50%;
+ background:var(--main);
+ color:#020617;
+ font-size:28px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ cursor:pointer;
+ box-shadow:0 0 30px rgba(34,211,238,.6);
+}
 
-/* ===== MAIN ===== */
-main{padding:80px 15px 30px}
-
-/* HERO */
+/* MAIN */
+main{padding:80px 20px}
 .hero{
- background:linear-gradient(135deg,#020617,#020617);
- border-radius:20px;
- padding:30px;
+ background:linear-gradient(135deg,#020617,#0a0f21);
+ border-radius:20px;padding:25px;
  box-shadow:0 0 40px rgba(34,211,238,.15);
- margin-bottom:30px
+ margin-bottom:30px;
+ transition:.4s;
 }
+.hero:hover{box-shadow:0 0 60px rgba(34,211,238,.25);}
 .hero h2{margin-top:0}
 .hero p{opacity:.85}
 .hero button{
@@ -80,22 +91,24 @@ main{padding:80px 15px 30px}
  border:none;
  border-radius:12px;
  font-weight:bold;
- cursor:pointer
+ cursor:pointer;
+ transition:.3s;
 }
-
-/* CARDS */
+.hero button:hover{transform:scale(1.05);}
 .grid{
  display:grid;
  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
- gap:15px
+ gap:15px;
 }
 .card{
  background:var(--card);
  border:1px solid var(--line);
  border-radius:18px;
  padding:15px;
- box-shadow:0 0 20px rgba(0,0,0,.4)
+ box-shadow:0 0 20px rgba(0,0,0,.4);
+ transition:.3s;
 }
+.card:hover{box-shadow:0 0 35px rgba(34,211,238,.35);}
 .card h3{margin:0 0 8px}
 .card p{font-size:14px;opacity:.8}
 .card button{
@@ -106,32 +119,11 @@ main{padding:80px 15px 30px}
  border:1px solid var(--main);
  color:var(--main);
  border-radius:10px;
- cursor:pointer
-}
-
-/* FLOAT BTN */
-.float{
- position:fixed;
- bottom:20px;left:20px;
- width:55px;height:55px;
- border-radius:50%;
- background:var(--main);
- color:#020617;
- font-size:28px;
- display:flex;
- align-items:center;
- justify-content:center;
  cursor:pointer;
- box-shadow:0 0 30px rgba(34,211,238,.6)
+ transition:.3s;
 }
-
-/* FOOTER */
-footer{
- text-align:center;
- opacity:.6;
- margin-top:40px;
- font-size:13px
-}
+.card button:hover{transform:scale(1.03);}
+footer{text-align:center;opacity:.6;margin-top:40px;font-size:13px}
 </style>
 </head>
 <body>
@@ -141,7 +133,7 @@ footer{
   <h1>الوسيط الآمن</h1>
 </header>
 
-<div class="side" id="side">
+<div class="side" id="sideMenu">
   <a href="index.html">🏠 الرئيسية</a>
   <a href="profile.html">👤 البروفايل</a>
   <a href="publish.html">➕ نشر حساب</a>
@@ -151,45 +143,26 @@ footer{
 </div>
 
 <main>
-
 <section class="hero">
   <h2>منصة وسيطة لبيع الحسابات بأمان</h2>
-  <p>
-  انشر حسابك، يتم التحقق منه، ثم يُعرض للبيع بأمان تام.
-  </p>
+  <p>انشر حسابك، يتم التحقق منه، ثم يُعرض للبيع بأمان تام.</p>
   <button onclick="goPublish()">نشر حساب</button>
 </section>
 
 <section>
 <h3>🛒 الحسابات المعروضة</h3>
 <div class="grid" id="list">
-
-  <div class="card">
-    <h3>حساب Minecraft</h3>
-    <p>وصف تجريبي للحساب</p>
-    <button>عرض التفاصيل</button>
-  </div>
-
-  <div class="card">
-    <h3>حساب Fortnite</h3>
-    <p>سكينات نادرة – مستوى عالي</p>
-    <button>عرض التفاصيل</button>
-  </div>
-
+  <!-- الحسابات المقبولة ستعرض هنا -->
 </div>
 </section>
 
-<footer>
-© 2026 الوسيط الآمن – جميع الحقوق محفوظة
-</footer>
-
-</main>
+<footer>© 2026 الوسيط الآمن – جميع الحقوق محفوظة</footer>
 
 <div class="float" onclick="goPublish()">+</div>
 
 <script>
 function toggleMenu(){
- document.getElementById("side").classList.toggle("active");
+ document.getElementById("sideMenu").classList.toggle("active");
 }
 
 function goPublish(){
@@ -201,11 +174,21 @@ function goPublish(){
  }
 }
 
-// إخفاء الأدمن
+// إخفاء رابط الأدمن لغير Younisxho
 if(localStorage.getItem("currentUser")!=="Younisxho"){
  let a=document.getElementById("adminLink");
  if(a) a.style.display="none";
 }
+
+// عرض الحسابات المقبولة
+let approved=JSON.parse(localStorage.getItem("approved")||"[]");
+let list=document.getElementById("list");
+approved.forEach(a=>{
+ let card=document.createElement("div");
+ card.className="card";
+ card.innerHTML=`<h3>${a.game}</h3><p>${a.desc}</p><button>عرض التفاصيل</button>`;
+ list.appendChild(card);
+});
 </script>
 
 </body>
