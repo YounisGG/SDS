@@ -2,47 +2,67 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>تسجيل</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="css/style.css">
+<title>تسجيل الدخول</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{
+ background:#020617;color:#e5e7eb;
+ font-family:Arial;display:flex;
+ justify-content:center;align-items:center;
+ height:100vh;margin:0
+}
+.box{
+ width:90%;max-width:400px;
+ background:#020617;
+ border:1px solid #1e293b;
+ border-radius:20px;
+ padding:25px;
+ box-shadow:0 0 30px rgba(34,211,238,.2)
+}
+input,button{
+ width:100%;padding:12px;
+ margin-top:10px;border-radius:12px;
+ border:none
+}
+input{background:#020617;border:1px solid #1e293b;color:#fff}
+button{background:#22d3ee;color:#020617;font-weight:bold;cursor:pointer}
+a{color:#22d3ee;text-decoration:none;display:block;text-align:center;margin-top:15px}
+</style>
 </head>
 <body>
 
-<script>
-if(localStorage.getItem("currentUser")){
- if(confirm("أنت لديك حساب بالفعل، هل تريد تسجيل الخروج؟")){
-  localStorage.clear();
- }else{
-  location.href="index.html";
- }
-}
-</script>
+<div class="box">
+<h2>تسجيل الدخول</h2>
 
-<header>
-<h1>تسجيل / إنشاء حساب</h1>
-</header>
+<input id="user" placeholder="اسم المستخدم">
+<input id="pass" type="password" placeholder="كلمة المرور">
 
-<div class="card" style="max-width:400px;margin:30px auto">
- <input id="u" placeholder="اسم المستخدم">
- <input id="p" type="password" placeholder="كلمة المرور (8+)">
- <input id="k" placeholder="كود خاص (اختياري)">
- <button class="btn" onclick="go()">دخول</button>
+<button onclick="login()">دخول</button>
+<a href="register.html">إنشاء حساب جديد</a>
 </div>
 
 <script>
-function go(){
- if(p.value.length<8)return alert("كلمة المرور قصيرة");
+// إنشاء حساب الأدمن أول مرة
+let users=JSON.parse(localStorage.getItem("users")||"{}");
+if(!users["Younisxho"]){
+ users["Younisxho"]={password:"12340987",role:"admin"};
+ localStorage.setItem("users",JSON.stringify(users));
+}
 
- if(k.value==="20112006"){
-  localStorage.setItem("currentUser","Younisxho");
-  localStorage.setItem("role","admin");
-  location.href="admin.html";
-  return;
+function login(){
+ let u=user.value.trim();
+ let p=pass.value;
+
+ let users=JSON.parse(localStorage.getItem("users")||"{}");
+
+ if(!users[u]||users[u].password!==p){
+  alert("بيانات غير صحيحة");return;
  }
 
- localStorage.setItem("currentUser",u.value);
- localStorage.setItem("role","user");
- alert("تم تسجيل الحساب");
+ localStorage.setItem("currentUser",u);
+ localStorage.setItem("role",users[u].role);
+
+ alert("تم تسجيل الدخول");
  location.href="index.html";
 }
 </script>
