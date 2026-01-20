@@ -3,8 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <title>الملف الشخصي</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/style.css">
+<style>
+.profile{
+ max-width:700px;margin:30px auto;
+ background:#020617;border-radius:20px;
+ padding:25px;box-shadow:0 0 30px rgba(34,211,238,.25)
+}
+.avatar{
+ width:130px;height:130px;border-radius:50%;
+ object-fit:cover;border:4px solid #22d3ee;
+ margin:auto;display:block
+}
+.section{margin-top:20px}
+.section h3{margin-bottom:10px;color:#22d3ee}
+textarea{min-height:80px}
+.save{margin-top:20px}
+</style>
 </head>
 <body>
 
@@ -12,26 +28,79 @@
   <h1>الملف الشخصي</h1>
 </header>
 
-<div class="card" style="max-width:400px;margin:30px auto;text-align:center">
-  <img id="img" style="width:120px;height:120px;border-radius:50%;object-fit:cover">
+<div class="profile">
+
+  <img id="avatar" class="avatar">
   <input type="file" accept="image/*" onchange="loadImg(event)">
-  <p id="name"></p>
+
+  <div class="section">
+    <h3>الاسم</h3>
+    <input id="name" placeholder="اسمك">
+  </div>
+
+  <div class="section">
+    <h3>نبذة عنك</h3>
+    <textarea id="bio" placeholder="اكتب نبذة مختصرة عنك"></textarea>
+  </div>
+
+  <div class="section">
+    <h3>المهارات</h3>
+    <input id="skills" placeholder="مثال: HTML, CSS, Minecraft">
+  </div>
+
+  <div class="section">
+    <h3>الخبرة / النشاط</h3>
+    <textarea id="exp" placeholder="اشرح شغلك أو خبرتك"></textarea>
+  </div>
+
+  <div class="section">
+    <h3>التواصل</h3>
+    <input id="contact" placeholder="إيميل أو تيليجرام">
+  </div>
+
+  <button class="btn save" onclick="save()">حفظ التغييرات</button>
   <button class="btn" onclick="logout()">تسجيل خروج</button>
+
 </div>
 
 <script>
-let u = localStorage.getItem("currentUser");
-if(!u){location.href="login.html";}
-name.innerText = "اسم المستخدم: "+u;
-
-let saved = localStorage.getItem("avatar");
-if(saved) img.src = saved;
+if(!localStorage.getItem("currentUser")){
+ location.href="login.html";
+}
 
 function loadImg(e){
  let r=new FileReader();
- r.onload=()=>{localStorage.setItem("avatar",r.result);img.src=r.result;}
+ r.onload=()=>{
+  localStorage.setItem("profile_avatar",r.result);
+  avatar.src=r.result;
+ };
  r.readAsDataURL(e.target.files[0]);
 }
+
+function save(){
+ let data={
+  name:name.value,
+  bio:bio.value,
+  skills:skills.value,
+  exp:exp.value,
+  contact:contact.value
+ };
+ localStorage.setItem("profile_data",JSON.stringify(data));
+ alert("تم حفظ البروفايل");
+}
+
+function load(){
+ let img=localStorage.getItem("profile_avatar");
+ if(img) avatar.src=img;
+
+ let d=JSON.parse(localStorage.getItem("profile_data")||"{}");
+ name.value=d.name||"";
+ bio.value=d.bio||"";
+ skills.value=d.skills||"";
+ exp.value=d.exp||"";
+ contact.value=d.contact||"";
+}
+load();
 
 function logout(){
  localStorage.clear();
