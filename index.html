@@ -2,90 +2,209 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>الوسيط للأمان</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/style.css">
+<title>الوسيط الآمن</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+ --bg:#020617;
+ --card:#020617;
+ --line:#1e293b;
+ --main:#22d3ee;
+ --text:#e5e7eb;
+}
+*{box-sizing:border-box;font-family:Tajawal,Arial}
+body{
+ margin:0;background:linear-gradient(180deg,#020617,#020617);
+ color:var(--text)
+}
+
+/* ===== HEADER ===== */
+header{
+ position:fixed;top:0;right:0;left:0;
+ height:60px;
+ background:rgba(2,6,23,.9);
+ display:flex;align-items:center;
+ padding:0 15px;
+ z-index:1000;
+ backdrop-filter:blur(10px);
+ border-bottom:1px solid var(--line)
+}
+.menu{
+ font-size:26px;cursor:pointer;
+ margin-left:10px;color:var(--main)
+}
+header h1{
+ font-size:18px;margin:0
+}
+
+/* ===== SIDE MENU ===== */
+.side{
+ position:fixed;top:60px;right:-260px;
+ width:260px;height:100%;
+ background:#020617;
+ border-left:1px solid var(--line);
+ transition:.3s;
+ padding:20px;
+ z-index:999
+}
+.side.active{right:0}
+.side a{
+ display:block;
+ padding:12px;
+ color:var(--text);
+ text-decoration:none;
+ border-radius:10px;
+ margin-bottom:8px
+}
+.side a:hover{background:#020617;color:var(--main)}
+
+/* ===== MAIN ===== */
+main{padding:80px 15px 30px}
+
+/* HERO */
+.hero{
+ background:linear-gradient(135deg,#020617,#020617);
+ border-radius:20px;
+ padding:30px;
+ box-shadow:0 0 40px rgba(34,211,238,.15);
+ margin-bottom:30px
+}
+.hero h2{margin-top:0}
+.hero p{opacity:.85}
+.hero button{
+ margin-top:15px;
+ padding:12px 20px;
+ background:var(--main);
+ color:#020617;
+ border:none;
+ border-radius:12px;
+ font-weight:bold;
+ cursor:pointer
+}
+
+/* CARDS */
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+ gap:15px
+}
+.card{
+ background:var(--card);
+ border:1px solid var(--line);
+ border-radius:18px;
+ padding:15px;
+ box-shadow:0 0 20px rgba(0,0,0,.4)
+}
+.card h3{margin:0 0 8px}
+.card p{font-size:14px;opacity:.8}
+.card button{
+ width:100%;
+ margin-top:10px;
+ padding:10px;
+ background:#020617;
+ border:1px solid var(--main);
+ color:var(--main);
+ border-radius:10px;
+ cursor:pointer
+}
+
+/* FLOAT BTN */
+.float{
+ position:fixed;
+ bottom:20px;left:20px;
+ width:55px;height:55px;
+ border-radius:50%;
+ background:var(--main);
+ color:#020617;
+ font-size:28px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ cursor:pointer;
+ box-shadow:0 0 30px rgba(34,211,238,.6)
+}
+
+/* FOOTER */
+footer{
+ text-align:center;
+ opacity:.6;
+ margin-top:40px;
+ font-size:13px
+}
+</style>
 </head>
 <body>
 
-<!-- زر المنيو -->
-<div class="menu" onclick="toggle()">☰</div>
+<header>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+  <h1>الوسيط الآمن</h1>
+</header>
 
-<!-- منيو جانبي -->
 <div class="side" id="side">
   <a href="index.html">🏠 الرئيسية</a>
   <a href="profile.html">👤 البروفايل</a>
   <a href="publish.html">➕ نشر حساب</a>
   <a href="payment.html">💳 الدفع</a>
   <a href="admin.html" id="adminLink">🛠 الأدمن</a>
-  <a href="login.html">🔐 تسجيل</a>
+  <a href="login.html">🔐 تسجيل الدخول</a>
 </div>
 
-<!-- الهيدر -->
-<header>
-  <h1>الوسيط للأمان</h1>
-  <p id="welcome"></p>
-</header>
+<main>
 
-<!-- زر إضافة -->
-<div style="text-align:center;margin:20px">
-  <button class="btn" onclick="goPublish()">＋ نشر حساب</button>
+<section class="hero">
+  <h2>منصة وسيطة لبيع الحسابات بأمان</h2>
+  <p>
+  انشر حسابك، يتم التحقق منه، ثم يُعرض للبيع بأمان تام.
+  </p>
+  <button onclick="goPublish()">نشر حساب</button>
+</section>
+
+<section>
+<h3>🛒 الحسابات المعروضة</h3>
+<div class="grid" id="list">
+
+  <div class="card">
+    <h3>حساب Minecraft</h3>
+    <p>وصف تجريبي للحساب</p>
+    <button>عرض التفاصيل</button>
+  </div>
+
+  <div class="card">
+    <h3>حساب Fortnite</h3>
+    <p>سكينات نادرة – مستوى عالي</p>
+    <button>عرض التفاصيل</button>
+  </div>
+
 </div>
+</section>
 
-<!-- الحسابات -->
-<section class="cards" id="cards"></section>
+<footer>
+© 2026 الوسيط الآمن – جميع الحقوق محفوظة
+</footer>
+
+</main>
+
+<div class="float" onclick="goPublish()">+</div>
 
 <script>
-/* منيو */
-function toggle(){
+function toggleMenu(){
  document.getElementById("side").classList.toggle("active");
 }
 
-/* ترحيب */
-let user = localStorage.getItem("currentUser");
-let role = localStorage.getItem("role");
-welcome.innerText = user ? "مرحبًا "+user : "سجل حسابك لعرض الحسابات";
-
-/* إظهار الأدمن */
-if(role !== "admin"){
- document.getElementById("adminLink").style.display="none";
-}
-
-/* نشر */
 function goPublish(){
- if(!user){
-  alert("سجل دخول أولاً");
+ if(!localStorage.getItem("currentUser")){
+  alert("يجب تسجيل الدخول أولاً");
   location.href="login.html";
  }else{
   location.href="publish.html";
  }
 }
 
-/* عرض الحسابات */
-let store = JSON.parse(localStorage.getItem("store") || "[]");
-let cards = document.getElementById("cards");
-
-if(store.length === 0){
- cards.innerHTML = "<p style='padding:20px'>لا توجد حسابات معروضة</p>";
-}else{
- store.forEach(s=>{
-  cards.innerHTML += `
-   <div class="card">
-    <h3>${s.game}</h3>
-    <p>${s.desc}</p>
-    <button class="btn" onclick="buy()">شراء</button>
-   </div>
-  `;
- });
-}
-
-function buy(){
- if(!user){
-  alert("سجل دخول للشراء");
-  location.href="login.html";
- }else{
-  location.href="payment.html";
- }
+// إخفاء الأدمن
+if(localStorage.getItem("currentUser")!=="Younisxho"){
+ let a=document.getElementById("adminLink");
+ if(a) a.style.display="none";
 }
 </script>
 
