@@ -4,187 +4,141 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>منصة الإعلانات الرقمية</title>
-
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 <style>
-body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:#0f1220;
-  color:#fff;
+:root{
+ --bg:#0f1220;
+ --header:#151933;
+ --menu:#1b1f45;
+ --main:#4f6cff;
+ --text:#fff;
+ --card:#23286b;
+ --hover:#4f6cffaa;
 }
-
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Tajawal',sans-serif;}
+body{background:var(--bg);color:var(--text);}
 header{
-  background:#151933;
-  padding:15px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+ display:flex;justify-content:space-between;align-items:center;
+ padding:15px;background:var(--header);
+ position:fixed;top:0;left:0;right:0;z-index:1000;
+ box-shadow:0 2px 10px rgba(0,0,0,0.5);
 }
-
-.menu-btn{
-  font-size:24px;
-  cursor:pointer;
-}
-
+.menu-btn{font-size:28px;cursor:pointer;color:var(--main);transition:.3s;}
+.menu-btn:hover{transform:rotate(15deg);}
+header h3{font-size:20px;font-weight:700;}
 nav{
-  position:fixed;
-  top:0;
-  right:-260px;
-  width:250px;
-  height:100%;
-  background:#1b1f45;
-  padding:20px;
-  transition:0.3s;
+ position:fixed;top:0;right:-280px;width:260px;height:100%;
+ background:var(--menu);padding:20px;transition:.4s;z-index:999;border-radius:0 0 0 15px;
+ box-shadow:-3px 0 20px rgba(0,0,0,0.7);
 }
-nav.active{ right:0; }
-
+nav.active{right:0;}
 nav a{
-  display:block;
-  color:#fff;
-  text-decoration:none;
-  margin:15px 0;
+ display:block;color:var(--text);text-decoration:none;margin:15px 0;font-weight:600;
+ padding:8px 12px;border-radius:10px;transition:.3s;
 }
+nav a:hover{background:var(--hover);}
 
-.container{
-  padding:20px;
-}
+.container{padding:80px 20px;}
 
 .tabs{
-  display:flex;
-  gap:10px;
-  margin-bottom:15px;
+ display:flex;gap:10px;margin-bottom:15px;overflow-x:auto;
 }
-
 .tabs button{
-  flex:1;
-  padding:10px;
-  border:none;
-  background:#23286b;
-  color:#fff;
-  cursor:pointer;
-  border-radius:8px;
+ flex:1; padding:12px; border:none; border-radius:12px; cursor:pointer;
+ background:var(--card); color:var(--text); font-weight:700; transition:.3s;
+ white-space:nowrap;
 }
+.tabs button.active{background:var(--main);color:#020617; transform:scale(1.05);}
 
-.tabs button.active{
-  background:#4f6cff;
-}
-
-.search{
-  margin-bottom:15px;
-}
+.search{margin-bottom:20px;}
 .search input{
-  width:100%;
-  padding:12px;
-  border-radius:8px;
-  border:none;
+ width:100%; padding:12px 15px; border-radius:12px; border:none;
+ font-size:16px; outline:none; background:#1c1f38; color:#fff;
 }
 
 .cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:15px;
+ display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:20px;
 }
 
 .card{
-  background:#1b1f45;
-  border-radius:12px;
-  overflow:hidden;
+ background:var(--card); border-radius:15px; overflow:hidden;
+ box-shadow:0 0 20px rgba(0,0,0,0.4);
+ transform:translateY(0); transition:.3s;
+ cursor:pointer;
 }
-.card img{
-  width:100%;
-  height:140px;
-  object-fit:cover;
-}
-.card .content{
-  padding:10px;
-}
-.card h3{
-  margin:0 0 5px;
-}
-.card p{
-  font-size:14px;
-  opacity:0.8;
-}
+.card:hover{transform:translateY(-5px) scale(1.02); box-shadow:0 0 30px var(--main);}
+.card img{width:100%;height:140px;object-fit:cover;}
+.card .content{padding:12px;}
+.card h3{margin-bottom:5px;font-size:16px;font-weight:700;}
+.card p{font-size:14px;opacity:.8;}
 
 .add-btn{
-  position:fixed;
-  bottom:20px;
-  left:20px;
-  background:#4f6cff;
-  width:55px;
-  height:55px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:30px;
-  cursor:pointer;
+ position:fixed;bottom:25px;left:25px;width:60px;height:60px;
+ background:var(--main);border-radius:50%;display:flex;
+ align-items:center;justify-content:center;font-size:32px;
+ cursor:pointer;box-shadow:0 0 25px var(--main);
+ transition:.3s;
 }
+.add-btn:hover{transform:scale(1.1);}
 </style>
 </head>
-
 <body>
 
 <header>
-  <div class="menu-btn" onclick="toggleMenu()">☰</div>
-  <h3>منصة الإعلانات</h3>
+ <div class="menu-btn" onclick="toggleMenu()">☰</div>
+ <h3>منصة الإعلانات</h3>
 </header>
 
 <nav id="menu">
-  <a href="index.html">الرئيسية</a>
-  <a href="add-ad.html">إضافة إعلان</a>
-  <a href="profile.html">البروفايل</a>
-  <a href="admin.html">لوحة الأدمن</a>
+ <a href="index.html">🏠 الرئيسية</a>
+ <a href="add-ad.html">➕ إضافة إعلان</a>
+ <a href="profile.html">👤 البروفايل</a>
+ <a href="admin.html">🛠 لوحة الأدمن</a>
 </nav>
 
 <div class="container">
+ <div class="tabs">
+   <button class="active" onclick="filterType('all')">الكل</button>
+   <button onclick="filterType('account')">حسابات</button>
+   <button onclick="filterType('game')">ألعاب</button>
+   <button onclick="filterType('app')">تطبيقات</button>
+ </div>
 
-  <div class="tabs">
-    <button class="active" onclick="filterType('all')">الكل</button>
-    <button onclick="filterType('account')">حسابات</button>
-    <button onclick="filterType('game')">ألعاب</button>
-    <button onclick="filterType('app')">تطبيقات</button>
-  </div>
+ <div class="search">
+   <input type="text" id="searchInput" placeholder="ابحث عن إعلان...">
+ </div>
 
-  <div class="search">
-    <input type="text" id="searchInput" placeholder="ابحث عن إعلان...">
-  </div>
-
-  <div class="cards" id="adsContainer"></div>
-
+ <div class="cards" id="adsContainer"></div>
 </div>
 
 <div class="add-btn" onclick="location.href='add-ad.html'">+</div>
 
 <script>
 let menu=document.getElementById("menu");
-function toggleMenu(){
-  menu.classList.toggle("active");
-}
+function toggleMenu(){menu.classList.toggle("active");}
 
 let ads = JSON.parse(localStorage.getItem("ads") || "[]");
 let currentType="all";
 
 function renderAds(){
   let q=document.getElementById("searchInput").value.toLowerCase();
-  let box=document.getElementById("adsContainer");
-  box.innerHTML="";
-
-  ads
-  .filter(ad=>ad.approved===true)
-  .filter(ad=>currentType==="all" || ad.type===currentType)
-  .filter(ad=>ad.title.toLowerCase().includes(q))
-  .forEach(ad=>{
-    box.innerHTML+=`
-      <div class="card">
-        <img src="${ad.image || 'https://via.placeholder.com/300'}">
-        <div class="content">
-          <h3>${ad.title}</h3>
-          <p>${ad.description}</p>
-        </div>
-      </div>
-    `;
-  });
+  let container=document.getElementById("adsContainer");
+  container.innerHTML="";
+  
+  ads.filter(ad=>ad.approved)
+     .filter(ad=>currentType==="all"||ad.type===currentType)
+     .filter(ad=>ad.title.toLowerCase().includes(q))
+     .forEach(ad=>{
+       container.innerHTML+=`
+         <div class="card">
+           <img src="${ad.image||'https://via.placeholder.com/300'}">
+           <div class="content">
+             <h3>${ad.title}</h3>
+             <p>${ad.description}</p>
+           </div>
+         </div>
+       `;
+     });
 }
 
 function filterType(type){
@@ -195,7 +149,6 @@ function filterType(type){
 }
 
 document.getElementById("searchInput").addEventListener("input",renderAds);
-
 renderAds();
 </script>
 
