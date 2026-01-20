@@ -4,37 +4,110 @@
 <meta charset="UTF-8">
 <title>نشر حساب</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/style.css">
+
+<style>
+body{
+ margin:0;
+ font-family:Arial;
+ background:#020617;
+ color:#e5e7eb;
+}
+header{
+ padding:15px;
+ border-bottom:1px solid #1e293b;
+}
+.box{
+ max-width:500px;
+ margin:30px auto;
+ background:#020617;
+ border:1px solid #1e293b;
+ border-radius:20px;
+ padding:20px;
+ box-shadow:0 0 30px rgba(34,211,238,.2)
+}
+input,textarea,button{
+ width:100%;
+ margin-top:10px;
+ padding:12px;
+ border-radius:12px;
+ border:none;
+ font-size:14px
+}
+input,textarea{
+ background:#020617;
+ border:1px solid #1e293b;
+ color:#fff
+}
+textarea{min-height:90px}
+button{
+ background:#22d3ee;
+ color:#020617;
+ font-weight:bold;
+ cursor:pointer
+}
+.note{
+ font-size:13px;
+ opacity:.7;
+ margin-top:10px
+}
+</style>
 </head>
 <body>
 
 <header>
-  <h2>طلب نشر حساب</h2>
-  <p>سيتم التحقق خلال 24 ساعة</p>
+<h2>➕ نشر حساب للبيع</h2>
 </header>
 
-<div class="card" style="max-width:500px;margin:30px auto">
-  <input id="game" placeholder="اسم اللعبة">
-  <textarea id="desc" placeholder="وصف الحساب"></textarea>
-  <input id="email" placeholder="الإيميل">
-  <input id="pass" placeholder="كلمة مرور الحساب">
-  <button class="btn" onclick="send()">إرسال الطلب</button>
+<div class="box">
+
+<input id="game" placeholder="اسم اللعبة">
+<textarea id="desc" placeholder="وصف الحساب"></textarea>
+<input id="email" placeholder="الإيميل (للمراجعة فقط)">
+<input id="pass" type="password" placeholder="كلمة المرور (للمراجعة فقط)">
+
+<button onclick="send()">إرسال الطلب</button>
+
+<p class="note">
+ملاحظة: سيتم التحقق من الحساب خلال 24 ساعة قبل نشره.
+</p>
+
 </div>
 
 <script>
+// حماية: لازم يكون مسجل دخول
+let user = localStorage.getItem("currentUser");
+if(!user){
+ alert("يجب تسجيل الدخول أولاً");
+ location.href="login.html";
+}
+
+// إرسال الطلب
 function send(){
-  let reqs = JSON.parse(localStorage.getItem("requests") || "[]");
+ let gameName = game.value.trim();
+ let description = desc.value.trim();
+ let emailVal = email.value.trim();
+ let passVal = pass.value.trim();
 
-  reqs.push({
-    game: game.value,
-    desc: desc.value,
-    email: email.value,
-    pass: pass.value,
-    status: "pending"
-  });
+ if(!gameName || !description || !emailVal || !passVal){
+  alert("املأ كل الحقول");
+  return;
+ }
 
-  localStorage.setItem("requests", JSON.stringify(reqs));
-  alert("تم إرسال الطلب بنجاح");
+ let requests = JSON.parse(localStorage.getItem("requests") || "[]");
+
+ requests.push({
+  game: gameName,
+  desc: description,
+  email: emailVal,
+  password: passVal,
+  user: user,
+  time: new Date().toLocaleString()
+ });
+
+ localStorage.setItem("requests", JSON.stringify(requests));
+
+ alert("تم إرسال الطلب بنجاح");
+ game.value = desc.value = email.value = pass.value = "";
 }
 </script>
 
