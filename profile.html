@@ -2,110 +2,141 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>الملف الشخصي</title>
+<title>البروفايل</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/style.css">
+
 <style>
-.profile{
- max-width:700px;margin:30px auto;
- background:#020617;border-radius:20px;
- padding:25px;box-shadow:0 0 30px rgba(34,211,238,.25)
+:root{
+ --bg:#020617;
+ --card:#0a0f21;
+ --line:#1e293b;
+ --main:#22d3ee;
+ --text:#e5e7eb;
 }
-.avatar{
- width:130px;height:130px;border-radius:50%;
- object-fit:cover;border:4px solid #22d3ee;
- margin:auto;display:block
+*{box-sizing:border-box;font-family:Tajawal,Arial;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text)}
+header{
+ position:fixed;top:0;right:0;left:0;
+ height:60px;background:rgba(2,6,23,.95);
+ display:flex;align-items:center;padding:0 15px;
+ z-index:1000;border-bottom:1px solid var(--line);
+ backdrop-filter:blur(8px);
 }
-.section{margin-top:20px}
-.section h3{margin-bottom:10px;color:#22d3ee}
-textarea{min-height:80px}
-.save{margin-top:20px}
+.menu{font-size:28px;cursor:pointer;color:var(--main);margin-left:10px;transition:.3s;}
+.menu:hover{transform:rotate(10deg);}
+header h1{font-size:18px;margin:0}
+
+/* SIDE MENU */
+.side{
+ position:fixed;top:60px;right:-280px;width:280px;height:100%;
+ background:#020617;border-left:1px solid var(--line);
+ transition:.4s;padding:20px;
+ z-index:999;border-radius:15px 0 0 15px;
+ box-shadow:-5px 0 30px rgba(34,211,238,.3);
+}
+.side.active{right:0;}
+.side a{display:block;color:var(--text);text-decoration:none;margin-bottom:15px;padding:10px;border-radius:12px;font-weight:bold;transition:.3s;}
+.side a:hover{background:#0a0f21;color:var(--main);transform:translateX(-5px);}
+.float{position:fixed;bottom:20px;left:20px;width:55px;height:55px;border-radius:50%;background:var(--main);color:#020617;font-size:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 30px rgba(34,211,238,.6);}
+
+/* PROFILE */
+main{padding:80px 20px;}
+.profile-header{display:flex;align-items:center;gap:15px;margin-bottom:25px;}
+.profile-header img{width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--main);}
+.profile-header h2{font-size:22px;}
+.profile-header button{margin-left:auto;padding:8px 14px;background:var(--main);color:#020617;border:none;border-radius:12px;cursor:pointer;font-weight:bold;transition:.3s;}
+.profile-header button:hover{transform:scale(1.05);}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:15px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;box-shadow:0 0 20px rgba(0,0,0,.4);transition:.3s;}
+.card:hover{box-shadow:0 0 35px rgba(34,211,238,.35);}
+.card h3{margin-bottom:5px;}
+.card p{opacity:.8;font-size:14px;}
+.card button{width:100%;margin-top:10px;padding:10px;background:#020617;border:1px solid var(--main);color:var(--main);border-radius:10px;cursor:pointer;transition:.3s;}
+.card button:hover{transform:scale(1.03);}
+
+/* EMPTY MESSAGE */
+.empty{padding:30px;background:#0a0f21;border-radius:18px;text-align:center;opacity:.7;font-size:15px;}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>الملف الشخصي</h1>
+  <div class="menu" onclick="toggleMenu()">☰</div>
+  <h1>البروفايل</h1>
 </header>
 
-<div class="profile">
-
-  <img id="avatar" class="avatar">
-  <input type="file" accept="image/*" onchange="loadImg(event)">
-
-  <div class="section">
-    <h3>الاسم</h3>
-    <input id="name" placeholder="اسمك">
-  </div>
-
-  <div class="section">
-    <h3>نبذة عنك</h3>
-    <textarea id="bio" placeholder="اكتب نبذة مختصرة عنك"></textarea>
-  </div>
-
-  <div class="section">
-    <h3>المهارات</h3>
-    <input id="skills" placeholder="مثال: HTML, CSS, Minecraft">
-  </div>
-
-  <div class="section">
-    <h3>الخبرة / النشاط</h3>
-    <textarea id="exp" placeholder="اشرح شغلك أو خبرتك"></textarea>
-  </div>
-
-  <div class="section">
-    <h3>التواصل</h3>
-    <input id="contact" placeholder="إيميل أو تيليجرام">
-  </div>
-
-  <button class="btn save" onclick="save()">حفظ التغييرات</button>
-  <button class="btn" onclick="logout()">تسجيل خروج</button>
-
+<div class="side" id="sideMenu">
+  <a href="index.html">🏠 الرئيسية</a>
+  <a href="profile.html">👤 البروفايل</a>
+  <a href="publish.html">➕ نشر حساب</a>
+  <a href="payment.html">💳 الدفع</a>
+  <a href="admin.html" id="adminLink">🛠 الأدمن</a>
+  <a href="login.html">🔐 تسجيل الدخول</a>
 </div>
 
+<main>
+<div class="profile-header">
+  <img id="pfp" src="" alt="صورة الملف الشخصي">
+  <h2 id="username">--</h2>
+  <button onclick="changePic()">تغيير الصورة</button>
+</div>
+
+<h3>خياراتك</h3>
+<div class="cards" id="cards">
+  <!-- الكروت تظهر هنا -->
+</div>
+
+</main>
+
 <script>
-if(!localStorage.getItem("currentUser")){
+// قائمة 3 شخطات
+function toggleMenu(){document.getElementById("sideMenu").classList.toggle("active");}
+if(localStorage.getItem("currentUser")!=="Younisxho"){ let a=document.getElementById("adminLink"); if(a) a.style.display="none"; }
+
+// بيانات المستخدم
+let currentUser=localStorage.getItem("currentUser");
+let users=JSON.parse(localStorage.getItem("users")||"{}");
+if(!currentUser){
+ alert("يجب تسجيل الدخول أولاً");
  location.href="login.html";
 }
 
-function loadImg(e){
- let r=new FileReader();
- r.onload=()=>{
-  localStorage.setItem("profile_avatar",r.result);
-  avatar.src=r.result;
- };
- r.readAsDataURL(e.target.files[0]);
+// اسم المستخدم
+document.getElementById("username").innerText=currentUser;
+
+// الصورة المحفوظة
+let savedPic=localStorage.getItem(currentUser+"_pic");
+let pfp=document.getElementById("pfp");
+if(savedPic) pfp.src=savedPic;
+else pfp.src=""; // صورة فارغة
+if(!savedPic){
+ let div=document.createElement("div");
+ div.className="empty";
+ div.innerText="ليس لديك أي صورة محفوظة";
+ document.getElementById("cards").appendChild(div);
 }
 
-function save(){
- let data={
-  name:name.value,
-  bio:bio.value,
-  skills:skills.value,
-  exp:exp.value,
-  contact:contact.value
- };
- localStorage.setItem("profile_data",JSON.stringify(data));
- alert("تم حفظ البروفايل");
+// تغيير الصورة
+function changePic(){
+ let url=prompt("ضع رابط الصورة الجديدة:");
+ if(url){
+  localStorage.setItem(currentUser+"_pic",url);
+  pfp.src=url;
+  alert("تم تغيير الصورة!");
+ }
 }
 
-function load(){
- let img=localStorage.getItem("profile_avatar");
- if(img) avatar.src=img;
-
- let d=JSON.parse(localStorage.getItem("profile_data")||"{}");
- name.value=d.name||"";
- bio.value=d.bio||"";
- skills.value=d.skills||"";
- exp.value=d.exp||"";
- contact.value=d.contact||"";
-}
-load();
-
-function logout(){
- localStorage.clear();
- location.href="login.html";
-}
+// مثال: إنشاء خيارات داخل الكروت
+let exampleOptions=["الطلبات","الحسابات المعروضة","المفضلة"];
+let container=document.getElementById("cards");
+exampleOptions.forEach(opt=>{
+ let c=document.createElement("div");
+ c.className="card";
+ c.innerHTML=`<h3>${opt}</h3><p>اضغط للاطلاع</p><button onclick="alert('تم اختيار ${opt}')">فتح</button>`;
+ container.appendChild(c);
+});
 </script>
 
 </body>
