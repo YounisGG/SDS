@@ -3,204 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أكاديمية Godot للبرمجة</title>
+    <title>منصة Younis لتعليم تطوير الألعاب</title>
     <style>
         :root {
-            --main-color: #478cbf; /* لون غودو الرسمي */
-            --dark-bg: #22272e;
-            --card-bg: #2d333b;
-            --text-color: #adbac7;
-            --accent: #eb6f92;
+            --bg: #1a1c23;
+            --card: #252833;
+            --primary: #478cbf;
+            --accent: #00e676;
+            --text: #e0e0e0;
+            --code-bg: #0d1117;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-color);
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
             margin: 0;
-            padding: 0;
+            line-height: 1.6;
         }
 
         header {
-            background-color: var(--main-color);
-            padding: 20px;
+            background: linear-gradient(135deg, #478cbf, #1e1e1e);
+            padding: 40px 20px;
             text-align: center;
-            color: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border-bottom: 4px solid var(--accent);
         }
 
         nav {
+            background: #111;
+            padding: 15px;
             display: flex;
             justify-content: center;
-            gap: 20px;
-            background: #1c2128;
-            padding: 15px;
+            gap: 15px;
+            flex-wrap: wrap;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
         }
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
+        nav a { color: white; text-decoration: none; font-weight: bold; padding: 5px 10px; }
 
-        .container {
-            max-width: 1000px;
-            margin: 20px auto;
-            padding: 20px;
-        }
+        .container { max-width: 1100px; margin: auto; padding: 20px; }
 
         .section-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 30px;
-            border: 1px solid #444c56;
+            background: var(--card);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .code-block {
-            background: #161b22;
-            padding: 15px;
-            border-radius: 8px;
+        .code-container {
+            background: var(--code-bg);
+            padding: 20px;
+            border-radius: 10px;
             direction: ltr;
             text-align: left;
-            font-family: 'Courier New', Courier, monospace;
-            color: #d1d5da;
-            position: relative;
+            overflow-x: auto;
+            border-left: 5px solid var(--primary);
         }
+
+        .explanation-step {
+            background: #2d323e;
+            padding: 15px;
+            margin-top: 10px;
+            border-right: 4px solid var(--accent);
+            display: none;
+        }
+
+        .admin-only { display: none; background: #333; padding: 15px; border: 1px dashed var(--accent); border-radius: 10px; margin-top: 15px; }
 
         .btn {
-            background: var(--main-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
+            background: var(--primary);
+            color: white; border: none; padding: 10px 20px;
+            border-radius: 5px; cursor: pointer; transition: 0.3s;
         }
+        .btn:hover { opacity: 0.8; transform: scale(1.05); }
+        
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-right: 5px; }
+        .high { background: #d32f2f; }
+        .med { background: #f57c00; }
+        .low { background: #388e3c; }
 
-        .explanation {
-            display: none;
-            background: #2a2e35;
-            padding: 15px;
-            border-right: 4px solid var(--accent);
-            margin-top: 10px;
-        }
-
-        /* لوحة الإدمن */
-        #admin-panel {
-            display: none;
-            background: #1c2128;
-            border: 2px solid var(--accent);
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .download-box {
-            background: #3e4451;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
-            display: inline-block;
+        input[type="text"], input[type="password"], textarea {
+            width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none;
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>مركز تعليم تطوير الألعاب - Godot Engine</h1>
-    <p>تعلم بناء عالمك الخاص بدقة واحترافية</p>
+    <h1>موسوعة Godot الاحترافية</h1>
+    <p>تعلم البرمجة وبناء العوالم الثلاثية الأبعاد بدقة متناهية</p>
 </header>
 
 <nav>
-    <a href="#player">بناء اللاعب</a>
-    <a href="#enemy">بناء الأعداء</a>
-    <a href="#maps">الخرائط والبنايات</a>
-    <a href="#admin" onclick="showAdminPrompt()">لوحة الإدارة</a>
+    <a href="#player">🚀 بناء اللاعب</a>
+    <a href="#zombie">🧟 عدو زومبي ذكي</a>
+    <a href="#maps">🏗️ بناء الخرائط</a>
+    <a href="#logic">⚙️ برمجة الأنظمة</a>
+    <a href="#admin">🔐 بوابة الإدارة</a>
 </nav>
 
 <div class="container">
 
-    <section id="player" class="section-card">
-        <h2>👤 قسم بناء الشخصيات (Player Creation)</h2>
-        <p>في هذا القسم سنتعلم كيف نبني CharacterBody3D متكامل.</p>
-        <img src="https://via.placeholder.com/800x400?text=Godot+Player+Setup" alt="إعداد اللاعب" style="width:100%; border-radius:8px;">
+    <section id="zombie" class="section-card">
+        <h2>🧟 بناء عدو زومبي متطور (AI Navigation)</h2>
+        <p>في هذا الدرس، سنصنع زومبي يستخدم نظام الملاحة (NavigationAgent3D) لمطاردة اللاعب وتجنب العوائق.</p>
         
-        <div class="code-block">
-            var velocity = Vector3.ZERO<br>
-            const SPEED = 5.0<br>
-            func _physics_process(delta):<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;# منطق الحركة هنا
+        <div>
+            <span class="badge high">دقة عالية: 50,000 Triangle</span>
+            <span class="badge med">دقة متوسطة: 15,000 Triangle</span>
+            <span class="badge low">دقة منخفضة: 2,000 Triangle</span>
         </div>
-        <button class="btn" onclick="toggleDiv('player-desc')">شرح الكود بالتفصيل</button>
-        <div id="player-desc" class="explanation">
-            هذا الكود يستخدم <b>Vector3</b> لتحديد اتجاه الحركة في الفضاء الثلاثي الأبعاد، بينما <b>_physics_process</b> تضمن أن الحركة تعمل بشكل متزامن مع محرك الفيزياء.
+
+        <h3>1. البرمجة (The Script)</h3>
+        <div class="code-container">
+            <pre>
+extends CharacterBody3D
+
+@onready var nav_agent = $NavigationAgent3D
+var SPEED = 3.0
+
+func _physics_process(_delta):
+    var player = get_tree().get_first_node_in_group("player")
+    if player:
+        nav_agent.target_position = player.global_position
+        
+    var next_path_pos = nav_agent.get_next_path_position()
+    var current_pos = global_position
+    var new_velocity = (next_path_pos - current_pos).normalized() * SPEED
+    
+    velocity = new_velocity
+    move_and_slide()
+            </pre>
+        </div>
+
+        <button class="btn" onclick="toggleElement('zombie-logic')">🔍 شرح الكود سطراً بسطر</button>
+        
+        <div id="zombie-logic" class="explanation-step">
+            <p><b>extends CharacterBody3D:</b> تعني أن هذا الكائن هو جسم فيزيائي يمكنه التحرك والاصطدام.</p>
+            <p><b>@onready var nav_agent:</b> نقوم بتعريف عقدة الملاحة التي ستحسب لنا أقصر طريق للاعب.</p>
+            <p><b>get_first_node_in_group("player"):</b> هنا نبحث عن اللاعب في مشهد اللعبة (يجب أن تضع اللاعب في مجموعة اسمها player).</p>
+            <p><b>target_position:</b> هنا نخبر الزومبي أن يذهب إلى موقع اللاعب الحالي.</p>
+            <p><b>get_next_path_position():</b> هذه الدالة السحرية تعطينا النقطة التالية التي يجب أن يتجه إليها الزومبي ليتجنب الجدران.</p>
+            <p><b>normalized():</b> تجعل سرعة الزومبي ثابتة في كل الاتجاهات فلا يسرع عند التحرك بزاوية.</p>
+            <p><b>move_and_slide():</b> هي المسؤولة عن تحريك الزومبي فعلياً ومعالجة الاصطدام بالجدران.</p>
+        </div>
+
+        <div id="zombie-files-display">
+            <h4>الملفات المتوفرة:</h4>
+            <p id="no-files">لا توجد ملفات مرفوعة حالياً.</p>
+        </div>
+
+        <div id="zombie-upload" class="admin-only">
+            <h4>⬆️ رفع ملفات الزومبي (خاص بالآدمن)</h4>
+            <input type="file" id="fileInput">
+            <button class="btn" onclick="uploadFile('zombie')">نشر الملف للمستخدمين</button>
         </div>
     </section>
 
-    <section id="enemy" class="section-card">
-        <h2>🧟 قسم بناء عدو (زومبي AI)</h2>
-        <p>شرح بناء عدو يطارد اللاعب باستخدام NavigationAgent3D.</p>
-        
-        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-            <button class="btn" style="background: #28a745;">دقة عالية (High Poly)</button>
-            <button class="btn" style="background: #ffc107; color: black;">دقة متوسطة</button>
-            <button class="btn" style="background: #dc3545;">دقة منخفضة (Low Poly)</button>
-        </div>
-
-        <div class="code-block">
-            func _on_timer_timeout():<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;nav_agent.target_position = player.global_position
-        </div>
-        <button class="btn" onclick="toggleDiv('zombie-desc')">شرح كود المطاردة</button>
-        <div id="zombie-desc" class="explanation">
-            الكود يقوم بتحديث موقع الهدف (اللاعب) داخل نظام الملاحة (Navigation) لكي يعرف الزومبي المسار الأقصر للوصول إليك.
-        </div>
-
-        <div class="download-box">
-            📁 <b>تحميل ملفات الزومبي الكاملة (.zip)</b>
-        </div>
+    <section id="maps" class="section-card">
+        <h2>🏗️ قسم بناء الخرائط والمباني</h2>
+        <p>شرح استخدام الـ GridMap والـ MeshLibrary لبناء مدن كاملة بسرعة.</p>
+        <button class="btn">عرض الدروس</button>
     </section>
 
-    <section id="admin" class="section-card" style="border-color: var(--accent);">
-        <h2>🔐 لوحة التحكم (السرية)</h2>
-        <div id="admin-login">
-            <p>يرجى إدخال رمز الدخول للوصول للشكاوي والطلبات:</p>
-            <input type="password" id="adminPass" placeholder="كلمة السر...">
-            <button class="btn" onclick="checkAdmin()">دخول</button>
+    <section id="admin" class="section-card">
+        <h2>🔐 لوحة تحكم الآدمن</h2>
+        <div id="login-box">
+            <input type="password" id="passInput" placeholder="أدخل كلمة السر السرية">
+            <button class="btn" onclick="login()">دخول</button>
         </div>
-        
-        <div id="admin-panel">
-            <h3>مرحباً سيد Younis!</h3>
-            <ul>
-                <li>طلب: "نريد شرح عن الـ Multiplayer" - من مستخدم 1</li>
-                <li>شكوى: "رابط تحميل الزومبي لا يعمل" - من مستخدم 2</li>
-            </ul>
+
+        <div id="admin-content" style="display:none;">
+            <h3 style="color:var(--accent)">أهلاً بك يا Younis</h3>
+            <p>لقد فتحت الآن صلاحيات الرفع وتعديل الدروس.</p>
+            <div style="background:#111; padding:10px; border-radius:5px;">
+                <h4>الطلبات الجديدة:</h4>
+                <p>- "ممكن شرح نظام إطلاق النار؟"</p>
+                <p>- "ملف الخريطة فيه مشكلة بالخامات"</p>
+            </div>
         </div>
     </section>
-
 </div>
 
 <script>
-    function toggleDiv(id) {
-        var x = document.getElementById(id);
-        if (x.style.display === "block") {
-            x.style.display = "none";
+    function toggleElement(id) {
+        var el = document.getElementById(id);
+        el.style.display = (el.style.display === "block") ? "none" : "block";
+    }
+
+    function login() {
+        var p = document.getElementById("passInput").value;
+        if (p === "Younis123321") {
+            document.getElementById("login-box").style.display = "none";
+            document.getElementById("admin-content").style.display = "block";
+            
+            // إظهار أزرار الرفع في كل الأقسام
+            var uploads = document.getElementsByClassName("admin-only");
+            for(var i=0; i<uploads.length; i++) {
+                uploads[i].style.display = "block";
+            }
+            alert("تم تفعيل وضع الآدمن بنجاح");
         } else {
-            x.style.display = "block";
+            alert("كلمة السر خاطئة!");
         }
     }
 
-    function checkAdmin() {
-        var pass = document.getElementById("adminPass").value;
-        if (pass === "Younis123321") {
-            document.getElementById("admin-login").style.display = "none";
-            document.getElementById("admin-panel").style.display = "block";
-            alert("تم الدخول بنجاح، أهلاً أيمن!");
+    function uploadFile(section) {
+        var file = document.getElementById("fileInput").files[0];
+        if(file) {
+            document.getElementById("no-files").style.display = "none";
+            var display = document.getElementById("zombie-files-display");
+            var link = document.createElement("a");
+            link.href = "#";
+            link.className = "btn";
+            link.style.background = "#444";
+            link.style.margin = "5px";
+            link.innerHTML = "📄 تحميل: " + file.name;
+            display.appendChild(link);
+            alert("تم رفع الملف بنجاح!");
         } else {
-            alert("كلمة السر خاطئة!");
+            alert("يرجى اختيار ملف أولاً");
         }
     }
 </script>
