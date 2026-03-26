@@ -3,21 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محرك CCSV العملاق</title>
-    <link rel="stylesheet" href="style.css"> </head>
+    <title>أكاديمية Godot للبرمجة</title>
+    <style>
+        :root {
+            --main-color: #478cbf; /* لون غودو الرسمي */
+            --dark-bg: #22272e;
+            --card-bg: #2d333b;
+            --text-color: #adbac7;
+            --accent: #eb6f92;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--main-color);
+            padding: 20px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            background: #1c2128;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid #444c56;
+        }
+
+        .code-block {
+            background: #161b22;
+            padding: 15px;
+            border-radius: 8px;
+            direction: ltr;
+            text-align: left;
+            font-family: 'Courier New', Courier, monospace;
+            color: #d1d5da;
+            position: relative;
+        }
+
+        .btn {
+            background: var(--main-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .explanation {
+            display: none;
+            background: #2a2e35;
+            padding: 15px;
+            border-right: 4px solid var(--accent);
+            margin-top: 10px;
+        }
+
+        /* لوحة الإدمن */
+        #admin-panel {
+            display: none;
+            background: #1c2128;
+            border: 2px solid var(--accent);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .download-box {
+            background: #3e4451;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+    </style>
+</head>
 <body>
-    <div class="container">
-        <h1>🤖 مصنع CCSV للذكاء الاصطناعي</h1>
-        <p>اطلب بناء ميزة الـ DLSS لأي لعبة (ببجي، أرك، كود):</p>
-        
-        <textarea id="userPrompt" placeholder="مثلاً: ابني كود CCSV لرفع فريمات ARK إلى 120fps باستخدام الـ GPU..."></textarea>
-        
-        <br>
-        <button id="generateBtn">تشغيل المحرك العملاق</button>
 
-        <div id="output" class="code-box"></div>
-    </div>
+<header>
+    <h1>مركز تعليم تطوير الألعاب - Godot Engine</h1>
+    <p>تعلم بناء عالمك الخاص بدقة واحترافية</p>
+</header>
 
-    <script src="script.js"></script>
+<nav>
+    <a href="#player">بناء اللاعب</a>
+    <a href="#enemy">بناء الأعداء</a>
+    <a href="#maps">الخرائط والبنايات</a>
+    <a href="#admin" onclick="showAdminPrompt()">لوحة الإدارة</a>
+</nav>
+
+<div class="container">
+
+    <section id="player" class="section-card">
+        <h2>👤 قسم بناء الشخصيات (Player Creation)</h2>
+        <p>في هذا القسم سنتعلم كيف نبني CharacterBody3D متكامل.</p>
+        <img src="https://via.placeholder.com/800x400?text=Godot+Player+Setup" alt="إعداد اللاعب" style="width:100%; border-radius:8px;">
+        
+        <div class="code-block">
+            var velocity = Vector3.ZERO<br>
+            const SPEED = 5.0<br>
+            func _physics_process(delta):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;# منطق الحركة هنا
+        </div>
+        <button class="btn" onclick="toggleDiv('player-desc')">شرح الكود بالتفصيل</button>
+        <div id="player-desc" class="explanation">
+            هذا الكود يستخدم <b>Vector3</b> لتحديد اتجاه الحركة في الفضاء الثلاثي الأبعاد، بينما <b>_physics_process</b> تضمن أن الحركة تعمل بشكل متزامن مع محرك الفيزياء.
+        </div>
+    </section>
+
+    <section id="enemy" class="section-card">
+        <h2>🧟 قسم بناء عدو (زومبي AI)</h2>
+        <p>شرح بناء عدو يطارد اللاعب باستخدام NavigationAgent3D.</p>
+        
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <button class="btn" style="background: #28a745;">دقة عالية (High Poly)</button>
+            <button class="btn" style="background: #ffc107; color: black;">دقة متوسطة</button>
+            <button class="btn" style="background: #dc3545;">دقة منخفضة (Low Poly)</button>
+        </div>
+
+        <div class="code-block">
+            func _on_timer_timeout():<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;nav_agent.target_position = player.global_position
+        </div>
+        <button class="btn" onclick="toggleDiv('zombie-desc')">شرح كود المطاردة</button>
+        <div id="zombie-desc" class="explanation">
+            الكود يقوم بتحديث موقع الهدف (اللاعب) داخل نظام الملاحة (Navigation) لكي يعرف الزومبي المسار الأقصر للوصول إليك.
+        </div>
+
+        <div class="download-box">
+            📁 <b>تحميل ملفات الزومبي الكاملة (.zip)</b>
+        </div>
+    </section>
+
+    <section id="admin" class="section-card" style="border-color: var(--accent);">
+        <h2>🔐 لوحة التحكم (السرية)</h2>
+        <div id="admin-login">
+            <p>يرجى إدخال رمز الدخول للوصول للشكاوي والطلبات:</p>
+            <input type="password" id="adminPass" placeholder="كلمة السر...">
+            <button class="btn" onclick="checkAdmin()">دخول</button>
+        </div>
+        
+        <div id="admin-panel">
+            <h3>مرحباً سيد Younis!</h3>
+            <ul>
+                <li>طلب: "نريد شرح عن الـ Multiplayer" - من مستخدم 1</li>
+                <li>شكوى: "رابط تحميل الزومبي لا يعمل" - من مستخدم 2</li>
+            </ul>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    function toggleDiv(id) {
+        var x = document.getElementById(id);
+        if (x.style.display === "block") {
+            x.style.display = "none";
+        } else {
+            x.style.display = "block";
+        }
+    }
+
+    function checkAdmin() {
+        var pass = document.getElementById("adminPass").value;
+        if (pass === "Younis123321") {
+            document.getElementById("admin-login").style.display = "none";
+            document.getElementById("admin-panel").style.display = "block";
+            alert("تم الدخول بنجاح، أهلاً أيمن!");
+        } else {
+            alert("كلمة السر خاطئة!");
+        }
+    }
+</script>
+
 </body>
 </html>
