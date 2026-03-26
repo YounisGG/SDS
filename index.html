@@ -1,233 +1,215 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة Younis لتعليم تطوير الألعاب</title>
-    <style>
-        :root {
-            --bg: #1a1c23;
-            --card: #252833;
-            --primary: #478cbf;
-            --accent: #00e676;
-            --text: #e0e0e0;
-            --code-bg: #0d1117;
-        }
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            line-height: 1.6;
-        }
-
-        header {
-            background: linear-gradient(135deg, #478cbf, #1e1e1e);
-            padding: 40px 20px;
-            text-align: center;
-            border-bottom: 4px solid var(--accent);
-        }
-
-        nav {
-            background: #111;
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        nav a { color: white; text-decoration: none; font-weight: bold; padding: 5px 10px; }
-
-        .container { max-width: 1100px; margin: auto; padding: 20px; }
-
-        .section-card {
-            background: var(--card);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .code-container {
-            background: var(--code-bg);
-            padding: 20px;
-            border-radius: 10px;
-            direction: ltr;
-            text-align: left;
-            overflow-x: auto;
-            border-left: 5px solid var(--primary);
-        }
-
-        .explanation-step {
-            background: #2d323e;
-            padding: 15px;
-            margin-top: 10px;
-            border-right: 4px solid var(--accent);
-            display: none;
-        }
-
-        .admin-only { display: none; background: #333; padding: 15px; border: 1px dashed var(--accent); border-radius: 10px; margin-top: 15px; }
-
-        .btn {
-            background: var(--primary);
-            color: white; border: none; padding: 10px 20px;
-            border-radius: 5px; cursor: pointer; transition: 0.3s;
-        }
-        .btn:hover { opacity: 0.8; transform: scale(1.05); }
-        
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-right: 5px; }
-        .high { background: #d32f2f; }
-        .med { background: #f57c00; }
-        .low { background: #388e3c; }
-
-        input[type="text"], input[type="password"], textarea {
-            width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>منصة تعليم Godot</title>
+<style>
+body {
+    font-family: Tahoma;
+    background: #1e1e1e;
+    color: white;
+    margin: 0;
+}
+header {
+    background: #111;
+    padding: 20px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+}
+nav {
+    background: #222;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+nav a {
+    color: #00eaff;
+    text-decoration: none;
+    font-size: 18px;
+}
+section {
+    padding: 20px;
+}
+.card {
+    background: #2a2a2a;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+button {
+    padding: 10px 20px;
+    background: #00eaff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.hidden {
+    display: none;
+}
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background: #333;
+    color: white;
+    border: 1px solid #555;
+}
+.admin-panel {
+    background: #111;
+    padding: 20px;
+    border-radius: 10px;
+}
+</style>
 </head>
+
 <body>
 
-<header>
-    <h1>موسوعة Godot الاحترافية</h1>
-    <p>تعلم البرمجة وبناء العوالم الثلاثية الأبعاد بدقة متناهية</p>
-</header>
+<header>منصة تعليم Godot – بإدارة يونس</header>
 
 <nav>
-    <a href="#player">🚀 بناء اللاعب</a>
-    <a href="#zombie">🧟 عدو زومبي ذكي</a>
-    <a href="#maps">🏗️ بناء الخرائط</a>
-    <a href="#logic">⚙️ برمجة الأنظمة</a>
-    <a href="#admin">🔐 بوابة الإدارة</a>
+    <a href="#" onclick="showPage('home')">الرئيسية</a>
+    <a href="#" onclick="showPage('player')">صنع اللاعب</a>
+    <a href="#" onclick="showPage('zombie')">صنع عدو زومبي</a>
+    <a href="#" onclick="showPage('buildings')">صنع البنايات</a>
+    <a href="#" onclick="showPage('contact')">مراسلة فريق العمل</a>
+    <a href="#" onclick="showPage('adminLogin')">لوحة الأدمِن</a>
 </nav>
 
-<div class="container">
-
-    <section id="zombie" class="section-card">
-        <h2>🧟 بناء عدو زومبي متطور (AI Navigation)</h2>
-        <p>في هذا الدرس، سنصنع زومبي يستخدم نظام الملاحة (NavigationAgent3D) لمطاردة اللاعب وتجنب العوائق.</p>
-        
-        <div>
-            <span class="badge high">دقة عالية: 50,000 Triangle</span>
-            <span class="badge med">دقة متوسطة: 15,000 Triangle</span>
-            <span class="badge low">دقة منخفضة: 2,000 Triangle</span>
+<!-- الصفحات -->
+<div id="home" class="page">
+    <section>
+        <div class="card">
+            <h2>مرحباً بك في منصة تعليم Godot</h2>
+            <p>هنا ستتعلم كل شيء عن بناء الألعاب خطوة بخطوة.</p>
         </div>
+    </section>
+</div>
 
-        <h3>1. البرمجة (The Script)</h3>
-        <div class="code-container">
-            <pre>
+<div id="player" class="page hidden">
+    <section>
+        <div class="card">
+            <h2>شرح صنع اللاعب Player</h2>
+            <img src="https://via.placeholder.com/600x200" style="width:100%;border-radius:10px;">
+            <p>1. أضف Node3D</p>
+            <p>2. أضف CharacterBody3D</p>
+            <p>3. أضف Camera3D</p>
+            <p>4. أضف CollisionShape3D</p>
+
+            <button onclick="toggleCode('playerCode')">إظهار/إخفاء الكود</button>
+            <pre id="playerCode" class="hidden">
 extends CharacterBody3D
 
-@onready var nav_agent = $NavigationAgent3D
-var SPEED = 3.0
+var speed = 5.0
 
-func _physics_process(_delta):
-    var player = get_tree().get_first_node_in_group("player")
-    if player:
-        nav_agent.target_position = player.global_position
-        
-    var next_path_pos = nav_agent.get_next_path_position()
-    var current_pos = global_position
-    var new_velocity = (next_path_pos - current_pos).normalized() * SPEED
-    
-    velocity = new_velocity
+func _physics_process(delta):
+    var input_dir = Input.get_vector("left","right","forward","back")
+    velocity.x = input_dir.x * speed
+    velocity.z = input_dir.y * speed
     move_and_slide()
             </pre>
         </div>
+    </section>
+</div>
 
-        <button class="btn" onclick="toggleElement('zombie-logic')">🔍 شرح الكود سطراً بسطر</button>
-        
-        <div id="zombie-logic" class="explanation-step">
-            <p><b>extends CharacterBody3D:</b> تعني أن هذا الكائن هو جسم فيزيائي يمكنه التحرك والاصطدام.</p>
-            <p><b>@onready var nav_agent:</b> نقوم بتعريف عقدة الملاحة التي ستحسب لنا أقصر طريق للاعب.</p>
-            <p><b>get_first_node_in_group("player"):</b> هنا نبحث عن اللاعب في مشهد اللعبة (يجب أن تضع اللاعب في مجموعة اسمها player).</p>
-            <p><b>target_position:</b> هنا نخبر الزومبي أن يذهب إلى موقع اللاعب الحالي.</p>
-            <p><b>get_next_path_position():</b> هذه الدالة السحرية تعطينا النقطة التالية التي يجب أن يتجه إليها الزومبي ليتجنب الجدران.</p>
-            <p><b>normalized():</b> تجعل سرعة الزومبي ثابتة في كل الاتجاهات فلا يسرع عند التحرك بزاوية.</p>
-            <p><b>move_and_slide():</b> هي المسؤولة عن تحريك الزومبي فعلياً ومعالجة الاصطدام بالجدران.</p>
-        </div>
+<div id="zombie" class="page hidden">
+    <section>
+        <div class="card">
+            <h2>شرح صنع عدو زومبي</h2>
+            <img src="https://via.placeholder.com/600x200" style="width:100%;border-radius:10px;">
+            <p>1. أضف Node3D</p>
+            <p>2. أضف AnimatedSprite3D</p>
+            <p>3. أضف NavigationAgent3D</p>
+            <p>4. أضف CollisionShape3D</p>
 
-        <div id="zombie-files-display">
-            <h4>الملفات المتوفرة:</h4>
-            <p id="no-files">لا توجد ملفات مرفوعة حالياً.</p>
-        </div>
+            <button onclick="toggleCode('zombieCode')">إظهار/إخفاء الكود</button>
+            <pre id="zombieCode" class="hidden">
+extends CharacterBody3D
 
-        <div id="zombie-upload" class="admin-only">
-            <h4>⬆️ رفع ملفات الزومبي (خاص بالآدمن)</h4>
-            <input type="file" id="fileInput">
-            <button class="btn" onclick="uploadFile('zombie')">نشر الملف للمستخدمين</button>
+var speed = 2.0
+var player
+
+func _ready():
+    player = get_node("/root/World/Player")
+
+func _physics_process(delta):
+    if player:
+        look_at(player.global_transform.origin, Vector3.UP)
+        velocity = (player.global_transform.origin - global_transform.origin).normalized() * speed
+        move_and_slide()
+            </pre>
         </div>
     </section>
+</div>
 
-    <section id="maps" class="section-card">
-        <h2>🏗️ قسم بناء الخرائط والمباني</h2>
-        <p>شرح استخدام الـ GridMap والـ MeshLibrary لبناء مدن كاملة بسرعة.</p>
-        <button class="btn">عرض الدروس</button>
-    </section>
-
-    <section id="admin" class="section-card">
-        <h2>🔐 لوحة تحكم الآدمن</h2>
-        <div id="login-box">
-            <input type="password" id="passInput" placeholder="أدخل كلمة السر السرية">
-            <button class="btn" onclick="login()">دخول</button>
+<div id="buildings" class="page hidden">
+    <section>
+        <div class="card">
+            <h2>شرح صنع البنايات</h2>
+            <img src="https://via.placeholder.com/600x200" style="width:100%;border-radius:10px;">
+            <p>1. أضف MeshInstance3D</p>
+            <p>2. اختر Mesh جاهز</p>
+            <p>3. أضف CollisionShape3D</p>
+            <p>4. أضف Material</p>
         </div>
+    </section>
+</div>
 
-        <div id="admin-content" style="display:none;">
-            <h3 style="color:var(--accent)">أهلاً بك يا Younis</h3>
-            <p>لقد فتحت الآن صلاحيات الرفع وتعديل الدروس.</p>
-            <div style="background:#111; padding:10px; border-radius:5px;">
-                <h4>الطلبات الجديدة:</h4>
-                <p>- "ممكن شرح نظام إطلاق النار؟"</p>
-                <p>- "ملف الخريطة فيه مشكلة بالخامات"</p>
-            </div>
+<div id="contact" class="page hidden">
+    <section>
+        <div class="card">
+            <h2>مراسلة فريق العمل</h2>
+            <textarea placeholder="اكتب رسالتك هنا"></textarea>
+            <button>إرسال</button>
+        </div>
+    </section>
+</div>
+
+<!-- تسجيل دخول الأدمِن -->
+<div id="adminLogin" class="page hidden">
+    <section>
+        <div class="card">
+            <h2>تسجيل دخول الأدمِن</h2>
+            <input type="password" id="adminPass" placeholder="أدخل كلمة السر">
+            <button onclick="loginAdmin()">دخول</button>
+        </div>
+    </section>
+</div>
+
+<!-- لوحة الأدمِن -->
+<div id="adminPanel" class="page hidden">
+    <section>
+        <div class="admin-panel">
+            <h2>لوحة تحكم الأدمِن</h2>
+            <p>رفع ملفات للمستخدمين:</p>
+            <input type="file">
+            <button>رفع</button>
+
+            <h3>الشكاوي:</h3>
+            <div id="complaints">لا توجد شكاوي حالياً</div>
         </div>
     </section>
 </div>
 
 <script>
-    function toggleElement(id) {
-        var el = document.getElementById(id);
-        el.style.display = (el.style.display === "block") ? "none" : "block";
-    }
+function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
+}
 
-    function login() {
-        var p = document.getElementById("passInput").value;
-        if (p === "Younis123321") {
-            document.getElementById("login-box").style.display = "none";
-            document.getElementById("admin-content").style.display = "block";
-            
-            // إظهار أزرار الرفع في كل الأقسام
-            var uploads = document.getElementsByClassName("admin-only");
-            for(var i=0; i<uploads.length; i++) {
-                uploads[i].style.display = "block";
-            }
-            alert("تم تفعيل وضع الآدمن بنجاح");
-        } else {
-            alert("كلمة السر خاطئة!");
-        }
-    }
+function toggleCode(id) {
+    document.getElementById(id).classList.toggle('hidden');
+}
 
-    function uploadFile(section) {
-        var file = document.getElementById("fileInput").files[0];
-        if(file) {
-            document.getElementById("no-files").style.display = "none";
-            var display = document.getElementById("zombie-files-display");
-            var link = document.createElement("a");
-            link.href = "#";
-            link.className = "btn";
-            link.style.background = "#444";
-            link.style.margin = "5px";
-            link.innerHTML = "📄 تحميل: " + file.name;
-            display.appendChild(link);
-            alert("تم رفع الملف بنجاح!");
-        } else {
-            alert("يرجى اختيار ملف أولاً");
-        }
+function loginAdmin() {
+    let pass = document.getElementById("adminPass").value;
+    if (pass === "Younis123321") {
+        showPage('adminPanel');
+    } else {
+        alert("كلمة السر خاطئة");
     }
+}
 </script>
 
 </body>
