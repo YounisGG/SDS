@@ -1,215 +1,260 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>منصة تعليم Godot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>تعلم Godot</title>
+
 <style>
 body {
-    font-family: Tahoma;
-    background: #1e1e1e;
-    color: white;
-    margin: 0;
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  margin: 0;
 }
+
 header {
-    background: #111;
-    padding: 20px;
-    text-align: center;
-    font-size: 28px;
-    font-weight: bold;
+  background: #1e293b;
+  padding: 10px;
+  text-align: center;
 }
-nav {
-    background: #222;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+
+nav button {
+  margin: 5px;
+  padding: 10px;
+  background: #334155;
+  color: white;
+  border: none;
+  border-radius: 8px;
 }
-nav a {
-    color: #00eaff;
-    text-decoration: none;
-    font-size: 18px;
+
+.content {
+  padding: 20px;
 }
-section {
-    padding: 20px;
-}
-.card {
-    background: #2a2a2a;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-}
-button {
-    padding: 10px 20px;
-    background: #00eaff;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-}
+
 .hidden {
-    display: none;
+  display: none;
 }
-input, textarea {
+
+img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 10px;
+}
+
+pre {
+  background: #020617;
+  padding: 10px;
+  border-radius: 10px;
+  overflow-x: auto;
+}
+
+.admin-btn {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: red;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.admin {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background: #111;
+  padding: 20px;
+}
+
+@media (max-width: 600px) {
+  nav button {
     width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    background: #333;
-    color: white;
-    border: 1px solid #555;
-}
-.admin-panel {
-    background: #111;
-    padding: 20px;
-    border-radius: 10px;
+  }
 }
 </style>
-</head>
 
+</head>
 <body>
 
-<header>منصة تعليم Godot – بإدارة يونس</header>
+<header>
+  <h1>🔥 تعلم Godot من الصفر</h1>
 
-<nav>
-    <a href="#" onclick="showPage('home')">الرئيسية</a>
-    <a href="#" onclick="showPage('player')">صنع اللاعب</a>
-    <a href="#" onclick="showPage('zombie')">صنع عدو زومبي</a>
-    <a href="#" onclick="showPage('buildings')">صنع البنايات</a>
-    <a href="#" onclick="showPage('contact')">مراسلة فريق العمل</a>
-    <a href="#" onclick="showPage('adminLogin')">لوحة الأدمِن</a>
-</nav>
+  <nav>
+    <button onclick="show('player')">اللاعب</button>
+    <button onclick="show('enemy')">الزومبي</button>
+    <button onclick="show('maps')">الخرائط</button>
+    <button onclick="show('buildings')">البنايات</button>
+    <button onclick="show('contact')">تواصل</button>
+  </nav>
+</header>
 
-<!-- الصفحات -->
-<div id="home" class="page">
-    <section>
-        <div class="card">
-            <h2>مرحباً بك في منصة تعليم Godot</h2>
-            <p>هنا ستتعلم كل شيء عن بناء الألعاب خطوة بخطوة.</p>
-        </div>
-    </section>
-</div>
+<!-- اللاعب -->
+<section id="player" class="content">
 
-<div id="player" class="page hidden">
-    <section>
-        <div class="card">
-            <h2>شرح صنع اللاعب Player</h2>
-            <img src="https://via.placeholder.com/600x200" style="width:100%;border-radius:10px;">
-            <p>1. أضف Node3D</p>
-            <p>2. أضف CharacterBody3D</p>
-            <p>3. أضف Camera3D</p>
-            <p>4. أضف CollisionShape3D</p>
+<h2>🎮 صنع اللاعب</h2>
 
-            <button onclick="toggleCode('playerCode')">إظهار/إخفاء الكود</button>
-            <pre id="playerCode" class="hidden">
-extends CharacterBody3D
+<p>1. أضف Node من نوع CharacterBody2D</p>
+<img src="https://i.imgur.com/6XQZ6rA.png">
 
-var speed = 5.0
+<p>2. أضف CollisionShape2D + Sprite2D</p>
+
+<p>3. استخدم هذا الكود:</p>
+
+<pre>
+extends CharacterBody2D
+
+@export var speed = 250
+@export var jump_force = -500
+var gravity = 1000
 
 func _physics_process(delta):
-    var input_dir = Input.get_vector("left","right","forward","back")
-    velocity.x = input_dir.x * speed
-    velocity.z = input_dir.y * speed
+    if not is_on_floor():
+        velocity.y += gravity * delta
+
+    var dir = Input.get_axis("ui_left", "ui_right")
+    velocity.x = dir * speed
+
+    if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+        velocity.y = jump_force
+
     move_and_slide()
-            </pre>
-        </div>
-    </section>
-</div>
+</pre>
 
-<div id="zombie" class="page hidden">
-    <section>
-        <div class="card">
-            <h2>شرح صنع عدو زومبي</h2>
-            <img src="https://via.placeholder.com/600x200" style="width:100%;border-radius:10px;">
-            <p>1. أضف Node3D</p>
-            <p>2. أضف AnimatedSprite3D</p>
-            <p>3. أضف NavigationAgent3D</p>
-            <p>4. أضف CollisionShape3D</p>
+<h3>📱 دعم الموبايل</h3>
+<p>استخدم أزرار TouchScreenButton واربطها بـ Input Map</p>
 
-            <button onclick="toggleCode('zombieCode')">إظهار/إخفاء الكود</button>
-            <pre id="zombieCode" class="hidden">
-extends CharacterBody3D
+</section>
 
-var speed = 2.0
+<!-- الزومبي -->
+<section id="enemy" class="content hidden">
+
+<h2>🧟 صنع عدو زومبي</h2>
+
+<p>1. أضف CharacterBody2D</p>
+<p>2. أضف Sprite + Collision</p>
+
+<img src="https://i.imgur.com/Z7AzH2c.png">
+
+<p>3. الكود:</p>
+
+<pre>
+extends CharacterBody2D
+
+@export var speed = 100
 var player
 
-func _ready():
-    player = get_node("/root/World/Player")
-
-func _physics_process(delta):
+func _process(delta):
     if player:
-        look_at(player.global_transform.origin, Vector3.UP)
-        velocity = (player.global_transform.origin - global_transform.origin).normalized() * speed
+        var dir = (player.global_position - global_position).normalized()
+        velocity = dir * speed
         move_and_slide()
-            </pre>
-        </div>
-    </section>
+</pre>
+
+<p>📦 تحميل ملف الزومبي:</p>
+<a href="#" onclick="alert('حط ملفك هنا بعد رفعه على GitHub')">تحميل</a>
+
+</section>
+
+<!-- الخرائط -->
+<section id="maps" class="content hidden">
+
+<h2>🗺️ صنع الخرائط</h2>
+
+<p>استخدم TileMap</p>
+<img src="https://i.imgur.com/YW6G6Qh.png">
+
+</section>
+
+<!-- البنايات -->
+<section id="buildings" class="content hidden">
+
+<h2>🏠 البنايات</h2>
+
+<p>استخدم MeshInstance أو Sprite</p>
+<img src="https://i.imgur.com/Fx3pKkM.png">
+
+</section>
+
+<!-- تواصل -->
+<section id="contact" class="content hidden">
+
+<h2>📩 مراسلة الفريق</h2>
+
+<input id="name" placeholder="اسمك"><br><br>
+<textarea id="msg" placeholder="رسالتك"></textarea><br><br>
+
+<button onclick="send()">ارسال</button>
+
+</section>
+
+<!-- زر سري -->
+<button class="admin-btn" onclick="openAdmin()">⚙️</button>
+
+<!-- لوحة الادمن -->
+<div id="admin" class="admin hidden">
+
+<h2>🔒 لوحة الادمن</h2>
+
+<input id="pass" placeholder="كلمة السر"><br><br>
+<button onclick="login()">دخول</button>
+
+<div id="panel" class="hidden">
+
+<h3>📨 الرسائل</h3>
+<div id="messages"></div>
+
 </div>
 
-<div id="buildings" class="page hidden">
-    <section>
-        <div class="card">
-            <h2>شرح صنع البنايات</h2>
-            <img src="https://via.placeholder.com/600x200" style="width:100%;border-radius:10px;">
-            <p>1. أضف MeshInstance3D</p>
-            <p>2. اختر Mesh جاهز</p>
-            <p>3. أضف CollisionShape3D</p>
-            <p>4. أضف Material</p>
-        </div>
-    </section>
-</div>
-
-<div id="contact" class="page hidden">
-    <section>
-        <div class="card">
-            <h2>مراسلة فريق العمل</h2>
-            <textarea placeholder="اكتب رسالتك هنا"></textarea>
-            <button>إرسال</button>
-        </div>
-    </section>
-</div>
-
-<!-- تسجيل دخول الأدمِن -->
-<div id="adminLogin" class="page hidden">
-    <section>
-        <div class="card">
-            <h2>تسجيل دخول الأدمِن</h2>
-            <input type="password" id="adminPass" placeholder="أدخل كلمة السر">
-            <button onclick="loginAdmin()">دخول</button>
-        </div>
-    </section>
-</div>
-
-<!-- لوحة الأدمِن -->
-<div id="adminPanel" class="page hidden">
-    <section>
-        <div class="admin-panel">
-            <h2>لوحة تحكم الأدمِن</h2>
-            <p>رفع ملفات للمستخدمين:</p>
-            <input type="file">
-            <button>رفع</button>
-
-            <h3>الشكاوي:</h3>
-            <div id="complaints">لا توجد شكاوي حالياً</div>
-        </div>
-    </section>
 </div>
 
 <script>
-function showPage(id) {
-    document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-    document.getElementById(id).classList.remove('hidden');
+
+function show(id){
+  document.querySelectorAll(".content").forEach(e=>e.classList.add("hidden"))
+  document.getElementById(id).classList.remove("hidden")
 }
 
-function toggleCode(id) {
-    document.getElementById(id).classList.toggle('hidden');
+function send(){
+  let name = document.getElementById("name").value
+  let msg = document.getElementById("msg").value
+
+  let data = JSON.parse(localStorage.getItem("msgs") || "[]")
+  data.push({name,msg})
+
+  localStorage.setItem("msgs", JSON.stringify(data))
+  alert("تم الارسال")
 }
 
-function loginAdmin() {
-    let pass = document.getElementById("adminPass").value;
-    if (pass === "Younis123321") {
-        showPage('adminPanel');
-    } else {
-        alert("كلمة السر خاطئة");
-    }
+function openAdmin(){
+  document.getElementById("admin").classList.remove("hidden")
 }
+
+function login(){
+  let pass = document.getElementById("pass").value
+
+  if(pass === "Younis123321"){
+    document.getElementById("panel").classList.remove("hidden")
+    load()
+  } else {
+    alert("خطأ")
+  }
+}
+
+function load(){
+  let data = JSON.parse(localStorage.getItem("msgs") || "[]")
+  let div = document.getElementById("messages")
+
+  div.innerHTML = ""
+
+  data.forEach(m=>{
+    div.innerHTML += `<p>${m.name}: ${m.msg}</p>`
+  })
+}
+
 </script>
 
 </body>
