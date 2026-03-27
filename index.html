@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Godot Platform</title>
+<title>DevPath (DP)</title>
 
 <style>
 body{
@@ -13,22 +13,43 @@ body{
   color:white;
 }
 
+/* HEADER + LOGO */
 header{
-  text-align:center;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
   padding:20px;
-  font-size:25px;
+  font-size:22px;
 }
 
-.page{
-  display:none;
-  padding:20px;
-  text-align:center;
+.logo{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  background:linear-gradient(45deg,#22c55e,#3b82f6);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-weight:bold;
+  animation:spin 5s linear infinite;
 }
 
-.active{
-  display:block;
+@keyframes spin{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
 }
 
+/* PAGES */
+.page{display:none;padding:20px;text-align:center;}
+.active{display:block;animation:fade .5s;}
+
+@keyframes fade{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1}
+}
+
+/* BUTTON */
 .btn{
   display:block;
   width:85%;
@@ -39,98 +60,194 @@ header{
   border-radius:12px;
   color:white;
   font-size:18px;
-  transition:0.3s;
 }
 
-.btn:hover{
-  background:#475569;
-  transform:scale(1.05);
-}
+.btn:hover{background:#475569}
 
-.back{
-  background:red;
-}
-
-#content{
+/* BOX */
+.box{
   background:#020617;
-  margin:20px;
   padding:15px;
+  margin:10px;
   border-radius:10px;
   text-align:right;
-  white-space:pre-wrap;
-  max-height:300px;
-  overflow:auto;
+}
+
+/* INPUT */
+input,textarea{
+  width:90%;
+  margin:5px;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+}
+
+/* IMAGE */
+img{
+  width:90%;
+  max-width:300px;
+  border-radius:10px;
+  margin-top:10px;
 }
 </style>
-
 </head>
+
 <body>
 
-<header>🔥 منصة تعلم Godot</header>
+<header>
+<div class="logo">DP</div>
+<div>DevPath</div>
+</header>
 
-<!-- الصفحة الرئيسية -->
+<!-- MAIN -->
 <div id="main" class="page active">
-  <h2>اختر القسم</h2>
-  <button class="btn" onclick="openPage('page2d')">🟢 2D</button>
-  <button class="btn" onclick="openPage('page3d')">🔵 3D</button>
+<h2>المنصة</h2>
+<button class="btn" onclick="openPage('lessons')">📚 الدروس</button>
+<button class="btn" onclick="openPage('contact')">📩 مراسلة الفريق</button>
+<button class="btn" onclick="openPage('adminLogin')">🔐 الادمن</button>
 </div>
 
-<!-- قسم 2D -->
-<div id="page2d" class="page">
-  <h2>🟢 دروس 2D</h2>
-
-  <button class="btn" onclick="loadLesson('2d_player.txt')">🎮 اللاعب</button>
-  <button class="btn" onclick="loadLesson('2d_movement.txt')">🏃 الحركة</button>
-  <button class="btn" onclick="loadLesson('2d_zombie.txt')">🧟 الزومبي</button>
-
-  <button class="btn back" onclick="goBack()">⬅ رجوع</button>
+<!-- LESSONS -->
+<div id="lessons" class="page">
+<h2>📚 الدروس</h2>
+<div id="lessonList"></div>
+<button class="btn" onclick="goBack()">⬅ رجوع</button>
 </div>
 
-<!-- قسم 3D -->
-<div id="page3d" class="page">
-  <h2>🔵 دروس 3D</h2>
-
-  <button class="btn" onclick="loadLesson('player.txt')">🎮 اللاعب 3D</button>
-  <button class="btn" onclick="loadLesson('movement.txt')">🏃 الحركة 3D</button>
-  <button class="btn" onclick="loadLesson('zombie.txt')">👾 العدو 3D</button>
-
-  <button class="btn back" onclick="goBack()">⬅ رجوع</button>
+<!-- VIEW LESSON -->
+<div id="viewLesson" class="page">
+<div class="box" id="lessonContent"></div>
+<img id="lessonImage">
+<button class="btn" onclick="openPage('lessons')">⬅ رجوع</button>
 </div>
 
-<!-- عرض الدرس -->
-<div id="content">📖 اختر درس</div>
+<!-- CONTACT -->
+<div id="contact" class="page">
+<h2>📩 مراسلة الفريق</h2>
+<input id="msgName" placeholder="اسمك">
+<textarea id="msgText" placeholder="اكتب رسالتك"></textarea>
+<button class="btn" onclick="sendMsg()">ارسال</button>
+<div id="messages"></div>
+<button class="btn" onclick="goBack()">⬅ رجوع</button>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div id="adminLogin" class="page">
+<h2>🔐 تسجيل دخول الادمن</h2>
+<input type="password" id="adminPass" placeholder="كلمة السر">
+<button class="btn" onclick="login()">دخول</button>
+<button class="btn" onclick="goBack()">⬅ رجوع</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin" class="page">
+<h2>🛠 لوحة الادمن</h2>
+
+<input id="lessonTitle" placeholder="اسم الدرس">
+<textarea id="lessonText" placeholder="نص الدرس"></textarea>
+<input type="file" id="lessonImg">
+
+<button class="btn" onclick="addLesson()">➕ رفع درس</button>
+
+<h3>📂 الدروس</h3>
+<div id="adminLessons"></div>
+
+<h3>📩 الشكاوي</h3>
+<div id="adminMsgs"></div>
+
+<button class="btn" onclick="goBack()">⬅ خروج</button>
+</div>
 
 <script>
+let lessons = JSON.parse(localStorage.getItem("lessons")||"[]")
+let msgs = JSON.parse(localStorage.getItem("msgs")||"[]")
 
-// فتح صفحة
+function save(){
+  localStorage.setItem("lessons",JSON.stringify(lessons))
+  localStorage.setItem("msgs",JSON.stringify(msgs))
+}
+
 function openPage(id){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
   document.getElementById(id).classList.add("active")
+  render()
 }
 
-// رجوع
-function goBack(){
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
-  document.getElementById("main").classList.add("active")
+function goBack(){openPage("main")}
+
+function addLesson(){
+  let title=document.getElementById("lessonTitle").value
+  let text=document.getElementById("lessonText").value
+  let file=document.getElementById("lessonImg").files[0]
+
+  if(!title||!text)return
+
+  let img=""
+  if(file) img=URL.createObjectURL(file)
+
+  lessons.push({title,text,img})
+  save()
+  render()
 }
 
-// تحميل الدرس من txt
-function loadLesson(file){
-  fetch("lessons/" + file)
-  .then(res => {
-    if(!res.ok){
-      throw "❌ الملف غير موجود"
-    }
-    return res.text()
-  })
-  .then(data => {
-    document.getElementById("content").textContent = data
-  })
-  .catch(err => {
-    document.getElementById("content").textContent = err
-  })
+function render(){
+  let list=document.getElementById("lessonList")
+  let adminList=document.getElementById("adminLessons")
+  let msgBox=document.getElementById("messages")
+  let adminMsgs=document.getElementById("adminMsgs")
+
+  if(list){
+    list.innerHTML=""
+    lessons.forEach((l,i)=>{
+      list.innerHTML+=`<button class="btn" onclick="view(${i})">${l.title}</button>`
+    })
+  }
+
+  if(adminList){
+    adminList.innerHTML=""
+    lessons.forEach((l,i)=>{
+      adminList.innerHTML+=`<div class="box">${l.title}</div>`
+    })
+  }
+
+  if(msgBox){
+    msgBox.innerHTML=""
+    msgs.forEach(m=>{
+      msgBox.innerHTML+=`<div class="box">${m.name}: ${m.text}</div>`
+    })
+  }
+
+  if(adminMsgs){
+    adminMsgs.innerHTML=""
+    msgs.forEach(m=>{
+      adminMsgs.innerHTML+=`<div class="box">${m.name}: ${m.text}</div>`
+    })
+  }
 }
 
+function view(i){
+  openPage("viewLesson")
+  document.getElementById("lessonContent").textContent=lessons[i].text
+  document.getElementById("lessonImage").src=lessons[i].img
+}
+
+function sendMsg(){
+  let name=document.getElementById("msgName").value
+  let text=document.getElementById("msgText").value
+  if(!name||!text)return
+  msgs.push({name,text})
+  save()
+  render()
+}
+
+function login(){
+  let pass=document.getElementById("adminPass").value
+  if(pass==="Younis123321"){
+    openPage("admin")
+  }
+}
+
+render()
 </script>
 
 </body>
