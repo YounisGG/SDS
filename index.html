@@ -2,26 +2,124 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>تعلم Godot</title>
-</head>
 
+<style>
+body{
+  background:#0f172a;
+  color:white;
+  font-family:Arial;
+  margin:0;
+  text-align:center;
+}
+
+h1{margin-top:20px;}
+
+.container{
+  margin-top:40px;
+}
+
+button{
+  padding:15px;
+  margin:10px;
+  border:none;
+  border-radius:10px;
+  background:#334155;
+  color:white;
+  font-size:18px;
+}
+
+.hidden{
+  display:none;
+}
+
+.back{
+  background:red;
+}
+
+.lesson{
+  display:block;
+  width:80%;
+  margin:10px auto;
+}
+
+pre{
+  background:#020617;
+  padding:15px;
+  margin:10px;
+  border-radius:10px;
+  text-align:right;
+}
+</style>
+
+</head>
 <body>
 
-<h1>الدروس</h1>
+<!-- الصفحة الرئيسية -->
+<div id="mainPage" class="container">
+  <h1>🎮 اختر نوع التعلم</h1>
 
-<button onclick="loadLesson('player.txt')">شرح اللاعب</button>
-<button onclick="loadLesson('zombie.txt')">شرح الزومبي</button>
+  <button onclick="openSection('page2d')">🟢 تعلم 2D</button>
+  <button onclick="openSection('page3d')">🔵 تعلم 3D</button>
+</div>
 
-<pre id="content"></pre>
+<!-- صفحة 2D -->
+<div id="page2d" class="hidden">
+
+  <h1>🟢 قسم 2D</h1>
+
+  <button class="lesson" onclick="loadLesson('2d/player.txt')">🎮 اللاعب</button>
+  <button class="lesson" onclick="loadLesson('2d/movement.txt')">🏃 الحركة</button>
+  <button class="lesson" onclick="loadLesson('2d/zombie.txt')">🧟 العدو</button>
+
+  <button class="back" onclick="goBack()">⬅ رجوع</button>
+
+</div>
+
+<!-- صفحة 3D -->
+<div id="page3d" class="hidden">
+
+  <h1>🔵 قسم 3D</h1>
+
+  <button class="lesson" onclick="loadLesson('3d/player3d.txt')">🎮 اللاعب 3D</button>
+  <button class="lesson" onclick="loadLesson('3d/movement3d.txt')">🏃 الحركة 3D</button>
+  <button class="lesson" onclick="loadLesson('3d/enemy3d.txt')">👾 العدو 3D</button>
+
+  <button class="back" onclick="goBack()">⬅ رجوع</button>
+
+</div>
+
+<!-- عرض الدرس -->
+<pre id="content">📖 اختر درس</pre>
 
 <script>
+
+// فتح قسم
+function openSection(id){
+  document.getElementById("mainPage").classList.add("hidden")
+  document.getElementById("page2d").classList.add("hidden")
+  document.getElementById("page3d").classList.add("hidden")
+
+  document.getElementById(id).classList.remove("hidden")
+}
+
+// رجوع
+function goBack(){
+  document.getElementById("mainPage").classList.remove("hidden")
+  document.getElementById("page2d").classList.add("hidden")
+  document.getElementById("page3d").classList.add("hidden")
+}
+
+// تحميل الدرس
 function loadLesson(file){
   fetch("lessons/" + file)
   .then(res => res.text())
   .then(data => {
-    document.getElementById("content").textContent = data;
-  });
+    document.getElementById("content").textContent = data
+  })
 }
+
 </script>
 
 </body>
