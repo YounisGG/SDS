@@ -3,143 +3,126 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>تعلم Godot</title>
 
 <style>
-body {
+body{
   font-family: Arial;
-  background: #0f172a;
-  color: white;
-  margin: 0;
+  background:#0f172a;
+  color:white;
+  margin:0;
 }
 
-header {
-  background: #1e293b;
-  padding: 10px;
-  text-align: center;
+header{
+  background:#1e293b;
+  padding:10px;
+  text-align:center;
 }
 
-nav button {
-  margin: 5px;
-  padding: 10px;
-  background: #334155;
-  color: white;
-  border: none;
-  border-radius: 8px;
+button{
+  padding:10px;
+  margin:5px;
+  border:none;
+  border-radius:8px;
+  background:#334155;
+  color:white;
 }
 
-.content {
-  padding: 20px;
+.content{padding:20px;}
+.hidden{display:none;}
+
+pre{
+  background:#020617;
+  padding:10px;
+  border-radius:10px;
+  overflow:auto;
 }
 
-.hidden {
-  display: none;
+.admin{
+  position:fixed;
+  top:0;
+  right:0;
+  width:300px;
+  height:100%;
+  background:#111;
+  padding:15px;
 }
 
-img {
-  width: 100%;
-  max-width: 400px;
-  border-radius: 10px;
+.admin-btn{
+  position:fixed;
+  bottom:10px;
+  right:10px;
+  background:red;
+  border-radius:50%;
 }
 
-pre {
-  background: #020617;
-  padding: 10px;
-  border-radius: 10px;
-  overflow-x: auto;
-}
-
-.admin-btn {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  background: red;
-  border: none;
-  padding: 10px;
-  border-radius: 50%;
-}
-
-.admin {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 300px;
-  height: 100%;
-  background: #111;
-  padding: 20px;
-}
-
-@media (max-width: 600px) {
-  nav button {
-    width: 100%;
-  }
-}
 </style>
-
 </head>
+
 <body>
 
 <header>
-  <h1>🔥 تعلم Godot من الصفر</h1>
+<h1>🔥 تعلم Godot (شرح حقيقي)</h1>
 
-  <nav>
-    <button onclick="show('player')">اللاعب</button>
-    <button onclick="show('enemy')">الزومبي</button>
-    <button onclick="show('maps')">الخرائط</button>
-    <button onclick="show('buildings')">البنايات</button>
-    <button onclick="show('contact')">تواصل</button>
-  </nav>
+<button onclick="show('player')">اللاعب</button>
+<button onclick="show('zombie')">الزومبي</button>
 </header>
 
 <!-- اللاعب -->
 <section id="player" class="content">
 
-<h2>🎮 صنع اللاعب</h2>
+<h2>🎮 صنع اللاعب خطوة خطوة</h2>
 
-<p>1. أضف Node من نوع CharacterBody2D</p>
-<img src="https://i.imgur.com/6XQZ6rA.png">
+<p>🔹 الخطوة 1:</p>
+<p>افتح Godot → New Scene → اختر CharacterBody2D</p>
 
-<p>2. أضف CollisionShape2D + Sprite2D</p>
+<p>🔹 الخطوة 2:</p>
+<p>أضف نودات:</p>
+<ul>
+<li>Sprite2D</li>
+<li>CollisionShape2D</li>
+</ul>
 
-<p>3. استخدم هذا الكود:</p>
+<p>🔹 الخطوة 3:</p>
+<p>احفظ المشهد باسم Player.tscn</p>
+
+<p>🔹 الخطوة 4 (الكود):</p>
 
 <pre>
 extends CharacterBody2D
 
 @export var speed = 250
-@export var jump_force = -500
-var gravity = 1000
 
 func _physics_process(delta):
-    if not is_on_floor():
-        velocity.y += gravity * delta
-
-    var dir = Input.get_axis("ui_left", "ui_right")
+    var dir = Input.get_axis("ui_left","ui_right")
     velocity.x = dir * speed
-
-    if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-        velocity.y = jump_force
-
     move_and_slide()
 </pre>
 
-<h3>📱 دعم الموبايل</h3>
-<p>استخدم أزرار TouchScreenButton واربطها بـ Input Map</p>
+<p>🔹 الخطوة 5:</p>
+<p>افتح Main Scene واسحب Player.tscn داخلها</p>
 
 </section>
 
 <!-- الزومبي -->
-<section id="enemy" class="content hidden">
+<section id="zombie" class="content hidden">
 
-<h2>🧟 صنع عدو زومبي</h2>
+<h2>🧟 صنع زومبي يلاحق اللاعب</h2>
 
-<p>1. أضف CharacterBody2D</p>
-<p>2. أضف Sprite + Collision</p>
+<p>🔹 الخطوة 1:</p>
+<p>New Scene → CharacterBody2D</p>
 
-<img src="https://i.imgur.com/Z7AzH2c.png">
+<p>🔹 الخطوة 2:</p>
+<p>أضف:</p>
+<ul>
+<li>Sprite2D</li>
+<li>CollisionShape2D</li>
+</ul>
 
-<p>3. الكود:</p>
+<p>🔹 الخطوة 3:</p>
+<p>احفظه Zombie.tscn</p>
+
+<p>🔹 الخطوة 4 (الكود الصحيح):</p>
 
 <pre>
 extends CharacterBody2D
@@ -147,65 +130,44 @@ extends CharacterBody2D
 @export var speed = 100
 var player
 
-func _process(delta):
+func _ready():
+    player = get_parent().get_node("Player")
+
+func _physics_process(delta):
     if player:
         var dir = (player.global_position - global_position).normalized()
         velocity = dir * speed
         move_and_slide()
 </pre>
 
-<p>📦 تحميل ملف الزومبي:</p>
-<a href="#" onclick="alert('حط ملفك هنا بعد رفعه على GitHub')">تحميل</a>
+<p>🔹 الخطوة 5 (مهم جداً):</p>
+<p>روح للمشهد الرئيسي Main واسحب:</p>
+
+<ul>
+<li>Player.tscn</li>
+<li>Zombie.tscn</li>
+</ul>
+
+<p>📌 تأكد اسم اللاعب داخل المشهد هو: <b>Player</b></p>
 
 </section>
 
-<!-- الخرائط -->
-<section id="maps" class="content hidden">
-
-<h2>🗺️ صنع الخرائط</h2>
-
-<p>استخدم TileMap</p>
-<img src="https://i.imgur.com/YW6G6Qh.png">
-
-</section>
-
-<!-- البنايات -->
-<section id="buildings" class="content hidden">
-
-<h2>🏠 البنايات</h2>
-
-<p>استخدم MeshInstance أو Sprite</p>
-<img src="https://i.imgur.com/Fx3pKkM.png">
-
-</section>
-
-<!-- تواصل -->
-<section id="contact" class="content hidden">
-
-<h2>📩 مراسلة الفريق</h2>
-
-<input id="name" placeholder="اسمك"><br><br>
-<textarea id="msg" placeholder="رسالتك"></textarea><br><br>
-
-<button onclick="send()">ارسال</button>
-
-</section>
-
-<!-- زر سري -->
+<!-- زر الادمن -->
 <button class="admin-btn" onclick="openAdmin()">⚙️</button>
 
 <!-- لوحة الادمن -->
 <div id="admin" class="admin hidden">
 
-<h2>🔒 لوحة الادمن</h2>
+<h2>🔒 الأدمن</h2>
 
 <input id="pass" placeholder="كلمة السر"><br><br>
 <button onclick="login()">دخول</button>
+<button onclick="closeAdmin()">خروج ❌</button>
 
 <div id="panel" class="hidden">
 
 <h3>📨 الرسائل</h3>
-<div id="messages"></div>
+<div id="msgs"></div>
 
 </div>
 
@@ -218,19 +180,12 @@ function show(id){
   document.getElementById(id).classList.remove("hidden")
 }
 
-function send(){
-  let name = document.getElementById("name").value
-  let msg = document.getElementById("msg").value
-
-  let data = JSON.parse(localStorage.getItem("msgs") || "[]")
-  data.push({name,msg})
-
-  localStorage.setItem("msgs", JSON.stringify(data))
-  alert("تم الارسال")
-}
-
 function openAdmin(){
   document.getElementById("admin").classList.remove("hidden")
+}
+
+function closeAdmin(){
+  document.getElementById("admin").classList.add("hidden")
 }
 
 function login(){
@@ -238,21 +193,9 @@ function login(){
 
   if(pass === "Younis123321"){
     document.getElementById("panel").classList.remove("hidden")
-    load()
   } else {
-    alert("خطأ")
+    alert("كلمة السر خطأ")
   }
-}
-
-function load(){
-  let data = JSON.parse(localStorage.getItem("msgs") || "[]")
-  let div = document.getElementById("messages")
-
-  div.innerHTML = ""
-
-  data.forEach(m=>{
-    div.innerHTML += `<p>${m.name}: ${m.msg}</p>`
-  })
 }
 
 </script>
