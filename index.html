@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Godot Academy</title>
+<title>Godot Platform</title>
 
 <style>
 body{
@@ -31,7 +31,7 @@ header{
 
 .btn{
   display:block;
-  width:80%;
+  width:85%;
   margin:10px auto;
   padding:15px;
   background:#334155;
@@ -58,45 +58,37 @@ header{
   border-radius:10px;
   text-align:right;
   white-space:pre-wrap;
-}
-
-.fade{
-  animation:fade 0.5s;
-}
-
-@keyframes fade{
-  from{opacity:0}
-  to{opacity:1}
+  max-height:300px;
+  overflow:auto;
 }
 </style>
 
 </head>
 <body>
 
-<header>🔥 تعلم Godot</header>
+<header>🔥 منصة تعلم Godot</header>
 
 <!-- الصفحة الرئيسية -->
-<div id="main" class="page active fade">
+<div id="main" class="page active">
   <h2>اختر القسم</h2>
-
   <button class="btn" onclick="openPage('page2d')">🟢 2D</button>
   <button class="btn" onclick="openPage('page3d')">🔵 3D</button>
 </div>
 
-<!-- 2D -->
-<div id="page2d" class="page fade">
-  <h2>🟢 قسم 2D</h2>
+<!-- قسم 2D -->
+<div id="page2d" class="page">
+  <h2>🟢 دروس 2D</h2>
 
   <button class="btn" onclick="loadLesson('2d_player.txt')">🎮 اللاعب</button>
   <button class="btn" onclick="loadLesson('2d_movement.txt')">🏃 الحركة</button>
-  <button class="btn" onclick="loadLesson('2d_zombie.txt')">🧟 العدو</button>
+  <button class="btn" onclick="loadLesson('2d_zombie.txt')">🧟 الزومبي</button>
 
   <button class="btn back" onclick="goBack()">⬅ رجوع</button>
 </div>
 
-<!-- 3D -->
-<div id="page3d" class="page fade">
-  <h2>🔵 قسم 3D</h2>
+<!-- قسم 3D -->
+<div id="page3d" class="page">
+  <h2>🔵 دروس 3D</h2>
 
   <button class="btn" onclick="loadLesson('player.txt')">🎮 اللاعب 3D</button>
   <button class="btn" onclick="loadLesson('movement.txt')">🏃 الحركة 3D</button>
@@ -122,7 +114,7 @@ function goBack(){
   document.getElementById("main").classList.add("active")
 }
 
-// تحميل درس
+// تحميل الدرس من txt
 function loadLesson(file){
   fetch("lessons/" + file)
   .then(res => {
